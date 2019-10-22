@@ -1,0 +1,29 @@
+/* CONFIG */
+const express = require('express')
+const app = express()
+
+const project = require("./project")
+const path = require("path")
+const ejs = require('ejs')
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.set('view engine', 'ejs'); // set the view engine to ejs
+app.set('views', path.join(__dirname, './..', '/frontend'));
+//app.use(express.static(path.join(__dirname, '../..', '/style')));
+
+/* CONSTANTES */
+const NUM_PORT = 3000
+const FIRST_PAGE_PATH = "../frontend/index"
+
+/* OTHER .js USED */
+app.use(project);
+
+app.get("/", function(req, res){
+  res.render(FIRST_PAGE_PATH)
+})
+
+app.listen(NUM_PORT, function () {
+  console.log('App listening on port ' + FIRST_PAGE_PATH + '!')
+})
