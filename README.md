@@ -22,6 +22,8 @@ Définitions
 
 **Sprint :** Issues à implémenter en un certain temps. Un sprint a un identifiant unique, un nom, une description, une date de début, une durée, un état (A faire, en cours ou terminé) et la liste des issues à implémenter.
 
+---
+
 | Id  |              Nom              |                                                                                                                                                                                                                     Description                                                                                                                                                                                                                    | Difficulté | Priorité |
 |-----|:-----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------:|:--------:|
 | I0  |      Création d'un compte     | **En tant que** visiteur, **je souhaite** créer un compte sur le site en cliquant sur un bouton "Inscription" **afin de** pouvoir me connecter. La page de création d'un compte doit me demander : <li> un nom d'utilisateur unique sous forme de chaîne de caractères (20 char max) <li> un mot de passe sous forme de chaîne de caractères.|     13     |   Basse  |
