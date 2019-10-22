@@ -1,10 +1,10 @@
 # CDP_Dev
 #Github for development
 
-#Group members:
-#_Kheloufi Rayan
-#_LAFOSSE Estelle
-#_MENAN Jimmy
+Group members:
+* Kheloufi Rayan
+* LAFOSSE Estelle
+* MENAN Jimmy
 
 | Id  |              Nom              |                                                                                                                                                                                                                     Description                                                                                                                                                                                                                    | Difficulté | Priorité |
 |-----|:-----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------:|:--------:|
@@ -47,7 +47,7 @@
 | I36 |        Compte rendu d'un sprint        | **En tant que** membre du projet **je souhaite** avoir accès à un compte rendu d'un sprint me permettant de savoir : <li> ce qui a été réalisé <li> ce qui n'a pas été réalisé <li> une description de l'avis du client | 13          | Basse    |
 | I37 |        Mise en valeur des tâches réalisables        | **En tant que** membre du projet **je souhaite** lors de la création d'un sprint, que les tâches n'ayant pas de pré-requis, celles dont les pré-requis sont réalisés et les tâches en retard soient mises en valeur | 8          | Basse    |
 | I38 |        Code couleur Tests        | **En tant que** membre du projet **je souhaite** que les tests bénéficient d'un code couleur concernant leur état  | 3          | Basse    |
-| I39 |        Checklist dans les Tâches        | **En tant que** membre d'un projet **je souhaite** qu'une checklist me permette de savoir les éléments restants à accomplir afin de compléter une tâche | chiffre          | Priorité    |
+| I39 |        Checklist dans les Tâches        | **En tant que** membre d'un projet **je souhaite** qu'une checklist me permette de savoir les éléments restants à accomplir afin de compléter une tâche | 8         | Basse    |
 
 
 
