@@ -6,6 +6,22 @@ Group members:
 * LAFOSSE Estelle
 * MENAN Jimmy
 
+Définitions
+===
+**Projet :** Un projet a un nom, une liste de membres, une liste d'issues, de tâches et une description.
+
+**Issue :** Une issue est l'expression d'un besoin particulier. Dans une issue doit apparaître un id unique, un nom, une description, une priorité, une difficulté et un état (En attente de validation, à faire, en cours, finie).
+
+**Tâche :** Une tâche décrit un travail qui va être effectué par un développeur dans l'objectif de réaliser une ou plusieurs issues. Une tâche comprend un nom, une description, est liée à une ou plusieurs issues, a un état (A faire, en cours, finie), est délimitée dans le temps (Date de début - Temps nécessaire à la réalisation), doit avoir une "Definition of Done" (spécifier exactement quand elle sera réalisée), une dépendance à la réalisation d'autres tâches si besoin, et son attribution à un membre du projet.
+
+**Release :** Sur le site, une release aura un nom, une description, une date, les issues auxquelles elle répond, et contiendra un lien vers la release sur un dépôt.
+
+**Documentation :** Documents donnant des informations concernant le logiciel. Notre projet soutiendra deux types de documentation : la documentation utilisateur et la documentation administrateur.
+
+**Test :** Ici un test réfère à un objet "Test" comprenant un nom, une description de la fonction à tester, le résultat attendu par celui-ci, l'issue à laquelle il correspond, un état (A coder ou fait), et la dernière version pour laquelle le test a été validé.
+
+**Sprint :** Issues à implémenter en un certain temps. Un sprint a un identifiant unique, un nom, une description, une date de début, une durée, un état (A faire, en cours ou terminé) et la liste des issues à implémenter.
+
 | Id  |              Nom              |                                                                                                                                                                                                                     Description                                                                                                                                                                                                                    | Difficulté | Priorité |
 |-----|:-----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------:|:--------:|
 | I0  |      Création d'un compte     | **En tant que** visiteur, **je souhaite** créer un compte sur le site en cliquant sur un bouton "Inscription" **afin de** pouvoir me connecter. La page de création d'un compte doit me demander : <li> un nom d'utilisateur unique sous forme de chaîne de caractères (20 char max) <li> un mot de passe sous forme de chaîne de caractères.|     13     |   Basse  |
