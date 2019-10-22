@@ -159,7 +159,7 @@ I12 (5, 13) -> En tant que membre d'un projet, je souhaite pouvoir accéder à l
 * les sprint en cours
 * les sprint terminés. 
 
-I32 (8, 8) -> En tant que membre du projet, je souhaite pouvoir ajouter un sprint en appuyant sur un bouton "Ajouter Sprint", puis en spécifiant :
+I32 (8, 13) -> En tant que membre du projet, je souhaite pouvoir ajouter un sprint en appuyant sur un bouton "Ajouter Sprint", puis en spécifiant :
 * un identifiant
 * un nom
 * une description
@@ -170,7 +170,7 @@ I32 (8, 8) -> En tant que membre du projet, je souhaite pouvoir ajouter un sprin
 * ajouter des issues à la liste des issues à implémenter durant ce sprint
 * supprimer des issues de la liste des issues à implémenter durant ce sprint
 
-I33 (8, 8) -> En tant que membre du projet et en étant sur la liste des sprints, je souhaite pouvoir supprimer un sprint en appuyant sur un bouton " Supprimer " à côté du sprint correspondant.
+I33 (8, 13) -> En tant que membre du projet et en étant sur la liste des sprints, je souhaite pouvoir supprimer un sprint en appuyant sur un bouton " Supprimer " à côté du sprint correspondant.
 
 I34 (8, 5) -> En tant que membre du projet et en étant sur la liste des sprints, je souhaite pouvoir modifier un sprint en cliquant sur un bouton " Modifier " à côté du sprint correspondant, puis en spécifiant :
 * un identifiant
