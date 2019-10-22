@@ -44,7 +44,7 @@ I4 (5, 8) -> En tant que créateur du projet, je souhaite pouvoir inviter d'autr
 
 afin qu'ils puissent participer à l'avancement du projet en modifiant les issues, les tâches, les releases, la documentation, les sprints et les tests.
 
-I5 (5, 3) -> En tant que  ou créateur du projet, je souhaite avoir accès à la liste des membres du projet. 
+I5 (5, 3) -> En tant que membre ou créateur du projet, je souhaite avoir accès à la liste des membres du projet. 
 
 I6 (5, 3) -> En tant que créateur du projet, je souhaite pouvoir supprimer un membre de mon projet en cliquant sur un bouton "Supprimer" à coté du nom d’un des membres de mon équipe dans la liste des membres du projet.
 
