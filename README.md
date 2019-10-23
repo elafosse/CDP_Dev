@@ -52,8 +52,8 @@ Définitions
 | **I23** |        Mise en valeur des tâches réalisables        |**En tant que** membre du projet **je souhaite** lors de la création d'un sprint, que les tâches n'ayant pas de pré-requis, celles dont les pré-requis sont réalisés et les tâches en retard soient mises en valeur | 8          | Basse    |
 | **I24** |        Code couleur Tests        |**En tant que** membre du projet **je souhaite** que les tests bénéficient d'un code couleur concernant leur état  | 3          | Basse    |
 | **I25** |        Checklist dans les Tâches        |**En tant que** membre d'un projet **je souhaite** qu'une checklist me permette de savoir les éléments restants à accomplir afin de compléter une tâche | 8         | Basse    |
-| **I26** |        Burndown Chart        |**En tant que** membre d'un projet **je souhaite** avoir accès a un Burndown Chart du projet | 8         | Basse    |
-| **I27** |        Burndown Chart        |**En tant que** créateur d'un projet **je souhaite** pouvoir remplir le Burndown Chart du projet, en y ajouter à la fin de chaque sprint le nombre de difficultés que l'équipe à rencontré | 8         | Basse    |
+| **I26** |        Accès Burndown Chart        |**En tant que** membre d'un projet **je souhaite** avoir accès a un Burndown Chart du projet | 8         | Basse    |
+| **I27** |        Remplissage du Burndown Chart        |**En tant que** créateur d'un projet **je souhaite** pouvoir remplir le Burndown Chart du projet, en y ajouter à la fin de chaque sprint le nombre de difficultés que l'équipe à rencontré | 8         | Basse    |
 | **I28** |        Vue android        |**En tant que** membre du projet **je souhaite** avoir accès a la vue sur mon smartphone android du site| 13         | Basse    |
 | **I29** |        Statistiques d'un sprint        |**En tant que** membre du projet **je souhaite** avoir accès aux statistiques d'un sprint avec une barre de progression concernant : les jours restant, les issues, les tasks, tests. Ces barres doivent indiquer le travail qui a été fait, et celui restant à faire. | 13         | Basse    |
 
