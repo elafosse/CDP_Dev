@@ -2,28 +2,22 @@
 const express = require('express')
 const app = express()
 
-const project = require("./project")
-const path = require("path")
+/* REQUIRED */
+const path = require('path')
 const ejs = require('ejs')
-var bodyParser = require('body-parser')
+let bodyParser = require('body-parser')
+const mysql = require('mysql')
+const index = require('./index')
 
+/* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(index.app)
 
-app.set('view engine', 'ejs'); // set the view engine to ejs
-app.set('views', path.join(__dirname, './..', '/frontend'));
-//app.use(express.static(path.join(__dirname, '../..', '/style')));
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, './..', '/frontend'))
 
-/* CONSTANTES */
 const NUM_PORT = 3000
-const FIRST_PAGE_PATH = "../frontend/index"
-
-/* OTHER .js USED */
-app.use(project);
-
-app.get("/", function(req, res){
-  res.render(FIRST_PAGE_PATH)
-})
 
 app.listen(NUM_PORT, function () {
-  console.log('App listening on port ' + FIRST_PAGE_PATH + '!')
+  console.log('App listening on port ' + NUM_PORT + '!')
 })
