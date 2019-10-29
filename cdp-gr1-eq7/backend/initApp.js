@@ -6,7 +6,6 @@ const app = express()
 const path = require('path')
 const ejs = require('ejs')
 let bodyParser = require('body-parser')
-const mysql = require('mysql')
 const index = require('./index')
 
 /* USE THE REQUIRES */
