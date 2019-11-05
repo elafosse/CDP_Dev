@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script defer src="../backend/newProject.js"></script>
+  <meta name="author" content="gr1_eq7"/>
+  <title>Liste de mes projets</title>
+</head>
+
+<body>
+  <br>
+  <form action="/create-project" method="post"> <!--/mettre overview-project à la place ???-->
+    <div class="form-group">
+      <label>Nom : <input id="nameProject" type="text"></label> <br>
+      <label>Description : <input id="descriptionProject" type="text"></label> <br>
+      
+      <label>Ajouter un membre au projet : <input id="usernameMemberToAdd"></label> <button type="submit" class="btn btn-primary" id="addMember">Ajouter</button> <br>
+      
+      <ul id="listProjectMembers">
+        Liste des membres du projet :
+        <% /* project.listMembers.forEach(function(member) { %>
+          <li> <%= member.username %>
+            <form action="/remove-member-from-project" method="post">
+              <input type="text" name="name" class="form-control" id="username" value="<%= member.username %>" hidden>
+              <button type="submit" class="btn btn-primary">Supprimer</button>
+            </form>
+          </li>
+          <% }); */ %>
+        </ul>
+      </div>
+      
+      <button type="submit" href="/project-overview?name=" class="btn btn-primary" id="createNewProject">Enregistrer</button>
+    </form>
+  </body>
+  </html>
