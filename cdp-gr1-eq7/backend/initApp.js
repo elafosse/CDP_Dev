@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(index.app)
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, './..', '/frontend'))
+app.set('views', path.join(__dirname, './..', '/views'))
 
 const NUM_PORT = 3000
 

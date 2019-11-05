@@ -12,9 +12,9 @@ const mysql = require('mysql')
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, './..', '/frontend'))
+app.set('views', path.join(__dirname, './..', '/views'))
 
-const INDEX_PATH = '../frontend/index'
+const INDEX_PATH = '../views/index'
 
 app.get('/', function(req, res){
   res.render(INDEX_PATH)
