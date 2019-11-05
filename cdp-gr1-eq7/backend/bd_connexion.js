@@ -58,6 +58,21 @@ function deleteMembersFromProject(projectId, usernameList) {
         });
     }
 }
+
+function getMembersOfProject(project_id){
+	let sql = "SELECT username FROM project_team WHERE project_id = '"
+		.concat(project_id, "\'");
+		console.log(sql);
+		con.query(sql, function (err, result) {
+		    	if (err) throw err;
+			let id_list = [];
+			for(let i = 0; i < result.length; i++){
+				id_list.push(result[i].username);
+			}
+			console.log(id_list);
+	      		return id_list;
+		});
+}
   
 
 // ================ Members ================
@@ -77,9 +92,25 @@ function storeMember(username, password) {
     });
 }
 
+function getProjectsOfMember(username) {
+	// TODO: Vérifier si le couple user/project_id n'existe pas déjà
+    let sql = "SELECT project_id FROM project_team WHERE username = '"
+        .concat(username, "\'");
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            	if (err) throw err;
+		let id_list = [];
+		for(let i = 0; i < result.length; i++){
+			id_list.push(result[i].project_id);
+		}
+		console.log(id_list);
+      		return id_list;
+        });
+}
+
 // ================ Issues ================
 
-function addIssue(projectId, name, description, priority, difficulty) {
+function addIssueToProject(projectId, name, description, priority, difficulty) {
     let sql = "INSERT INTO issue (project_id, name, description, priority, difficulty) VALUES ("
     .concat("'", projectId, "','", name, "','", description, "','", priority, "','", difficulty, ")");
     console.log(sql);
@@ -87,6 +118,21 @@ function addIssue(projectId, name, description, priority, difficulty) {
         if (err) throw err;
         console.log("New issue added");
     });
+}
+
+function getAllIssuesOfProject(project_id){
+	let sql = "SELECT id FROM issue WHERE project_id = '"
+		.concat(project_id, "\'");
+		console.log(sql);
+		con.query(sql, function (err, result) {
+		    	if (err) throw err;
+			let id_list = [];
+			for(let i = 0; i < result.length; i++){
+				id_list.push(result[i].id);
+			}
+			console.log(id_list);
+	      		return id_list;
+		});
 }
 // "INSERT INTO `issue` (`id`, `project_id`, `name`, `description`, `priority`, `difficulty`) VALUES (NULL, '2', 'dzqdzdq', 'zdzqdzqd', 'dzdq', '15');"
 
@@ -110,4 +156,7 @@ function addTask(projectId, name, description, state, date_beginning, realisatio
 //storeMember("user1", "password");
 //inviteMembersToProject(2, ["user1", "user2"], [true, false]);
 //deleteMembersFromProject(2, ["user2"]);
-addIssue(2, "Issue numéro 1", "Cette description concerne l'issue 1", "HIGH", 15); 
+//addIssue(2, "Issue numéro 1", "Cette description concerne l'issue 1", "HIGH", 15); 
+//let list = getMembersOfProject(2);
+//getAllIssuesOfProject(2);
+
