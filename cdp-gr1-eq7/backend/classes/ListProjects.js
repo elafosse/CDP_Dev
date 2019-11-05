@@ -11,9 +11,13 @@ class ListProjects {
     this.listProjects.push(newProject)
   }
 
-  removeProject (project){
-    let index = this.listProjects.indexOf(project) // fonctionne ??
-    this.listProjects.splice(index, 1)
+  function removeProject (id, listProjects){
+    listProjects.forEach(project => {
+      if (project.id === id){
+        let index = listProjects.indexOf (project)
+        listProjects.splice (index, 1)
+      }
+    })
   }
 }
 
