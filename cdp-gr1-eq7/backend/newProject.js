@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
-const NEW_PROJECT_ROUTE = '/new-project'
-const ADD_MEMBER_ROUTE = '/add-member'
-const REMOVE_MEMBER_ROUTE = '/remove-member'
-const CREATE_PROJECT_ROUTE = '/create-project'
+const NEW_PROJECT_ROUTE = '/newProject'
+const ADD_MEMBER_ROUTE = '/addMember'
+const REMOVE_MEMBER_ROUTE = '/removeMember'
+const CREATE_PROJECT_ROUTE = '/createProject'
 
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
@@ -38,7 +38,6 @@ function removeMember (username, listMembers){
       if (member.username === username){
         let index = listMembers.indexOf (member)
         let removed = listMembers.splice (index, 1)
-        console.log('removed : ' + removed[0].username)
       }
     })
 }
