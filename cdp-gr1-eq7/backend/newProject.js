@@ -6,13 +6,12 @@ const app = express()
 const path = require('path')
 const ejs = require('ejs')
 let bodyParser = require('body-parser')
-const mysql = require('mysql')
+const db = require('./db_connection')
 const project = require ('./classes/Project')
 const member = require ('./classes/Member')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-//app.use(listProjects.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
@@ -30,19 +29,22 @@ let user = new member.Member ('m1', 'pwd1', [])
 let newProject = new project.Project ('p1', 'p1', 'id1', [], user)
 newProject.listMembers.push(user)
 
+let listMembers = []
+
 /* FUNCTIONS */
 function removeMember (username, listMembers){
-  listMembers.forEach(member => {
-    if (member.username === username){
-      let index = listMembers.indexOf (member)
-      listMembers.splice (index, 1)
-    }
-  })
+    listMembers.forEach(member => {
+      if (member.username === username){
+        let index = listMembers.indexOf (member)
+        let removed = listMembers.splice (index, 1)
+        console.log('removed : ' + removed[0].username)
+      }
+    })
 }
 
 app.get (NEW_PROJECT_ROUTE, function (req, res){
   res.render (NEW_PROJECT_VIEW_PATH, {
-    project: newProject,
+    listMembers: listMembers
   })
 })
 
@@ -55,27 +57,28 @@ app.post(ADD_MEMBER_ROUTE, function(req, res){
   console.log("added " + memberUsernameToAdd)
   let newMember = new member.Member(memberUsernameToAdd, '', [])
   
-  newProject.listMembers.push(newMember)
+  listMembers.push(newMember)
   res.render(NEW_PROJECT_VIEW_PATH, {
-    project: newProject,
+    listMembers: listMembers
   })
 })
 
 app.post(REMOVE_MEMBER_ROUTE, function(req, res){
   const memberUsernameToRemove = req.body.memberUsernameToRemove
   console.log("removed " + memberUsernameToRemove)
-  removeMember(memberUsernameToRemove, newProject.listMembers)
+  
+  removeMember(memberUsernameToRemove, listMembers)
   res.render(NEW_PROJECT_VIEW_PATH, {
-    project: newProject,
+    listMembers: listMembers
   })
 })
 
 app.post(CREATE_PROJECT_ROUTE, function(req, res){
-  console.log("au revoir")
-
+  console.log(req.body.nameProject)
+  
   // save the project in the db, update members list of projects in db etc
   res.render(NEW_PROJECT_VIEW_PATH, {
-    project: newProject,
+    listMembers: listMembers
   })
   //res.render(PROJECT_OVERVIEW_VIEW_PATH)
 })
