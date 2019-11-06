@@ -9,9 +9,11 @@ let bodyParser = require('body-parser')
 const mysql = require('mysql')
 const project = require('./classes/Project')
 const member = require('./classes/Member')
+const newProject = require('./newProject')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(newProject.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
@@ -48,14 +50,15 @@ app.get (LIST_PROJECTS_ROUTE, function (req, res){
   })
 })
 
-app.get (NEW_PROJECT_ROUTE, function (req, res){
+// require newProject here causes an error if newProject requireq listProjects too
+/*app.get (NEW_PROJECT_ROUTE, function (req, res){
   res.render (NEW_PROJECT_VIEW_PATH)
-})
+})*/
 
 // delete project
 app.post ('/remove-project', function (req, res){
   // Maj bdd
-  const projectId = req.body.name;
+  const projectId = req.body.projectId;
   removeProject (projectId, user.listProjects)
   res.render (LIST_PROJECTS_VIEW_PATH, {
     userProjects: user.listProjects,
