@@ -7,6 +7,8 @@ const path = require('path')
 const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const mysql = require('mysql')
+const task = require('./classes/Task')
+
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
 
