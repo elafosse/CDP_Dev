@@ -15,7 +15,7 @@ var con = mysql.createConnection({
 
 // ================ Projects ================
 
-export function createProject(name, description) {
+function createProject(name, description) {
     let sql = "INSERT INTO project (name, description) VALUES (".concat("'", name, "'", ',', "'", description, "'", ')');
     console.log(sql);
     con.query(sql, function (err, result) {
@@ -24,7 +24,7 @@ export function createProject(name, description) {
     });
 }
 
-export function deleteProject(username, id) {
+function deleteProject(username, id) {
     //TODO: check if username is the project admin. 
     let sql = "DELETE FROM project WHERE id = ".concat("'", id, "'");
     con.query(sql, function (err, result) {
@@ -33,7 +33,7 @@ export function deleteProject(username, id) {
     });
 }
 
-export function inviteMembersToProject(projectId, usernameList, areAdminsList) {
+function inviteMembersToProject(projectId, usernameList, areAdminsList) {
     if (usernameList.length != areAdminsList.length) {
         throw "The usernameList and the areAdminsList lenght must be the same";
     }
@@ -51,7 +51,7 @@ export function inviteMembersToProject(projectId, usernameList, areAdminsList) {
     });
 }
 
-export function deleteMembersFromProject(projectId, usernameList) {
+function deleteMembersFromProject(projectId, usernameList) {
     let i;
     let sql = "";
     for (i = 0; i < usernameList.length; i++) {
@@ -66,8 +66,7 @@ export function deleteMembersFromProject(projectId, usernameList) {
     });
 }
 
-//TODO : This must return Member object instead of usernames;
-export function getMembersOfProject(project_id) {
+function getMembersOfProject(project_id) {
     let sql = "SELECT username FROM project_team WHERE project_id = '"
         .concat(project_id, "\'");
     console.log(sql);
@@ -82,11 +81,10 @@ export function getMembersOfProject(project_id) {
     });
 }
 
-
 // ================ Members ================
 //https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
 
-export function storeMember(username, password) {
+function storeMember(username, password) {
     bcrypt.hash(password, 10, function (err, hashedPassword) {
         if (err) throw err;
         let sql = "INSERT INTO member (username, password) VALUES (".concat("'", username, "','", hashedPassword, "'", ')');
@@ -98,7 +96,7 @@ export function storeMember(username, password) {
     });
 }
 
-export function getProjectsIdsOfMember(username) {
+function getProjectsIdsOfMember(username) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
     let sql = "SELECT project_id FROM project_team WHERE username = '"
         .concat(username, "\'");
@@ -114,7 +112,7 @@ export function getProjectsIdsOfMember(username) {
     });
 }
 
-export function getTaskIdsOfMember(username) {
+function getTaskIdsAssignedToMember(username) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
     let sql = "SELECT task_id FROM assigned_task WHERE username = '"
         .concat(username, "\'");
@@ -130,7 +128,7 @@ export function getTaskIdsOfMember(username) {
     });
 }
 
-export function areUsernameAndPasswordCorrect(username, password, functionSuccess, functionFail) {
+function areUsernameAndPasswordCorrect(username, password) {
     let sql = "SELECT password FROM member WHERE username = '"
         .concat(username, "\'");
     console.log(sql);
@@ -140,17 +138,15 @@ export function areUsernameAndPasswordCorrect(username, password, functionSucces
         bcrypt.compare(password, hashedPassword, function (err, result) {
             if (result == true) {
                 //True
-                functionSuccess();
             }
             else {
                 //False
-                functionFail();
             }
         });
     });
 }
 
-export function deleteMember(username) {
+function deleteMember(username) {
     let sql = "DELETE FROM member WHERE username = '"
         .concat(username, "\'");
     con.query(sql, function (err, result) {
@@ -160,11 +156,9 @@ export function deleteMember(username) {
     
 }
 
-deleteMember("User4");
-
 // ================ Issues ================
 
-export function addIssueToProject(projectId, name, description, priority, difficulty) {
+function addIssueToProject(projectId, name, description, priority, difficulty) {
     let sql = "INSERT INTO issue (project_id, name, description, priority, difficulty) VALUES ("
         .concat("'", projectId, "','", name, "','", description, "','", priority, "','", difficulty, ")");
     console.log(sql);
@@ -174,7 +168,7 @@ export function addIssueToProject(projectId, name, description, priority, diffic
     });
 }
 
-export function modifyIssue(issueId, name, description, priority, difficulty) {
+function modifyIssue(issueId, name, description, priority, difficulty) {
     var sql = "UPDATE issue SET".concat(
         " name = '", name, "',",
         " description = '", description, "',",
@@ -188,7 +182,7 @@ export function modifyIssue(issueId, name, description, priority, difficulty) {
     });
 }
 
-export function getAllProjectIssues(project_id) {
+function getAllProjectIssues(project_id) {
     let sql = "SELECT id FROM issue WHERE project_id = '"
         .concat(project_id, "\'");
     console.log(sql);
@@ -203,7 +197,7 @@ export function getAllProjectIssues(project_id) {
     });
 }
 
-export function deleteIssue(issueId) {
+function deleteIssue(issueId) {
     let sql = "DELETE FROM issue WHERE id = '"
         .concat(issueId, "'");
     console.log(sql);
@@ -213,11 +207,24 @@ export function deleteIssue(issueId) {
     });
 }
 
-
+function getIssueById(issueId) {
+    let sql = "SELECT * FROM issue WHERE id = '"
+        .concat(issueId, "\'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        let id_list = [];
+        for (let i = 0; i < result.length; i++) {
+            id_list.push([result[i].id, result[i].project_id, result[i].name, result[i].description, result[i].priority, result[i].difficulty]);
+        }
+        console.log(id_list);
+        return id_list;
+    });
+}
 
 // ================ Tasks ================
 
-export function addTask(projectId, name, description, state, date_beginning, realisation_time, DoD, dependencies /*list int*/, members /*list User*/) {
+function addTask(projectId, name, description, state, date_beginning, realisation_time, DoD, dependencies /*list int*/, members /*list User*/) {
     let sql = "INSERT INTO task (project_id, name, description, state, start_date, realisation_time, description_of_done) VALUES ("
         .concat(
             "'", projectId, "'", ',',
@@ -239,7 +246,7 @@ export function addTask(projectId, name, description, state, date_beginning, rea
     });
 }
 
-export function modifyTask(taskId, name, description, state, startDate, realisationTime, DoD) {
+function modifyTask(taskId, name, description, state, startDate, realisationTime, DoD) {
     var sql = "UPDATE task SET".concat(
         " name = '", name, "',",
         " description = '", description, "',",
@@ -255,7 +262,7 @@ export function modifyTask(taskId, name, description, state, startDate, realisat
     });
 }
 
-export function setTaskDependencies(taskId, dependsOnTasksIdList) {
+function setTaskDependencies(taskId, dependsOnTasksIdList) {
     var sql = "DELETE FROM task_dependencies WHERE task_id = '".concat(taskId, "';\n");
     for (let i = 0; i < dependsOnTasksIdList.length; i++) {
         sql = sql.concat("INSERT INTO task_dependencies (task_id, depend_on_task_id) VALUES (",
@@ -269,7 +276,7 @@ export function setTaskDependencies(taskId, dependsOnTasksIdList) {
     });
 }
 
-export function setTaskToMembers(taskId, usernameList) {
+function setTaskToMembers(taskId, usernameList) {
     let i;
     let sql = "DELETE FROM assigned_task WHERE task_id = '".concat(taskId, "';\n");
     for (i = 0; i < usernameList.length; i++) {
@@ -284,7 +291,23 @@ export function setTaskToMembers(taskId, usernameList) {
     });
 }
 
-export function getTaskDependencies(taskId) {
+function getMembersAssignedToTask(taskId) {
+    let sql = "SELECT username FROM assigned_task WHERE task_id = '"
+        .concat(taskId, "\'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        let id_list = [];
+        for (let i = 0; i < result.length; i++) {
+            id_list.push([
+                result[i].username]);
+        }
+        console.log(id_list);
+        return id_list;
+    });
+}
+
+function getTaskDependencies(taskId) {
     let sql = "SELECT depend_on_task_id FROM task_dependencies WHERE task_id = '"
         .concat(taskId, "\'");
     console.log(sql);
@@ -299,7 +322,7 @@ export function getTaskDependencies(taskId) {
     });
 }
 
-export function updateTaskState(taskId, state) {
+function updateTaskState(taskId, state) {
     var sql = "UPDATE task SET state = ".concat("'", state, "'", " WHERE id = '", taskId, "'");
     con.query(sql, function (err, result) {
         if (err) throw err;
@@ -307,7 +330,7 @@ export function updateTaskState(taskId, state) {
     });
 }
 
-export function deleteTask(taskId) {
+function deleteTask(taskId) {
     let sql = "DELETE FROM task WHERE id = '"
         .concat(taskId, "'");
     console.log(sql);
@@ -317,19 +340,36 @@ export function deleteTask(taskId) {
     });
 }
 
-// /!\ Pas fini
-export function setTaskChecklist(taskId, checklist) {
-    let i;
-    let sql = "DELETE FROM task_checklist WHERE task_id = '".concat(taskId, "';\n");
-    for (i = 0; i < checklist.length; i++) {
-        //TODO: Finir ça
-        sql = sql.concat("INSERT INTO assigned_task (task_id, description, is_done) VALUES ('",
-            taskId, "','",
-            taskId, "','",
-            usernameList[i], "'",
-            ');\n');
+function getTaskById(taskId) {
+    let sql = "SELECT * FROM task WHERE id = '"
+        .concat(taskId, "\'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        let id_list = [];
+        for (let i = 0; i < result.length; i++) {
+            id_list.push([
+                result[i].id,
+                result[i].project_id,
+                result[i].name,
+                result[i].description,
+                result[i].state,
+                result[i].start_date,
+                result[i].realisation_time,
+                result[i].description_of_done]);
+        }
+        console.log(id_list);
+        return id_list;
+    });
+}
 
-    }
+// ================ Checklist ================
+
+function setTaskChecklist(taskId, description, isDone) {
+    let sql = "INSERT INTO task_checklist (task_id, description, is_done) VALUES ('".concat(
+        taskId, "','",
+        description, "',",
+        isDone, ");\n");
     console.log(sql);
     con.query(sql, function (err, result) {
         if (err) throw err;
@@ -337,10 +377,55 @@ export function setTaskChecklist(taskId, checklist) {
     });
 }
 
-export function deleteChecklistOfTask(taskId) {
-    let sql = "DELETE FROM task_checklist WHERE task_id = '".concat(taskId, "';\n");
+function modifyTaskDescription(checklistId, description) {
+    var sql = "UPDATE task_checklist SET "
+        .concat("description = '", description, "'  WHERE id = '", checklistId, "'");
+    console.log(sql);
     con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Task assigned to members");
+    });
+}
+
+function modifyTaskState(checklistId, isDone) {
+    var sql = "UPDATE task_checklist SET "
+        .concat( "is_done = ", isDone, " WHERE id = '", checklistId, "'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Task assigned to members");
+    });
+}
+
+function getTaskChecklist(task_id) {
+    let sql = "SELECT * FROM task_checklist WHERE task_id = '"
+        .concat(task_id, "\'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        let id_list = [];
+        for (let i = 0; i < result.length; i++) {
+            id_list.push([result[i].description, result[i].is_done]);
+        }
+        console.log(id_list);
+        return id_list;
+    });
+}
+
+function getChecklistItemById(itemId) {
+    let sql = "SELECT * FROM task_checklist WHERE id = '"
+        .concat(itemId, "\'");
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        let id_list = [];
+        for (let i = 0; i < result.length; i++) {
+            id_list.push([
+                result[i].id,
+                result[i].description,
+                result[i].is_done]);
+        }
+        console.log(id_list);
+        return id_list;
     });
 }
