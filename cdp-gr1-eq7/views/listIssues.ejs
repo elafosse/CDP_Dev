@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script defer src="../backend/listIssues.js"></script>
+  <meta name="author" content="gr1_eq7"/>
+  <title><%=project.name + " | issues"%></title>
+</head>
+<body>
+  <div class="row">
+    <div class="col-12">
+      <a href="/overview-project" class="nav-link active"><h1><%= project.name %></h1></a>
+      <%= project.description %>
+    </div>
+  </div>
+  
+  <div class="row">
+  <% include ./projectSidebar %>
+    <div class="col-9">
+        <a type="button" href="/newProject?user=<%= user.username%>" class="btn btn-success btn-lg">Nouveau Projet</a>
+  
+        <h1>Liste des issues</h1>
+        <ul class="list-unstyled">
+          <% listIssues.forEach(issue => { %>
+            <li><%= issue.name %>
+              <% if (user.username === project.admin.username) { %>
+                <form action="/removeIssue" method="post">
+                  <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>" hidden>
+                  <button type="submit" class="btn btn-primary">Supprimer</button>
+                </form>
+              <% } %>
+            </li>
+          <% }); %>
+        </ul>
+    </div>
+  </div>
+</body>
+</html>
