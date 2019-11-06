@@ -17,21 +17,22 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
 const NEW_PROJECT_ROUTE = '/new-project'
-const PROJECT_OVERVIEW_ROUTE = '/project-overview'
-const CREATE_PROJECT_ROUTE = '/create-project'
-const NEW_PROJECT_VIEW_PATH = '../views/newProject'
-//const PROJECT_OVERVIEW_VIEW_PATH = '../views/project'
 const ADD_MEMBER_ROUTE = '/add-member'
 const REMOVE_MEMBER_ROUTE = '/remove-member'
+const CREATE_PROJECT_ROUTE = '/create-project'
+
+const NEW_PROJECT_VIEW_PATH = '../views/newProject'
+const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
+const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
+
+const DEFAULT_PROJECT_ID = ''
 
 /* TESTS ZONE */
 let user = new member.Member ('m1', 'pwd1', [])
-let newProject = new project.Project ('p1', 'p1', 'id1', [], user)
-newProject.listMembers.push(user)
-
-let listMembers = []
 
 /* FUNCTIONS */
+let listMembers = []
+
 function removeMember (username, listMembers){
     listMembers.forEach(member => {
       if (member.username === username){
@@ -74,13 +75,17 @@ app.post(REMOVE_MEMBER_ROUTE, function(req, res){
 })
 
 app.post(CREATE_PROJECT_ROUTE, function(req, res){
-  console.log(req.body.nameProject)
-  
-  // save the project in the db, update members list of projects in db etc
-  res.render(NEW_PROJECT_VIEW_PATH, {
-    listMembers: listMembers
+  const projectName = req.body.projectName
+  const projectDescription = req.body.projectDescription
+  console.log("Project " + projectName + " created")
+  let newProject = new project.Project(projectName, projectDescription, DEFAULT_PROJECT_ID, listMembers, user)
+
+  //db.createProject(projectName, projectDescription)
+  // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
+
+  res.render(PROJECT_OVERVIEW_VIEW_PATH, {
+    project: newProject
   })
-  //res.render(PROJECT_OVERVIEW_VIEW_PATH)
 })
 
 module.exports.app = app
