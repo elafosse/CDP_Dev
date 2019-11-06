@@ -14,6 +14,11 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
 const LIST_TASKS_PATH = '../views/listTasks.ejs'
+const NEW_TASK_PATH = '../views/newTask.ejs'
+
+app.get('/newTask', function (req, res) {
+    res.render(NEW_TASK_PATH)
+})
 
 app.get('/listTasks', function (req, res) {
     res.render(LIST_TASKS_PATH)
