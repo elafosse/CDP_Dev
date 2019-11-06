@@ -1,5 +1,4 @@
 /* REQUIRED */
-let bodyParser = require('body-parser')
 const mysql = require('mysql')
 
 class Project {
