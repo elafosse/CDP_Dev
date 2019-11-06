@@ -17,7 +17,7 @@
       <li><%= project.name %>
         <% if (user.username === project.admin.username) { %>
           <form action="/remove-project" method="post">
-            <input type="text" name="name" class="form-control" id="name" value="<%= project.id %>" hidden>
+            <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>" hidden>
             <button type="submit" class="btn btn-primary">Supprimer</button>
           </form>
         <% } %>

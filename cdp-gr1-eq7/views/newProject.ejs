@@ -10,27 +10,27 @@
 
 <body>
   <br>
-  <form action="/create-project" method="post"> <!--/mettre overview-project à la place ???-->
+  <form action="/create-project" method="post">
     <div class="form-group">
-      <label>Nom : <input id="nameProject" type="text"></label> <br>
+      <label>Nom : <input id="nameProject" type="text" name="projectName"></label> <br>
       <label>Description : <input id="descriptionProject" type="text"></label> <br>
       
-      <label>Ajouter un membre au projet : <input id="usernameMemberToAdd"></label> <button type="submit" class="btn btn-primary" id="addMember">Ajouter</button> <br>
+      <label>Ajouter un membre au projet :<input id="usernameMemberToAdd" name="memberUsernameToAdd"></label>
+      <button type="submit" class="btn btn-primary" formaction="/add-member">Ajouter</button>
       
-      <ul id="listProjectMembers">
-        Liste des membres du projet :
-        <% /* project.listMembers.forEach(function(member) { %>
+      <ul id="listProjectMembers">Liste des membres du projet :
+        <% project.listMembers.forEach(member => { %>
           <li> <%= member.username %>
-            <form action="/remove-member-from-project" method="post">
-              <input type="text" name="name" class="form-control" id="username" value="<%= member.username %>" hidden>
-              <button type="submit" class="btn btn-primary">Supprimer</button>
+            <form action="/remove-member" method="post" id="remove">
+              <input type="text" name="memberUsernameToRemove" class="form-control" id="username" value="<%= member.username %>" hidden>
+              <button type="submit" class="btn btn-primary" form="remove">Supprimer</button>
             </form>
           </li>
-          <% }); */ %>
-        </ul>
-      </div>
+        <% }); %>
+      </ul>
+    </div>
       
-      <button type="submit" href="/project-overview?name=" class="btn btn-primary" id="createNewProject">Enregistrer</button>
-    </form>
-  </body>
-  </html>
+    <button type="submit" class="btn btn-primary" id="createNewProject">Enregistrer</button>
+  </form>
+</body>
+</html>
