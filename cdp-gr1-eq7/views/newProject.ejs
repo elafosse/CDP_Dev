@@ -18,12 +18,12 @@
       <label>Ajouter un membre au projet :<input id="usernameMemberToAdd" name="memberUsernameToAdd"></label>
       <button type="submit" class="btn btn-primary" formaction="/add-member">Ajouter</button>
       
-      <ul id="listProjectMembers">Liste des membres du projet :
-        <% project.listMembers.forEach(member => { %>
-          <li> <%= member.username %>
+      <ul id="listProjectMembers">Liste des membres du projet : <%= listMembers.length %>
+        <% listMembers.forEach(member => { %>
+          <li><%= member.username %>
             <form action="/remove-member" method="post" id="remove">
-              <input type="text" name="memberUsernameToRemove" class="form-control" id="username" value="<%= member.username %>" hidden>
-              <button type="submit" class="btn btn-primary" form="remove">Supprimer</button>
+              <input type="text" name="memberUsernameToRemove" class="form-control" value="<%= member.username %>" hidden>
+              <button type="submit" class="btn btn-primary" formaction="/remove-member">Supprimer</button>
             </form>
           </li>
         <% }); %>
@@ -31,6 +31,6 @@
     </div>
       
     <button type="submit" class="btn btn-primary" id="createNewProject">Enregistrer</button>
-  </form>
+  <%//</form>%>
 </body>
 </html>
