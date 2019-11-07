@@ -10,30 +10,28 @@
 <body>
   <div class="row">
     <div class="col-12">
-      <a href="/overview-project" class="nav-link active"><h1><%= project.name %></h1></a>
+      <a href="/overview-project?projectId=<% project.id%>" class="nav-link active"><h1><%= project.name %></h1></a>
       <%= project.description %>
     </div>
   </div>
   
   <div class="row">
-  <% include ./projectSidebar %>
+    <% include ./projectSidebar %>
     <div class="col-9">
-        <a type="button" href="/newProject?user=<%= user.username%>" class="btn btn-success btn-lg">Nouveau Projet</a>
-  
-        <h1>Liste des issues</h1>
-        <ul class="list-unstyled">
-          <% listIssues.forEach(issue => { %>
-            <li><%= issue.name %>
-              <% if (user.username === project.admin.username) { %>
-                <form action="/removeIssue" method="post">
-                  <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>" hidden>
-                  <button type="submit" class="btn btn-primary">Supprimer</button>
-                </form>
-              <% } %>
-            </li>
+      <a type="button" href="/newIssue?projectId=<%= project.id%>" class="btn btn-success btn-lg">Nouvelle Issue</a>
+      
+      <h1>Liste des issues</h1>
+      <ul class="list-unstyled">
+        <% listIssues.forEach(issue => { %>
+          <li><%= issue.name %>
+            <form action="/removeIssue?projectId=<% project.id%>" method="post">
+              <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>" hidden>
+              <button type="submit" class="btn btn-primary">Supprimer</button>
+            </form>
+          </li>
           <% }); %>
         </ul>
+      </div>
     </div>
-  </div>
-</body>
-</html>
+  </body>
+  </html>

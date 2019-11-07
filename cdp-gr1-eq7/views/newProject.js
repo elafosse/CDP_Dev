@@ -6,7 +6,7 @@ const app = express()
 const path = require('path')
 const ejs = require('ejs')
 let bodyParser = require('body-parser')
-const db = require('./bd_connexion')
+const db = require('./db_connection')
 const project = require ('./classes/Project')
 const member = require ('./classes/Member')
 
