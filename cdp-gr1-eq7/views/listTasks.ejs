@@ -13,11 +13,10 @@
 
 <body>
     <div><a class="btn btn-primary" href="./newTask" role="button">Ajouter tache</a></div>
-
-        <!-- TODO : Remove placeholders once you can get manipulate tasks -->
     <span class="justify-content-center">
         <div class="list-group d-inline-flex" id="tasks_todo">
             <p>Taches à faire</p>
+            <!-- Template pour les tasks :
             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     Titre de la tâche
@@ -25,55 +24,42 @@
                 <p class="mb-1">Courte descrption de la tache.</p>
                 <small>Ajouter eventuellement plus d'infos</small>
             </a>
-
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        -->
+        <% taskToDo.forEach(task => { %>
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
-                    Titre de la tâche
+                    <%= task.name %>
                 </div>
-                <p class="mb-1">Courte descrption de la tache.</p>
-                <small>Ajouter eventuellement plus d'infos</small>
-            </a>
-
+                <p class="mb-1"><%= task.description %></p>
+                <small><%= task.state %></small>
+        </a>    
+        <% }); %>
         </div>
 
         <div class="list-group d-inline-flex" id="tasks_doing">
             <p>Taches en cours</p>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <% taskDoing.forEach(task => { %>
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
-                    Titre de la tâche
+                    <%= task.name %>
                 </div>
-                <p class="mb-1">Courte descrption de la tache.</p>
-                <small>Ajouter eventuellement plus d'infos</small>
-            </a>
-
+                <p class="mb-1"><%= task.description %></p>
+                <small><%= task.state %></small>
+        </a>    
+        <% }); %>
         </div>
 
         <div class="list-group d-inline-flex" id="tasks_done">
             <p>Taches terminées</p>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <% taskDone.forEach(task => { %>
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
-                    Titre de la tâche
+                    <%= task.name %>
                 </div>
-                <p class="mb-1">Courte descrption de la tache.</p>
-                <small>Ajouter eventuellement plus d'infos</small>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    Titre de la tâche
-                </div>
-                <p class="mb-1">Courte descrption de la tache.</p>
-                <small>Ajouter eventuellement plus d'infos</small>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    Titre de la tâche
-                </div>
-                <p class="mb-1">Courte descrption de la tache.</p>
-                <small>Ajouter eventuellement plus d'infos</small>
-            </a>
-
+                <p class="mb-1"><%= task.description %></p>
+                <small><%= task.state %></small>
+        </a>    
+        <% }); %>
         </div>
     </span>
 
