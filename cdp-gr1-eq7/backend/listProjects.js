@@ -10,16 +10,19 @@ const db = require('./db_connection')
 const project = require('./classes/Project')
 const member = require('./classes/Member')
 const newProject = require('./newProject')
+const overviewProject = require('./overviewProject')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(newProject.app)
+app.use(overviewProject.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
-const LIST_PROJECTS_ROUTE = '/list-projects'
-const NEW_PROJECT_ROUTE = '/new-project'
+const LIST_PROJECTS_ROUTE = '/listProjects'
+const NEW_PROJECT_ROUTE = '/newProject'
+const REMOVE_PROJECT_ROUTE = '/removeProject'
 
 const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
@@ -27,12 +30,12 @@ const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 let user = new member.Member ('m1', 'pwd1', [])
 
 /* TESTS ZONE */
-/*let p1 = new project.Project ('p1', 'p1', 'id1', [], user)
+let p1 = new project.Project ('p1', 'p1', 'id1', [], user)
 user.listProjects.push (p1)
 
 let m2 = new member.Member ('m2', 'pwd1', [])
 let p2 = new project.Project ('p2', 'p2', 'id2', [], m2)
-user.listProjects.push (p2)*/
+user.listProjects.push (p2)
 
 /* FUNCTIONS */
 function getProjects (user){
@@ -55,13 +58,14 @@ app.get (LIST_PROJECTS_ROUTE, function (req, res){
   })
 })
 
+//app.get (OVERVIEW_PROJECT_ROUTE)
+
 // require newProject here causes an error if newProject requireq listProjects too
 /*app.get (NEW_PROJECT_ROUTE, function (req, res){
   res.render (NEW_PROJECT_VIEW_PATH)
 })*/
 
-// delete project
-app.post ('/remove-project', function (req, res){
+app.post (REMOVE_PROJECT_ROUTE, function (req, res){
   const projectId = req.body.projectId;
   removeProject (projectId, user.listProjects)
 
@@ -74,6 +78,4 @@ app.post ('/remove-project', function (req, res){
   })
 })
 
-module.exports = {
-  app:app
-}
+module.exports.app = app
