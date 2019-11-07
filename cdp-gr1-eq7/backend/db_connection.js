@@ -816,6 +816,10 @@ function _getChecklistItemById(itemId) {
 }
 
 module.exports = {
+  _getProjectFromProjectId,
+  _getProjectsOfMember,
+  _getTaskIdsAssignedToMember,
+  _areUsernameAndPasswordCorrect,
   _createProject,
   _deleteProject,
   _inviteMembersToProject,
