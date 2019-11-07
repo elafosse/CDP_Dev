@@ -23,7 +23,6 @@ const CREATE_PROJECT_ROUTE = '/createProject'
 
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
-const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
 
 const DEFAULT_PROJECT_ID = ''
 
@@ -77,13 +76,13 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   const projectName = req.body.projectName
   const projectDescription = req.body.projectDescription
   console.log("Project " + projectName + " created")
-  let newProject = new project.Project(projectName, projectDescription, DEFAULT_PROJECT_ID, listMembers, user)
-
+  let newProject = new project.Project(DEFAULT_PROJECT_ID, projectName, projectDescription, listMembers, user)
   //db.createProject(projectName, projectDescription)
   // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
 
   res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-    project: newProject
+    project: newProject,
+    projectId: newProject.id
   })
 })
 
