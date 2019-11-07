@@ -32,12 +32,12 @@ let listProjects = []
 let currentProject
 
 /* TESTS ZONE */
-/*let p1 = new project.Project ('p1', 'p1', 'id1', [], user)
+let p1 = new project.Project ('p1', 'p1', 'id1', [], user)
 user.listProjects.push (p1)
 
 let m2 = new member.Member ('m2', 'pwd1', [])
 let p2 = new project.Project ('p2', 'p2', 'id2', [], m2)
-user.listProjects.push (p2)*/
+user.listProjects.push (p2)
 
 /* FUNCTIONS */
 
@@ -64,13 +64,13 @@ app.get (LIST_PROJECTS_ROUTE, function (req, res){
     })
   })*/
 
-  db._getProjectsOfMember('User6').then(result => {
+  /*db._getProjectsOfMember('User6').then(result => {
     console.log(result.length)
     result.forEach(element => {
       listProjects.push(element)
       console.log(listProjects.length)
     })
-  })
+  })*/
 
   /*db._getProjectFromProjectId('8').then(project => {
     console.log("yolo")
