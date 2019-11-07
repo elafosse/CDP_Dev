@@ -33,15 +33,11 @@ let user = new member.Member ('m1', 'pwd1', [])
 let currentproject = new project.Project ('p1', 'p1', 'id1', [], user)
 
 app.get (NEW_ISSUE_ROUTE, function (req, res){
-  projectId = projectId + req.query.projectId
+  projectId = req.query.projectId
   res.render (NEW_ISSUE_VIEW_PATH, {
     projectId: projectId
   })
 })
-
-/*app.get(ISSUE_OVERVIEW_ROUTE, function(req, res){
-  res.render(ISSUE_OVERVIEW_PATH)
-})*/
 
 app.post(CREATE_ISSUE_ROUTE + projectId, function(req, res){
   const issueName = req.body.issueName
@@ -50,8 +46,8 @@ app.post(CREATE_ISSUE_ROUTE + projectId, function(req, res){
   const issueDifficulty = req.body.issueDifficulty
   console.log("Issue " + issueName + " created")
 
-  let newIssue = new issue.Issue(issueName, issueDescription, projectId, DEFAULT_ISSUE_ID, issuePriority, issueDifficulty)
-  //db.createIssue(issueName, issueDescription)
+  let newIssue = new issue.Issue(DEFAULT_ISSUE_ID, projectId, issueName, issueDescription, issuePriority, issueDifficulty)
+  db._addIssueToProject(projectId, issueName, issueDescription, issuePriority, issueDifficulty)
   // TODO: récupérer l'id pour pouvoir màj la list
   // TODO: récupérer la liste des issues depuis la DB
 
