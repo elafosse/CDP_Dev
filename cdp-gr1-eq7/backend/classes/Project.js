@@ -1,8 +1,5 @@
-/* REQUIRED */
-const mysql = require('mysql')
-
 class Project {
-  constructor (name, description, id, listMembers, admin){
+    constructor(id, name, description, listMembers, admin){
     this.name = name
     this.description = description
     this.id = id

@@ -1,6 +1,3 @@
-/* REQUIRED */
-const mysql = require('mysql')
-
 class Member {
   constructor (username, password, listProjects){
     this.username = username

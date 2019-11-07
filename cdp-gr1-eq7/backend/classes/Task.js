@@ -5,9 +5,9 @@ const mysql = require('mysql')
 
 //addTask(projectId, name, description, state, date_beginning, realisation_time, DoD, List<int> dependancies, List<usernames> members)
 class Task {
-  constructor (projectId, taskId, name, description, state, date_beginning, realisation_time, dod, dependancies,  members){
-    this.projectId = projectId
+    constructor(taskId, projectId, name, description, state, date_beginning, realisation_time, dod, dependancies, members){
     this.taskId = taskId
+    this.projectId = projectId
     this.name = name
     this.description = description
     this.state = state
@@ -15,6 +15,7 @@ class Task {
     this.realisation_time = realisation_time
     this.dod = dod
     this.members = members
+    this.dependancies = dependancies
   }
 }
 
