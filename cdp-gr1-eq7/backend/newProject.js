@@ -77,6 +77,7 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   const projectDescription = req.body.projectDescription
   console.log("Project " + projectName + " created")
   let newProject = new project.Project(DEFAULT_PROJECT_ID, projectName, projectDescription, listMembers, user)
+  
   //db.createProject(projectName, projectDescription)
   // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
 
