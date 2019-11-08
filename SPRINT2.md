@@ -4,8 +4,8 @@
 **Liste des issues assignées au Sprint 2 :** 
 ---
 
-| Id  | Nom | Description | Difficulté | Priorité |
-|---|:---:|:---|:---:|:---:|
+| Id  | Nom | Description | Difficulté | Priorité | Sprint |
+|---|:---:|:---|:---:|:---:|:---:|
 | **I0**  |      Création d'un compte     |**En tant que** visiteur, **je souhaite** créer un compte sur le site en cliquant sur un bouton "Inscription" **afin de** pouvoir m'inscrire dans la base de donnée et me connecter par la suite. La page de création d'un compte doit me demander : <li> un nom d'utilisateur unique sous forme de chaîne de caractères (20 char max) <li> un mot de passe sous forme de chaîne de caractères.</li>|     13     |   Basse  |  1  |
 | **I1**  |           Connexion/Déconnexion           |**En tant que** visiteur, **je souhaite** me connecter à mon compte en cliquant sur un bouton "Connection" **afin d**'avoir accès à mes projets et me déconnecter en cliquant sur un bouton "Déconnexion". La page de connexion doit me demander : <li> mon nom d'utilisateur unique sous forme de chaîne de caractères. <li> un mot de passe sous forme de chaîne de caractères. <li> Un message d'erreur doit apparaître si le couple nom d'utilisateur/mot de passe entré ne correspond à aucun compte.</li>|      8     |   Basse  |  1  |
 | **I2**  |       Création de projet      |**En tant que** connecté, **je souhaite** pouvoir créer un projet **afin qu**'il soit disponible dans ma liste de projets en spécifiant : <li> un nom <li> une description <li> en ajoutant des membres</li>|      5     |   Haute  |  1  |
