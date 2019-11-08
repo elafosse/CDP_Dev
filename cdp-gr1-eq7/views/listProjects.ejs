@@ -15,8 +15,8 @@
   <h1>Liste de mes projets</h1>
   <ul class="list-unstyled">
     <% userProjects.forEach(project => { %>
-      <li><%= project.name %>
-        <% if (user.username === project.admin.username) { %>
+      <li><a href="/overviewProject?projectId=<%= project.id %>" ><%= project.name %></a>
+        <% if (user.username == project.admin) { %>
           <form action="/removeProject" method="post">
             <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>" hidden>
             <button type="submit" class="btn btn-primary">Supprimer</button>

@@ -27,18 +27,18 @@ const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 const DEFAULT_PROJECT_ID = '10'
 
 /* TESTS ZONE */
-let user = new member.Member ('m1', 'pwd1', [])
+let user = new member.Member ('User5', 'pwd1', [])
 
 /* FUNCTIONS */
 let listMembers = []
 
 function removeMember (username, listMembers){
-    listMembers.forEach(member => {
-      if (member.username === username){
-        let index = listMembers.indexOf (member)
-        let removed = listMembers.splice (index, 1)
-      }
-    })
+  listMembers.forEach(member => {
+    if (member.username === username){
+      let index = listMembers.indexOf (member)
+      listMembers.splice (index, 1)
+    }
+  })
 }
 
 app.get (NEW_PROJECT_ROUTE, function (req, res){
@@ -46,10 +46,6 @@ app.get (NEW_PROJECT_ROUTE, function (req, res){
     listMembers: listMembers
   })
 })
-
-/*app.get(PROJECT_OVERVIEW_ROUTE, function(req, res){
-  res.render(PROJECT_OVERVIEW_PATH)
-})*/
 
 app.post(ADD_MEMBER_ROUTE, function(req, res){
   const memberUsernameToAdd = req.body.memberUsernameToAdd
@@ -77,16 +73,17 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   const projectDescription = req.body.projectDescription
   console.log("Project " + projectName + " created")
 
-  db._createProject(projectName, projectDescription).then(result =>{
-    console.log(result)
-
-    //db.inviteMembersToProject(projectId, listMembers, areAdminsList)
-    // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
-
-    db._getProjectFromProjectId(result).then(newProject =>{
+  listMembers.push(user.username)
+  console.log(listMembers[0])
+  
+  db._createProject(projectName, projectDescription).then(resultId =>{
+    db._inviteMembersToProject(resultId, listMembers, listMembers)
+    
+    db._getProjectFromProjectId(resultId).then(newProject =>{
+      console.log(newProject)
       res.render(PROJECT_OVERVIEW_VIEW_PATH, {
         project: newProject,
-        projectId: DEFAULT_PROJECT_ID
+        projectId: resultId
       })
     })
   })
