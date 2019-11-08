@@ -22,7 +22,6 @@ var con = mysql.createConnection({
 function _createProject(name, description) {
     return new Promise(function (resolve, reject) {
         let sql = "INSERT INTO project (name, description) VALUES (".concat("'", name, "'", ',', "'", description, "'", ')');
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(-1);
             resolve(result.insertId);
@@ -52,7 +51,6 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
                 projectId, "','", usernameList[i], "'", ',', areAdminsList[i], ');\n');
 
         }
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             resolve("Members added");
@@ -80,7 +78,6 @@ function _getMembersOfProject(project_id) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT username FROM project_team WHERE project_id = '"
             .concat(project_id, "\'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             let id_list = [];
@@ -96,7 +93,6 @@ function _getAdminsOfProject(project_id) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT username FROM project_team WHERE project_id = '"
             .concat(project_id, "\' and is_admin = '1'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             let id_list = [];
@@ -116,7 +112,6 @@ function _storeMember(username, password) {
         bcrypt.hash(password, 10, function (err, hashedPassword) {
             if (err) throw err;
             let sql = "INSERT INTO member (username, password) VALUES (".concat("'", username, "','", hashedPassword, "'", ')');
-            console.log(sql);
             con.query(sql, function (err, result) {
                 if (err) reject(-1);
                 resolve(result.insertId);
@@ -148,7 +143,6 @@ function _getProjectFromProjectId(project_id) {
                 return new Promise(function (resolve, reject) {
                     let sql = "SELECT * FROM project WHERE id = '"
                         .concat(project_id, "\'");
-                    console.log(sql);
                     con.query(sql, function (err, result) {
                         let project = new Project.Project(
                             result[0].id,
@@ -171,6 +165,10 @@ function _getProjectFromProjectId(project_id) {
     });
     
 }
+
+/*_getProjectsOfMember("User6").then(valeur => {
+    console.log(valeur)
+})*/
 
 function _getProjectsOfMember(username) {
     return new Promise(function (resolve, reject) {
@@ -211,7 +209,6 @@ function _areUsernameAndPasswordCorrect(username, password) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT password FROM member WHERE username = '"
             .concat(username, "\'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) return err;
             let hashedPassword = result[0].password;
@@ -277,7 +274,6 @@ function _addIssueToProject(projectId, name, description, priority, difficulty) 
     return new Promise(function (resolve, reject) {
         let sql = "INSERT INTO issue (project_id, name, description, priority, difficulty) VALUES ("
             .concat("'", projectId, "','", name, "','", description, "','", priority, "',", difficulty, ")");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(-1);
             resolve(result.insertId);
@@ -293,7 +289,6 @@ function _modifyIssue(issueId, name, description, priority, difficulty) {
             " priority = '", priority, "',",
             " difficulty = '", difficulty, "'",
             " WHERE id = '", issueId, "';\n");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             resolve(result.affectedRows);
@@ -432,7 +427,6 @@ function _addTask(projectId, name, description, state, date_beginning, realisati
                 "'", date_beginning, "'", ',',
                 "'", realisation_time, "'", ',',
                 "'", DoD, "'", ');');
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("New task added");
@@ -452,7 +446,6 @@ function _modifyTask(taskId, name, description, state, startDate, realisationTim
             " realisation_time = '", realisationTime, "',",
             " description_of_done = '", DoD, "'",
             " WHERE id = '", taskId, "';\n");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             resolve(result.affectedRows);
@@ -537,7 +530,6 @@ function _deleteTask(taskId) {
     return new Promise(function (resolve, reject) {
         let sql = "DELETE FROM task WHERE id = '"
             .concat(taskId, "'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             resolve("Issue removed");
@@ -564,7 +556,6 @@ function _modifyTaskDescription(checklistId, description) {
     return new Promise(function (resolve, reject) {
         var sql = "UPDATE task_checklist SET "
             .concat("description = '", description, "'  WHERE id = '", checklistId, "'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             resolve("Task modified");
@@ -602,7 +593,6 @@ function _getChecklistItemById(itemId) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT * FROM task_checklist WHERE id = '"
             .concat(itemId, "\'");
-        console.log(sql);
         con.query(sql, function (err, result) {
             if (err) reject(err);
             let id_list = [];
