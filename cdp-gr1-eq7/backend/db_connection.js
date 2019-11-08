@@ -140,7 +140,7 @@ function _getProjectFromProjectId(project_id) {
     return new Promise(function (resolve, reject) {
         _getMembersOfProject(project_id).then((members) => {
             _getAdminsOfProject(project_id).then((admins) => {
-                return new Promise(function (resolve, reject) {
+                let p = new Promise(function (resolve, reject) {
                     let sql = "SELECT * FROM project WHERE id = '"
                         .concat(project_id, "\'");
                     con.query(sql, function (err, result) {
@@ -154,9 +154,10 @@ function _getProjectFromProjectId(project_id) {
                         resolve(project);
                     });
                 });
+                p.then((projects) => { resolve(projects) });
             }, (raison) => {
                 reject(raison);
-            });
+                });
         }, (raison) => {
             reject(raison);
         });
@@ -164,25 +165,22 @@ function _getProjectFromProjectId(project_id) {
     
 }
 
-/*_getProjectsOfMember("User6").then(valeur => {
-    console.log(valeur)
-})*/
 
 function _getProjectsOfMember(username) {
     return new Promise(function (resolve, reject) {
         _getProjectsIdsOfMember(username).then((id_list) => {
-            let project_list = [];
+            let promise_list = [];
             for (let i = 0; i < id_list.length; i++) {
-                _getProjectFromProjectId(id_list[i]).then((project) => {
-                    project_list.push(project);
-                }, (raison) => {
-                    reject(raison);
-                });
+                let promise = _getProjectFromProjectId(id_list[i]);
+                promise_list.push(promise);
             }
-            resolve(project_list);
+            Promise.all(promise_list).then(function (project_list) {
+                resolve(project_list);
+            });
         }, (raison) => {
-            reject(raison);
+            console.log(raison);
         });
+
     });
     
 }
