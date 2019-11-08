@@ -18,14 +18,6 @@ var con = mysql.createConnection({
 
 // ================ Projects ================
 
-function createProject(name, description) {
-    let sql = "INSERT INTO project (name, description) VALUES (".concat("'", name, "'", ',', "'", description, "'", ')');
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("New project added : (".concat(name, ',', description, ')'));
-    });
-}
 
 function _createProject(name, description) {
     return new Promise(function (resolve, reject) {
@@ -38,15 +30,6 @@ function _createProject(name, description) {
     });
 }
 
-function deleteProject(id) {
-    //TODO: check if username is the project admin. 
-    let sql = "DELETE FROM project WHERE id = ".concat("'", id, "'");
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Project deleted");
-    });
-}
-
 function _deleteProject(id) {
     return new Promise(function (resolve, reject) {
         let sql = "DELETE FROM project WHERE id = ".concat("'", id, "'");
@@ -54,24 +37,6 @@ function _deleteProject(id) {
             if (err) result(err);
             resolve("Project Deleted");
         });
-    });
-}
-
-function inviteMembersToProject(projectId, usernameList, areAdminsList) {
-    if (usernameList.length != areAdminsList.length) {
-        throw "The usernameList and the areAdminsList lenght must be the same";
-    }
-    let i;
-    let sql = "";
-    for (i = 0; i < usernameList.length; i++) {
-        sql = sql.concat("INSERT INTO project_team (project_id, username, is_admin) VALUES ('",
-            projectId, "','", usernameList[i], "'", ',', areAdminsList[i], ');\n');
-
-    }
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Member ".concat(usernameList[i], ' added to project'));
     });
 }
 
@@ -95,21 +60,6 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
     });
 }
 
-function deleteMembersFromProject(projectId, usernameList) {
-    let i;
-    let sql = "";
-    for (i = 0; i < usernameList.length; i++) {
-        //TODO: check if the user is not the admin of the project
-        sql = sql.concat("DELETE FROM project_team WHERE project_id = ",
-            projectId, " and username = ", "'", usernameList[i], "';\n");
-    }
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Member ".concat(usernameList[i], ' removed from project'));
-    });
-}
-
 function _deleteMembersFromProject(projectId, usernameList) {
     return new Promise(function (resolve, reject) {
         let i;
@@ -126,21 +76,6 @@ function _deleteMembersFromProject(projectId, usernameList) {
     });
 }
 
-function getMembersOfProject(project_id) {
-    let sql = "SELECT username FROM project_team WHERE project_id = '"
-        .concat(project_id, "\'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        let id_list = [];
-        for (let i = 0; i < result.length; i++) {
-            id_list.push(result[i].username);
-        }
-        console.log(id_list);
-        return id_list;
-    });
-}
-
 function _getMembersOfProject(project_id) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT username FROM project_team WHERE project_id = '"
@@ -154,21 +89,6 @@ function _getMembersOfProject(project_id) {
             }
             resolve(id_list);
         });
-    });
-}
-
-function getAdminsOfProject(project_id) {
-    let sql = "SELECT username FROM project_team WHERE project_id = '"
-        .concat(project_id, "\' and is_admin = '1'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        let id_list = [];
-        for (let i = 0; i < result.length; i++) {
-            id_list.push(result[i].username);
-        }
-        console.log(id_list);
-        return id_list;
     });
 }
 
@@ -191,18 +111,6 @@ function _getAdminsOfProject(project_id) {
 // ================ Members ================
 //https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
 
-function storeMember(username, password) {
-    bcrypt.hash(password, 10, function (err, hashedPassword) {
-        if (err) throw err;
-        let sql = "INSERT INTO member (username, password) VALUES (".concat("'", username, "','", hashedPassword, "'", ')');
-        console.log(sql);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("New member stored : ".concat(username));
-        });
-    });
-}
-
 function _storeMember(username, password) {
     return new Promise(function (resolve, reject) {
         bcrypt.hash(password, 10, function (err, hashedPassword) {
@@ -214,22 +122,6 @@ function _storeMember(username, password) {
                 resolve(result.insertId);
             });
         });
-    });
-}
-
-function getProjectsIdsOfMember(username) {
-    // TODO: Vérifier si le couple user/project_id n'existe pas déjà
-    let sql = "SELECT project_id FROM project_team WHERE username = '"
-        .concat(username, "\'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        let id_list = [];
-        for (let i = 0; i < result.length; i++) {
-            id_list.push(result[i].project_id);
-        }
-        console.log(id_list);
-        return id_list;
     });
 }
 
@@ -245,38 +137,6 @@ function _getProjectsIdsOfMember(username) {
                 id_list.push(result[i].project_id);
             }
             resolve(id_list);
-        });
-    });
-}
-
-function getProjectsOfMember(username) {
-    let project_list = [];
-    // TODO: Vérifier si le couple user/project_id n'existe pas déjà
-    let sql = "SELECT project_id FROM project_team WHERE username = '"
-        .concat(username, "\'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        sql = "";
-        for (let i = 0; i < result.length; i++) {
-            sql = sql.concat("SELECT * FROM project WHERE id = ".concat(result[i].project_id, ";\n"));
-        }
-        console.log(result);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-
-            for (let i = 0; i < result.length; i++) {
-                let p = new Project(
-                    result[i][0].name,
-                    result[i][0].description,
-                    result[i][0].id,
-                    null,
-                    null,
-                )
-                project_list.push(p);
-            }
-            console.log(project_list);
-            return project_list;
         });
     });
 }
@@ -331,22 +191,6 @@ function _getProjectsOfMember(username) {
     
 }
 
-function getTaskIdsAssignedToMember(username) {
-    // TODO: Vérifier si le couple user/project_id n'existe pas déjà
-    let sql = "SELECT task_id FROM assigned_task WHERE username = '"
-        .concat(username, "\'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        let id_list = [];
-        for (let i = 0; i < result.length; i++) {
-            id_list.push(result[i].task_id);
-        }
-        console.log(id_list);
-        return id_list;
-    });
-}
-
 function _getTaskIdsAssignedToMember(username) {
     return new Promise(function (resolve, reject) {
         // TODO: Vérifier si le couple user/project_id n'existe pas déjà
@@ -359,24 +203,6 @@ function _getTaskIdsAssignedToMember(username) {
                 id_list.push(result[i].task_id);
             }
             resolve(id_list);
-        });
-    });
-}
-
-function areUsernameAndPasswordCorrect(username, password) {
-    let sql = "SELECT password FROM member WHERE username = '"
-        .concat(username, "\'");
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) return err;
-        let hashedPassword = result[0].password;
-        bcrypt.compare(password, hashedPassword, function (err, result) {
-            if (result == true) {
-                //True
-            }
-            else {
-                //False
-            }
         });
     });
 }
@@ -402,16 +228,6 @@ function _areUsernameAndPasswordCorrect(username, password) {
     });
 }
 
-function deleteMember(username) {
-    let sql = "DELETE FROM member WHERE username = '"
-        .concat(username, "\'");
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Member deleted");
-    });
-
-}
-
 function _deleteMember(username) {
     return new Promise(function (resolve, reject) {
         let sql = "DELETE FROM member WHERE username = '"
@@ -420,20 +236,6 @@ function _deleteMember(username) {
             if (err) reject(err);
             resolve("Member deleted");
         });
-    });
-}
-
-function isUsernameAvailable(username) {
-    let sql = "SELECT username FROM member WHERE username = '"
-        .concat(username, "\'");
-    con.query(sql, function (err, result) {
-        if (err) return err;
-        if (result === []) {
-            return true;
-        }
-        else {
-            return false;
-        }
     });
 }
 
@@ -816,6 +618,7 @@ function _getChecklistItemById(itemId) {
 }
 
 module.exports = {
+  _getProjectsIdsOfMember,
   _getProjectFromProjectId,
   _getProjectsOfMember,
   _getTaskIdsAssignedToMember,

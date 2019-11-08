@@ -24,7 +24,7 @@ const CREATE_PROJECT_ROUTE = '/createProject'
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
-const DEFAULT_PROJECT_ID = ''
+const DEFAULT_PROJECT_ID = '10'
 
 /* TESTS ZONE */
 let user = new member.Member ('m1', 'pwd1', [])
@@ -76,14 +76,19 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   const projectName = req.body.projectName
   const projectDescription = req.body.projectDescription
   console.log("Project " + projectName + " created")
-  let newProject = new project.Project(DEFAULT_PROJECT_ID, projectName, projectDescription, listMembers, user)
-  
-  //db.createProject(projectName, projectDescription)
-  // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
 
-  res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-    project: newProject,
-    projectId: newProject.id
+  db._createProject(projectName, projectDescription).then(result =>{
+    console.log(result)
+
+    //db.inviteMembersToProject(projectId, listMembers, areAdminsList)
+    // TODO: récupérer l'id pour pouvoir màj les membres et l'objet newProject
+
+    db._getProjectFromProjectId(result).then(newProject =>{
+      res.render(PROJECT_OVERVIEW_VIEW_PATH, {
+        project: newProject,
+        projectId: DEFAULT_PROJECT_ID
+      })
+    })
   })
 })
 
