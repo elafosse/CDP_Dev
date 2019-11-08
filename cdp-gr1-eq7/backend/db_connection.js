@@ -151,8 +151,6 @@ function _getProjectFromProjectId(project_id) {
                             members,
                             admins
                         )
-                        console.log(project);
-
                         resolve(project);
                     });
                 });
