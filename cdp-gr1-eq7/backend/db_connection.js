@@ -165,7 +165,6 @@ function _getProjectFromProjectId(project_id) {
     
 }
 
-
 function _getProjectsOfMember(username) {
     return new Promise(function (resolve, reject) {
         _getProjectsIdsOfMember(username).then((id_list) => {

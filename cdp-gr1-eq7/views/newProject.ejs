@@ -21,9 +21,9 @@
       
       <ul id="listProjectMembers">Liste des membres du projet : <%= listMembers.length %>
         <% listMembers.forEach(member => { %>
-          <li><%= member.username %>
+          <li><%= member %>
             <form action="/removeMember" method="post" id="remove">
-              <input type="text" name="memberUsernameToRemove" class="form-control" value="<%= member.username %>" hidden>
+              <input type="text" name="memberUsernameToRemove" class="form-control" value="<%= member %>" hidden>
               <button type="submit" class="btn btn-primary" formaction="/removeMember">Supprimer</button>
             </form>
           </li>
