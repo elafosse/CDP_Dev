@@ -8,12 +8,16 @@ const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const session = require('express-session')
 const db = require('./db_connection')
-const project = require ('./classes/Project')
-const member = require ('./classes/Member')
+
+const listIssues = require('./listIssues')
+const listTasks = require('./listTasks')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
+
+app.use(listIssues.app)
+app.use(listTasks.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
@@ -22,6 +26,7 @@ const NEW_PROJECT_ROUTE = '/newProject'
 const ADD_MEMBER_ROUTE = '/addMember'
 const REMOVE_MEMBER_ROUTE = '/removeMember'
 const CREATE_PROJECT_ROUTE = '/createProject'
+const PROJECT_OVERVIEW_ROUTE = '../overviewProject'
 
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
@@ -87,9 +92,12 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
 
   listMembers.push(sess.username)
   areAdmins.push(1)
+  console.log(listMembers)
   
   db._createProject(projectName, projectDescription).then(resultId =>{
     db._inviteMembersToProject(resultId, listMembers, areAdmins)
+
+    //res.redirect(PROJECT_OVERVIEW_ROUTE)
     
     db._getProjectFromProjectId(resultId).then(newProject =>{
       res.render(PROJECT_OVERVIEW_VIEW_PATH, {

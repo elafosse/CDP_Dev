@@ -34,7 +34,7 @@ app.post(STORE_USER, function (req, res) {
     console.log(username)
     db._isUsernameAvailable(username).then(isAvailable =>{
       console.log(isAvailable)
-      if (!isAvailable){
+      if (isAvailable){
         db._storeMember(username, password).then(() =>{
           res.render(SIGNIN_VIEW_PATH)
         })

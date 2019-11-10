@@ -27,7 +27,7 @@
           <li><%= issue.name %>
             <form action="/removeIssue?projectId=<% project.id%>" method="post">
               <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>" hidden>
-              <button type="submit" class="btn btn-primary">Supprimer</button>
+              <button type="submit" class="btn btn-primary" formaction="/removeIssue">Supprimer</button>
             </form>
           </li>
           <% }); %>

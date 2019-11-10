@@ -61,7 +61,6 @@ app.get (LIST_PROJECTS_ROUTE, function (req, res){
     result.forEach(element => {
       listProjects.push(element)
     })
-    console.log(listProjects)
     res.render (LIST_PROJECTS_VIEW_PATH, {
       session: req.session,
       userProjects: listProjects,
