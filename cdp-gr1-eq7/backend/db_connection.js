@@ -202,10 +202,14 @@ function _getTaskIdsAssignedToMember(username) {
 
 function _areUsernameAndPasswordCorrect(username, password) {
     return new Promise(function (resolve, reject) {
-        let sql = "SELECT password FROM member WHERE username = '"
+        let sql = "SELECT * FROM member WHERE username = '"
             .concat(username, "\'");
         con.query(sql, function (err, result) {
-            if (err) return err;
+            if (err) reject(false);
+            if (result.length == 0) {
+                resolve(false);
+                return;
+            }
             let hashedPassword = result[0].password;
             bcrypt.compare(password, hashedPassword, function (err, result) {
                 if (err) reject(err);
@@ -217,8 +221,27 @@ function _areUsernameAndPasswordCorrect(username, password) {
                 }
             });
         });
+    }, (raison) => {
+        reject(raison);
     });
 }
+
+function _doesUsernameExists(username) {
+    return new Promise(function (resolve, reject) {
+        let sql = "SELECT username FROM member WHERE username = '"
+            .concat(username, "\'");
+        con.query(sql, function (err, result) {
+            if (err) reject(err);
+            if (result.length == 0) {
+                resolve(false);
+            }
+            else {
+                resolve(true);
+            }
+        });
+    });
+}
+
 
 function _deleteMember(username) {
     return new Promise(function (resolve, reject) {
@@ -231,7 +254,7 @@ function _deleteMember(username) {
     });
 }
 
-function _isUsernameAvailable(username) {
+/*function _isUsernameAvailable(username) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT username FROM member WHERE username = '"
             .concat(username, "\'");
@@ -246,6 +269,7 @@ function _isUsernameAvailable(username) {
         });
     });
 }
+*/
 
 // ================ Issues ================
 
@@ -262,6 +286,10 @@ f("hello").then((valeur) => {
 }, (raison) => {
     console.log("Pas ajouté");
 });
+
+f("User5").then((valeur) => {
+    console.log(valeur);
+})
 
 */
 
@@ -616,7 +644,7 @@ module.exports = {
   _getAdminsOfProject,
   _storeMember,
   _deleteMember,
-  _isUsernameAvailable,
+  _doesUsernameExists,
   _addIssueToProject,
   _modifyIssue,
   _getAllProjectIssues,
