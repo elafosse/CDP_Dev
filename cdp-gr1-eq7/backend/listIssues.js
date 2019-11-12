@@ -12,11 +12,13 @@ const member = require('./classes/Member')
 const project = require('./classes/Project')
 const issue = require('./classes/Issue')
 const newIssue = require('./newIssue')
+const modifyIssue = require('./modifyIssue')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
 app.use(newIssue.app)
+app.use(modifyIssue.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))

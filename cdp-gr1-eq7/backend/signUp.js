@@ -31,9 +31,7 @@ app.post(STORE_USER, function (req, res) {
   let confirmedPassword = req.body.confirmedPassword;
   
   if (password == confirmedPassword) {
-      console.log(username)
       db._doesUsernameExists(username).then(userExists => {
-          console.log(userExists)
       if (!userExists){
         db._storeMember(username, password).then(() =>{
           res.render(SIGNIN_VIEW_PATH)
