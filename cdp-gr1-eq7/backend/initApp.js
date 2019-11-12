@@ -23,6 +23,7 @@ app.use(listIssues.app)
 app.use(listProjects.app) // TODO : move to signIn
 app.use(listTasks.app)
 app.use(overviewProject.app)
+app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport à initApp.js
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
