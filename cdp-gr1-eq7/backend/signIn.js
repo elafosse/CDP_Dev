@@ -8,10 +8,12 @@ const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const session = require('express-session')
 const db = require('./db_connection')
+const listProjects = require('./listProjects')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
+app.use(listProjects.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))

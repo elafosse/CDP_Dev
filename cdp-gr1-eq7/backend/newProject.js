@@ -92,7 +92,6 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
 
   listMembers.push(sess.username)
   areAdmins.push(1)
-  console.log(listMembers)
   
   db._createProject(projectName, projectDescription).then(projectId =>{
     db._inviteMembersToProject(projectId, listMembers, areAdmins)

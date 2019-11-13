@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script defer src="../backend/modifyTest.js"></script>
+  <meta name="author" content="gr1_eq7"/>
+  <title><%=project.name + " | modifier test"%></title>
+</head>
+
+<body>
+  <%- include ../views/header.ejs %>
+  <br>
+  <form class="px-4 py-3" action="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>" method="post">
+    <div class="form-group">
+      <label>Nom : <input id="testName" type="text" name="testName"></label><br>
+      <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription"></label> <br>
+      <label>Résultats attendus : <input id="testResult" type="text" name="testResult"></label><br>
+      <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion"></label><br>
+
+      <label>Ajouter une issue au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
+      <button type="submit" class="btn btn-primary" formaction="/addIssue">Ajouter</button>
+      
+      <ul id="listIssues">Liste des issues : <%= listIssues.length %>
+        <% listIssues.forEach(issue => { %>
+          <li><%= issue.id + ' : ' + issue.name %>
+            <form action="/removeIssue" method="post" id="remove">
+              <input type="text" name="issueIdToRemove" class="form-control" value="<%= issue.id %>" hidden>
+              <button type="submit" class="btn btn-primary" formaction="/removeIssue">Supprimer</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+      
+    <button type="submit" class="btn btn-primary" formaction="/modifyTest">Enregistrer les modifications</button>
+  </form>
+</body>
+</html>

@@ -18,6 +18,7 @@ app.set('views', path.join(__dirname, './..', '/views'))
 const PROJECT_OVERVIEW_ROUTE = '../overviewProject'
 const LIST_ISSUES_ROUTE = '/listIssues'
 const LIST_TASKS_ROUTE = '/listTasks'
+const LIST_SPRINTS_ROUTE = '/listSprints'
 
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 

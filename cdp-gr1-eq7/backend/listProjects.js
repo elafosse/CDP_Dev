@@ -52,11 +52,12 @@ function removeProject (id, listProjects){
 }
 
 app.get (LIST_PROJECTS_ROUTE, function (req, res){
+  console.log('List projects')
   listProjects = []
   sess = req.session
 
-  db._getProjectsOfMember(session.username).then(listProjectsMembers => { // TODO probleme ici !!!
-    listProjectMembers.forEach(element => {
+  db._getProjectsOfMember(session.username).then(listProjectsMembers => {
+    listProjectsMembers.forEach(element => {
       listProjects.push(element)
     })
     res.render (LIST_PROJECTS_VIEW_PATH, {

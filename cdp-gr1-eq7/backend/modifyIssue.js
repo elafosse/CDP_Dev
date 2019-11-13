@@ -49,7 +49,7 @@ app.post(MODIFY_ISSUE_ROUTE, function(req, res){
   let newPriority = req.body.issuePriority
   let newDifficulty = req.body.issueDifficulty
 
-  console.log("Issue " + issueId + " modified")
+  console.log("Issue of id " + issueId + " modified")
 
   db._modifyIssue(issueId, newName, newDescription, newPriority, newDifficulty).then(result =>{
     res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)

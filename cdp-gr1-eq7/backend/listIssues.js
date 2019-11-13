@@ -66,7 +66,6 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
         session: sess,
         listIssues: listIssues,
         project: currentProject,
-        user: sess
       })
     })
   })
@@ -84,7 +83,6 @@ app.post(REMOVE_ISSUE_ROUTE, function(req, res) {
     listIssues: listIssues,
     projectId: projectId,
     project: currentProject,
-    user: sess
   })
 })
 
