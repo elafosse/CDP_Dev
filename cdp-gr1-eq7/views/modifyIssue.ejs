@@ -8,7 +8,7 @@
   <title><%=project.name + " | modifier issue"%></title>
 </head>
 <body>
-  <%- include ../views/header.ejs %>
+  <%- include ../views/partials/header.ejs %>
   <form class="px-4 py-3" action="/modifyIssue?projectId=<%= project.id %>&issueId=<%= issue.id %>" method="post">
     <div class="form-group">
       <label for="Nom">Nom</label>

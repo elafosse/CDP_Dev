@@ -52,19 +52,19 @@ function removeProject (id, listProjects){
 }
 
 app.get (LIST_PROJECTS_ROUTE, function (req, res){
-  console.log('List projects')
-  listProjects = []
-  sess = req.session
+    listProjects = []
+    sess = req.session
 
-  db._getProjectsOfMember(session.username).then(listProjectsMembers => {
-    listProjectsMembers.forEach(element => {
-      listProjects.push(element)
+    db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
+        listProjectsMembers.forEach(element => {
+            listProjects.push(element)
+        })
+
+        res.render(LIST_PROJECTS_VIEW_PATH, {
+            session: sess,
+            listProjects: listProjects,
+        })
     })
-    res.render (LIST_PROJECTS_VIEW_PATH, {
-      session: sess,
-      listProjects: listProjects,
-    })
-  })
   
 })
 // require newProject here causes an error if newProject requireq listProjects too
