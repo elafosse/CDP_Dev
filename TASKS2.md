@@ -2,20 +2,20 @@
 
 **Liste des tâches assignées au sprint 2 :**
 
-| Id  | Description | Etat | Durée | Issues | Dépendances| Développeur |
-|:---:|---|:---:|:---:|:---:|:---:|:---:|
-| **T29**  | Front : Créer le formulaire frontend de la création d'un test | A FAIRE | 0.5 | I16 | X | Estelle |
-| **T30**  | Front : Créer une page listTest affichant la liste des tests | A FAIRE | 1 | I16 | X | Rayan |
-| **T31**  | Front : Créer une page permettant de modifier un test existant | A FAIRE | 0.5 | I16 | T30| Estelle |
-| **T32**  | Front : Créer un bouton permettant de supprimer un test à coté de chaque test | A FAIRE | 0.5 | I16 | T30 | Rayan |
-| **T33**  | Mettre à jour l'état d'un test | A FAIRE | 1 | I16 | T36 T39 T31 | Jimmy |
-| **T34**  | Etablir un code couleur permettant de différencier les tests en fonction de leur état | A FAIRE | 0.5 | I24 | X | Jimmy Rayan Estelle |
-| **T35**  | Mettre en place le code couleur discuté avec les membres de l'équipe | A FAIRE | 1 | I24 | T34 | Estelle |
-| **T36**  | Créer les tables nécessaires au stockage des tests dans la base de donnée | A FAIRE | 0.5 | I16 | X | Jimmy |
-| **T37**  | Créer le backend de la création d'un test | A FAIRE | 1 | I16 | T36 T39 | Estelle |
-| **T38**  | Créer le backend de la modification d'un test | A FAIRE | 1 | I16 I17 | T36 T39| Estelle |
-| **T39**  | Créer les fonctions CRUD de la base de données concernant un test | A FAIRE | 1 | I16 | T36 | Jimmy |
-| **T37**  | Créer le backend de la liste des tests | A FAIRE | 1 | I16 | T36 T39 | Rayan |
+| Id  | Description | Definition of Done | Etat | Durée | Issues | Dépendances| Développeur |
+|:---:|---|---|:---:|:---:|:---:|:---:|:---:|
+| **T29**  | Front : Créer le formulaire frontend de la création d'un test | | A FAIRE | 0.5 | I16 | X | Estelle |
+| **T30**  | Front : Créer une page listTest affichant la liste des tests | | A FAIRE | 1 | I16 | X | Rayan |
+| **T31**  | Front : Créer une page permettant de modifier un test existant | | A FAIRE | 0.5 | I16 | T30| Estelle |
+| **T32**  | Front : Créer un bouton permettant de supprimer un test à coté de chaque test | | A FAIRE | 0.5 | I16 | T30 | Rayan |
+| **T33**  | Mettre à jour l'état d'un test | | A FAIRE | 1 | I16 | T36 T39 T31 | Jimmy |
+| **T34**  | Etablir un code couleur permettant de différencier les tests en fonction de leur état | | A FAIRE | 0.5 | I24 | X | Jimmy Rayan Estelle |
+| **T35**  | Mettre en place le code couleur discuté avec les membres de l'équipe | | A FAIRE | 1 | I24 | T34 | Estelle |
+| **T36**  | Créer les tables nécessaires au stockage des tests dans la base de donnée | | A FAIRE | 0.5 | I16 | X | Jimmy |
+| **T37**  | Créer le backend de la création d'un test | | A FAIRE | 1 | I16 | T36 T39 | Estelle |
+| **T38**  | Créer le backend de la modification d'un test | | A FAIRE | 1 | I16 I17 | T36 T39| Estelle |
+| **T39**  | Créer les fonctions CRUD de la base de données concernant un test | | A FAIRE | 1 | I16 | T36 | Jimmy |
+| **T37**  | Créer le backend de la liste des tests | | A FAIRE | 1 | I16 | T36 T39 | Rayan |
 
 
 | Id  | Description | Etat | Durée | Issues | Dépendances| Développeur |
