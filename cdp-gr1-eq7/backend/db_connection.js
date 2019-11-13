@@ -177,7 +177,7 @@ function _getProjectsOfMember(username) {
                 resolve(project_list);
             });
         }, (raison) => {
-            console.log(raison);
+            reject(raison);
         });
 
     });

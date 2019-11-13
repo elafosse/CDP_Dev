@@ -20,7 +20,6 @@ app.set('views', path.join(__dirname, './..', '/views'))
 
 const LIST_PROJECTS_ROUTE = '/listProjects'
 const REMOVE_PROJECT_ROUTE = '/removeProject'
-const OVERVIEW_PROJECT_ROUTE = '/overviewProject'
 
 const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
 const OVERVIEW_PROJECT_VIEW_PATH = '../views/overviewProject'
@@ -84,13 +83,5 @@ app.post (REMOVE_PROJECT_ROUTE, function (req, res){
   db._deleteProject(projectId)
 })
 
-app.get (OVERVIEW_PROJECT_ROUTE, function(req, res){
-  db._getProjectFromProjectId(req.query.projectId).then(project => {
-    res.render (OVERVIEW_PROJECT_VIEW_PATH, {
-      session: sess,
-      project: project
-    })
-  })
-})
 
 module.exports.app = app
