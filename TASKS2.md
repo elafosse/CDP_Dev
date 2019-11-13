@@ -3,7 +3,7 @@
 **Liste des tâches assignées au sprint 2 :**
 
 | Id  | Description | Definition of Done | Etat | Durée | Issues | Dépendances| Développeur |
-|:---:|---|---|:---:|:---:|:---:|:---:|:---:|
+|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
 | **T29**  | Front : Créer le formulaire frontend de la création d'un test | Une page newTest.ejs avec : <li>un champ de saisie " Nom du test " <li>un champ de saisie " Description de la fonction à tester " <li>un champ de saisie " Résultats attendus par le test " <li>un champ de saisie " Issues liées " <li>un champ de saisie " Dernière version validée " <li>bouton de redirection vers la page " liste des tests "</li> | A FAIRE | 0.5 | I16 | X | Estelle |
 | **T30**  | Front : Créer une page listTest affichant la liste des tests | | A FAIRE | 1 | I16 | X | Rayan |
 | **T31**  | Front : Créer une page permettant de modifier un test existant | Une page modifyTest contenant : <li>un champ de saisie " Nom " avec le nom actuel du test dedans <li>un champ de saisie " Description de la fonction à tester " avec la description actuelle du test dedans <li>un champ de saisie " Nom " avec le nom actuel du test dedans <li>un champ de saisie " Issues liées " avec les ID desissues actuelles du test dedans <li>un champ de saisie " Dernière version validée " avec la dernière version validée dedans <li>un bouton pour passer le test en " Non fait " et changer sa couleur en la couleur correspondante <li>un bouton pour passer le test en " Non Réussi " et changer sa couleur en la couleur correspondante <li>un bouton pour passer le teste en " Réussi " et changer sa couleur en la couleur correspondante <li>un bouton " Enregistrer " pour enregistrer les modifications</li> | A FAIRE | 0.5 | I16 | T30| Estelle |
