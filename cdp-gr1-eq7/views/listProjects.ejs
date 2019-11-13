@@ -10,12 +10,12 @@
 
 <body>
 <%- include ../views/header.ejs %>
-  <a type="button" href="/newProject?user=<%= user.username%>" class="btn btn-success btn-lg">Nouveau Projet</a>
+  <a type="button" href="/newProject?userName=<%= session.username%>" class="btn btn-success btn-lg">Nouveau Projet</a>
   <h1>Liste de mes projets</h1>
   <ul class="list-unstyled">
-    <% userProjects.forEach(project => { %>
+    <% listProjects.forEach(project => { %>
       <li><a href="/overviewProject?projectId=<%= project.id %>" ><%= project.name %></a>
-        <% if (user.username == project.admin) { %>
+        <% if (session.username == project.admin) { %>
           <form action="/removeProject" method="post">
             <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>" hidden>
             <button type="submit" class="btn btn-primary" formaction="/removeProject">Supprimer</button>

@@ -34,6 +34,8 @@ const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 /* TESTS ZONE */
 
 /* FUNCTIONS */
+let sess
+
 let listMembers = []
 let areAdmins = []
 
@@ -49,32 +51,32 @@ function removeMember (username, listMembers){
 app.get (NEW_PROJECT_ROUTE, function (req, res){
   listMembers = []
   areAdmins = []
+  sess = req.session
   
-  console.log(req.session)
   res.render (NEW_PROJECT_VIEW_PATH, {
-    sessionUser: req.session,
+    session: sess,
     listMembers: listMembers
   })
 })
 
 app.post(ADD_MEMBER_ROUTE, function(req, res){
   const memberUsernameToAdd = req.body.memberUsernameToAdd
-  console.log("added " + memberUsernameToAdd)
+  console.log("Added member " + memberUsernameToAdd)
   
   listMembers.push(memberUsernameToAdd)
   res.render(NEW_PROJECT_VIEW_PATH, {
-    sessionUser: req.session,
+    session: sess,
     listMembers: listMembers
   })
 })
 
 app.post(REMOVE_MEMBER_ROUTE, function(req, res){
   const memberUsernameToRemove = req.body.memberUsernameToRemove
-  console.log("removed " + memberUsernameToRemove)
+  console.log("Removed member " + memberUsernameToRemove)
   
   removeMember(memberUsernameToRemove, listMembers)
   res.render(NEW_PROJECT_VIEW_PATH, {
-    sessionUser: req.session,
+    session: sess,
     listMembers: listMembers
   })
 })
@@ -84,8 +86,6 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   const projectDescription = req.body.projectDescription
   console.log("Project " + projectName + " created")
 
-  let sess = req.session
-
   for (i = 0; i < listMembers.length; i++){
     areAdmins.push(0)
   }
@@ -94,16 +94,14 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res){
   areAdmins.push(1)
   console.log(listMembers)
   
-  db._createProject(projectName, projectDescription).then(resultId =>{
-    db._inviteMembersToProject(resultId, listMembers, areAdmins)
-
-    //res.redirect(PROJECT_OVERVIEW_ROUTE)
+  db._createProject(projectName, projectDescription).then(projectId =>{
+    db._inviteMembersToProject(projectId, listMembers, areAdmins)
     
-    db._getProjectFromProjectId(resultId).then(newProject =>{
+    db._getProjectFromProjectId(projectId).then(newProject =>{
       res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-        sessionUser: req.session,
+        session: sess,
         project: newProject,
-        projectId: resultId
+        projectId: projectId
       })
     })
   })

@@ -21,6 +21,8 @@ const LIST_TASKS_ROUTE = '/listTasks'
 
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
+const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
+
 let projectId
 
 // doesn't work ?????
@@ -29,7 +31,7 @@ app.get(PROJECT_OVERVIEW_ROUTE, function (req, res) {
   db._getProjectFromProjectId(resultId).then(newProject =>{
     projectId = req.query.projectId
     res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-      sessionUser: req.session,
+      session: req.session,
       project: newProject,
       projectId: resultId
     })
@@ -38,7 +40,7 @@ app.get(PROJECT_OVERVIEW_ROUTE, function (req, res) {
 
 // Usefull ???
 app.get(LIST_ISSUES_ROUTE, function (req, res) {
-  res.redirect('/listIssues?projectId=' + projectId)
+  res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
 })
 
 module.exports.app = app

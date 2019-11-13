@@ -36,9 +36,8 @@ app.post(CONNECT_USER, function (req, res) {
         sess.username = username
         sess.password = password
         res.render(LIST_PROJECTS_VIEW_PATH, {
-          sessionUser: sess,
-          user: sess,
-          userProjects: projects
+          session: sess,
+          listProjects: projects
         })
       })
     }

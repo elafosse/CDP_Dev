@@ -8,9 +8,6 @@ const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const db = require('./db_connection')
 const session = require('express-session')
-const member = require('./classes/Member')
-const project = require('./classes/Project')
-const issue = require('./classes/Issue')
 const newIssue = require('./newIssue')
 const modifyIssue = require('./modifyIssue')
 
@@ -31,6 +28,7 @@ const LIST_ISSUES_VIEW_PATH = '../views/listIssues'
 let listIssues = []
 let projectId
 let currentProject
+let sess
 
 /* TESTS ZONE */
 /* let user = new member.Member ('m1', 'pwd1', [])
@@ -56,19 +54,19 @@ function removeIssue (id, listIssues){
 app.get(LIST_ISSUES_ROUTE, function(req, res) {
   listIssues = []
   projectId = req.query.projectId
+  sess = req.session
   
   db._getProjectFromProjectId(projectId).then(result =>{
     currentProject = result
-    
-    db._getAllProjectIssues(currentProject.id).then(result => {
-      result.forEach(issue =>{
+    db._getAllProjectIssues(result.id).then(issues => {
+      issues.forEach(issue =>{
         listIssues.push(issue)
       })
       res.render(LIST_ISSUES_VIEW_PATH, {
-        sessionUser: req.session,
+        session: sess,
         listIssues: listIssues,
         project: currentProject,
-        user: req.session
+        user: sess
       })
     })
   })
@@ -82,11 +80,11 @@ app.post(REMOVE_ISSUE_ROUTE, function(req, res) {
   db._deleteIssue(issueId)
   
   res.render(LIST_ISSUES_VIEW_PATH, {
-    sessionUser: req.session,
+    session: sess,
     listIssues: listIssues,
     projectId: projectId,
     project: currentProject,
-    user: req.session
+    user: sess
   })
 })
 

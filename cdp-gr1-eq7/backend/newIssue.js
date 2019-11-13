@@ -20,14 +20,14 @@ const CREATE_ISSUE_ROUTE = '/createIssue'
 
 const NEW_ISSUE_VIEW_PATH = '../views/newIssue'
 
+const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
+
 let projectId
-let currentproject
 
 app.get (NEW_ISSUE_ROUTE, function (req, res){
   projectId = req.query.projectId
   
-  db._getProjectFromProjectId(projectId).then(result =>{
-    currentproject = result
+  db._getProjectFromProjectId(projectId).then(currentProject =>{
     res.render (NEW_ISSUE_VIEW_PATH, {
       session: session,
       projectId: projectId
@@ -44,7 +44,7 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res){
   
   db._addIssueToProject(projectId, issueName, issueDescription, issuePriority, issueDifficulty)
 
-  res.redirect('/listIssues?projectId=' + projectId)
+  res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
 })
 
 module.exports.app = app

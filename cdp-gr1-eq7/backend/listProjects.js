@@ -8,8 +8,6 @@ const path = require('path')
 const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const db = require('./db_connection')
-const project = require('./classes/Project')
-const member = require('./classes/Member')
 const newProject = require('./newProject')
 
 /* USE THE REQUIRES */
@@ -27,7 +25,7 @@ const OVERVIEW_PROJECT_ROUTE = '/overviewProject'
 const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
 const OVERVIEW_PROJECT_VIEW_PATH = '../views/overviewProject'
 
-let user
+let sess
 let listProjects = []
 
 /* TESTS ZONE */
@@ -55,16 +53,15 @@ function removeProject (id, listProjects){
 
 app.get (LIST_PROJECTS_ROUTE, function (req, res){
   listProjects = []
-  
-  user = req.session
-  db._getProjectsOfMember(user.username).then(result => {
-    result.forEach(element => {
+  sess = req.session
+
+  db._getProjectsOfMember(session.username).then(listProjectsMembers => { // TODO probleme ici !!!
+    listProjectMembers.forEach(element => {
       listProjects.push(element)
     })
     res.render (LIST_PROJECTS_VIEW_PATH, {
-      session: req.session,
-      userProjects: listProjects,
-      user:user
+      session: sess,
+      listProjects: listProjects,
     })
   })
   
@@ -79,9 +76,8 @@ app.post (REMOVE_PROJECT_ROUTE, function (req, res){
   removeProject (projectId, listProjects)
 
   res.render (LIST_PROJECTS_VIEW_PATH, {
-    session: req.session,
-    userProjects: listProjects,
-    user: user
+    session: sess,
+    listProjects: listProjects,
   })
   
   db._deleteProject(projectId)
@@ -90,8 +86,7 @@ app.post (REMOVE_PROJECT_ROUTE, function (req, res){
 app.get (OVERVIEW_PROJECT_ROUTE, function(req, res){
   db._getProjectFromProjectId(req.query.projectId).then(project => {
     res.render (OVERVIEW_PROJECT_VIEW_PATH, {
-      session: req.session,
-      user: user,
+      session: sess,
       project: project
     })
   })

@@ -8,7 +8,6 @@ const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const db = require('./db_connection')
 const session = require('express-session')
-const project = require('./classes/Project')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -20,21 +19,24 @@ app.set('views', path.join(__dirname, './..', '/views'))
 const MODIFY_ISSUE_ROUTE = "/modifyIssue"
 const MODIFY_ISSUE_VIEW_PATH = "../views/modifyIssue"
 
+const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
+
 let issueId
 let projectId
-let currentProject
+let sess
 
 app.get(MODIFY_ISSUE_ROUTE, function(req, res){
   projectId = req.query.projectId
   issueId = req.query.issueId
+
+  sess = req.session
   
-  db._getProjectFromProjectId(projectId).then(result =>{
-    currentProject = result
+  db._getProjectFromProjectId(projectId).then(currentProject =>{
 
     db._getIssueById(issueId).then(issue =>{
       res.render(MODIFY_ISSUE_VIEW_PATH, {
         project: currentProject,
-        sessionUser: req.session,
+        session: sess,
         issue: issue
       })
     })
@@ -50,7 +52,7 @@ app.post(MODIFY_ISSUE_ROUTE, function(req, res){
   console.log("Issue " + issueId + " modified")
 
   db._modifyIssue(issueId, newName, newDescription, newPriority, newDifficulty).then(result =>{
-    res.redirect('/listIssues?projectId=' + projectId)
+    res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
   })
 })
 

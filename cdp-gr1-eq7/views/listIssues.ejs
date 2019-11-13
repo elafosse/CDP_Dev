@@ -13,7 +13,7 @@
     <%- include ../views/header.ejs %>
     <div class="row">
       <div class="col-12">
-        <a href="/overview-project?projectId=<% project.id%>" class="nav-link active"><h1><%= project.name %></h1></a>
+        <a href="/overviewProject?projectId=<%= project.id%>" class="nav-link active"><h1><%= project.name %></h1></a>
         <%= project.description %>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <h1>Liste des issues</h1>
         <ul class="list-unstyled">
           <% listIssues.forEach(issue => { %>
-            <li><%= issue.name %><br>
+            <li><%= issue.id  + ': '%> <%= issue.name %><br>
               <a type="button" href="/modifyIssue?projectId=<%= project.id%>&issueId=<%= issue.id %>" class="btn btn-success btn-lg">Modifier</a>
               <form action="/removeIssue?projectId=<% project.id%>" method="post">
                 <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>" hidden>
@@ -39,3 +39,4 @@
       </div>
     </body>
     </html>
+    
