@@ -18,10 +18,10 @@
       <label>Résultats attendus : <input id="testResult" type="text" name="testResult"></label><br>
       <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion"></label><br>
 
-      <label>Ajouter une issue au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
+      <label>Ajouter une issue liée au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
       <button type="submit" class="btn btn-primary" formaction="/addIssue">Ajouter</button>
       
-      <ul id="listIssues">Liste des issues : <%= listIssues.length %>
+      <ul id="listIssues">Liste des issues liée au test : <%= listIssues.length %>
         <% listIssuess.forEach(issue => { %>
           <li><%= issue.id + ' : ' + issue.name %>
             <form action="/removeIssue" method="post" id="remove">
