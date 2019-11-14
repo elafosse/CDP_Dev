@@ -52,10 +52,17 @@ app.get('/listTasks', function (req, res) {
         res.render(LIST_TASKS_PATH, {
             taskToDo: taskToDo,
             taskDoing: taskDoing,
-            taskDone: taskDone
+            taskDone: taskDone,
+            projectId: req.query.projectId
         })
     }))
     
+})
+
+app.post('/removeTask', function(req, res) {
+    db._deleteTask(req.query.taskId).then(
+        res.redirect('/listTasks?projectId='.concat(req.query.projectId))
+    )
 })
 
 module.exports.app = app
