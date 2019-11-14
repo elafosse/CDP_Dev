@@ -37,7 +37,6 @@ app.get(PROJECT_OVERVIEW_ROUTE, function (req, res) {
         listProjects = []
         sess = req.session
 
-        //TODO : trouver un moyen de stocker et récupérer le username de la session. 
         db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
             listProjectsMembers.forEach(element => {
                 listProjects.push(element)
