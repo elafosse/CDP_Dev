@@ -4,25 +4,17 @@ const app = express()
 const session = require('express-session')
 
 /* REQUIRED */
-const path = require('path')
-const ejs = require('ejs')
-let bodyParser = require('body-parser')
 const db = require('./db_connection')
 const newProject = require('./newProject')
 
 /* USE THE REQUIRES */
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(newProject.app)
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
-
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, './..', '/views'))
 
 const LIST_PROJECTS_ROUTE = '/listProjects'
 const REMOVE_PROJECT_ROUTE = '/removeProject'
 
 const LIST_PROJECTS_VIEW_PATH = '../views/listProjects'
-const OVERVIEW_PROJECT_VIEW_PATH = '../views/overviewProject'
 
 let sess
 let listProjects = []
@@ -39,12 +31,9 @@ user.listProjects.push (p2)*/
 /* FUNCTIONS */
 
 function removeProject (id, listProjects){
-  console.log(id)
   listProjects.forEach(project => {
-    console.log(project)
     if (project.id == id){
       let index = listProjects.indexOf (project)
-      console.log(index)
       listProjects.splice (index, 1)
     }
   })

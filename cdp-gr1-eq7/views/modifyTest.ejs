@@ -13,20 +13,25 @@
   <br>
   <form class="px-4 py-3" action="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>" method="post">
     <div class="form-group">
-      <label>Nom : <input id="testName" type="text" name="testName"></label><br>
-      <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription"></label> <br>
-      <label>Résultats attendus : <input id="testResult" type="text" name="testResult"></label><br>
-      <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion"></label><br>
+      <label>Nom : <input id="testName" type="text" name="testName" value="<%= test.name %>"></label><br>
+      <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription" value="<%= test.description %>"></label> <br>
+      <label>Résultats attendus : <input id="testResult" type="text" name="testResult" value="<%= test.resultExpected %>"></label><br>
+      <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion" value="<%= test.lastVersionValidated %>"></label><br>
+      
+      Etat du test :
+      <button class="btn btn-primary" id="toDoState" name="toDoState" formaction="/todoState">A faire</button>
+      <button class="btn btn-primary" id="failedState" name="failedState" formaction="/failedState">Non Réussi</button>
+      <button class="btn btn-primary" id="passedState" name="passedState" formaction="/passedState">Réussi</button>
 
       <label>Ajouter une issue liée au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
-      <button type="submit" class="btn btn-primary" formaction="/addIssue">Ajouter</button>
+      <button type="submit" class="btn btn-primary" formaction="/addIssueTest">Ajouter</button>
       
-      <ul id="listIssues">Liste des issues liées au test : <%= listIssues.length %>
-        <% listIssues.forEach(issue => { %>
+      <ul id="listIssuesTest">Liste des issues liées au test : <%= listIssuesTest.length %>
+        <% listIssuesTest.forEach(issue => { %>
           <li><%= issue.id + ' : ' + issue.name %>
-            <form action="/removeIssue" method="post" id="remove">
+            <form action="/removeIssueTest" method="post" id="remove">
               <input type="text" name="issueIdToRemove" class="form-control" value="<%= issue.id %>" hidden>
-              <button type="submit" class="btn btn-primary" formaction="/removeIssue">Supprimer</button>
+              <button type="submit" class="btn btn-primary" formaction="/removeIssueTest">Supprimer</button>
             </form>
           </li>
         <% }); %>

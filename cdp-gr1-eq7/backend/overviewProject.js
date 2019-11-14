@@ -49,15 +49,13 @@ app.get(PROJECT_OVERVIEW_ROUTE, function (req, res) {
                 listProjects: listProjects,
             })
         })
-
-        
     })
 })
 
 
 // Usefull ???
-app.get(LIST_ISSUES_ROUTE, function (req, res) {
+/*app.get(LIST_ISSUES_ROUTE, function (req, res) {
     res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
-})
+})*/
 
 module.exports.app = app

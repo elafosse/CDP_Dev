@@ -19,14 +19,14 @@
       <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion"></label><br>
 
       <label>Ajouter une issue liée au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
-      <button type="submit" class="btn btn-primary" formaction="/addIssue">Ajouter</button>
+      <button type="submit" class="btn btn-primary" formaction="/addIssueTest">Ajouter</button>
       
-      <ul id="listIssues">Liste des issues liée au test : <%= listIssues.length %>
-        <% listIssuess.forEach(issue => { %>
+      <ul id="listIssuesTest">Liste des issues liée au test : <%= listIssuesTest.length %>
+        <% listIssuesTest.forEach(issue => { %>
           <li><%= issue.id + ' : ' + issue.name %>
-            <form action="/removeIssue" method="post" id="remove">
+            <form action="/removeIssueTest" method="post" id="remove">
               <input type="text" name="issueIdToRemove" class="form-control" value="<%= issue.id %>" hidden>
-              <button type="submit" class="btn btn-primary" formaction="/removeIssue">Supprimer</button>
+              <button type="submit" class="btn btn-primary" formaction="/removeIssueTest">Supprimer</button>
             </form>
           </li>
         <% }); %>

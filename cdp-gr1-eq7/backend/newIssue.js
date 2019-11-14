@@ -3,24 +3,15 @@ const express = require('express')
 const app = express()
 
 /* REQUIRED */
-const path = require('path')
-const ejs = require('ejs')
-let bodyParser = require('body-parser')
 const session = require('express-session')
 const db = require('./db_connection')
-
-/* USE THE REQUIRES */
-app.use(bodyParser.urlencoded({ extended: false }))
-
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, './..', '/views'))
 
 const NEW_ISSUE_ROUTE = '/newIssue'
 const CREATE_ISSUE_ROUTE = '/createIssue'
 
 const NEW_ISSUE_VIEW_PATH = '../views/newIssue'
 
-const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
+const LIST_ISSUES_REDIRECT_URL = '/listIssues?projectId='
 
 let projectId
 
@@ -44,7 +35,7 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res){
   
   db._addIssueToProject(projectId, issueName, issueDescription, issuePriority, issueDifficulty)
 
-  res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
+  res.redirect(LIST_ISSUES_REDIRECT_URL + projectId)
 })
 
 module.exports.app = app
