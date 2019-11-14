@@ -48,7 +48,6 @@ app.get('/listTasks', function (req, res) {
         taskDoing = result;
     })).then(db._getAllTasksOfProjectByState(req.query.projectId, "Done").then(result => {
         taskDone = result;
-        console.log(result);
     }).then(result => {
         res.render(LIST_TASKS_PATH, {
             taskToDo: taskToDo,

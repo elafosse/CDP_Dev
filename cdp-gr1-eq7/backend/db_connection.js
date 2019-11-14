@@ -421,7 +421,7 @@ function _getTaskById(task_id) {
                         result[0].name,
                         result[0].description,
                         result[0].state,
-                        result[0].date_beginning,
+                        result[0].start_date,
                         result[0].realisation_time,
                         result[0].description_of_done,
                         dependencies,
