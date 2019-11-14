@@ -390,6 +390,23 @@ function _getAllTasksIdsByProject(project_id) {
     });
 }
 
+function _getAllTasksIdsByProjectAndState(project_id, state) {
+    return new Promise(function (resolve, reject) {
+        let sql = "SELECT id FROM task WHERE project_id = '" 
+            .concat(project_id, "\'", "AND state = '", state, "'");
+        con.query(sql, function (err, result) {
+            if (err) reject(err);
+            let id_list = [];
+            for (let i = 0; i < result.length; i++) {
+                id_list.push(
+                    result[i].id
+                );
+            }
+            resolve(id_list);
+        });
+    });
+}
+
 function _getTaskById(task_id) {
     return new Promise(function (resolve, reject) {
         _getMembersAssignedToTask(task_id).then((members) => {
@@ -424,6 +441,24 @@ function _getTaskById(task_id) {
 function _getAllTasksOfProject(project_id) {
     return new Promise(function (resolve, reject) {
         _getAllTasksIdsByProject(project_id).then((id_list) => {
+            let promise_list = [];
+            for (let i = 0; i < id_list.length; i++) {
+                let promise = _getTaskById(id_list[i]);
+                promise_list.push(promise); 
+            }
+            Promise.all(promise_list).then(function (task_list) {
+                resolve(task_list);
+            });
+        }, (raison) => {
+            console.log(raison);
+        });
+
+    });
+}
+
+function _getAllTasksOfProjectByState(project_id, state) {
+    return new Promise(function (resolve, reject) {
+        _getAllTasksIdsByProjectAndState(project_id, state).then((id_list) => {
             let promise_list = [];
             for (let i = 0; i < id_list.length; i++) {
                 let promise = _getTaskById(id_list[i]);
@@ -651,8 +686,10 @@ module.exports = {
   _deleteIssue,
   _getIssueById,
   _getAllTasksIdsByProject,
+  _getAllTasksIdsByProjectAndState,
   _getTaskById,
   _getAllTasksOfProject,
+  _getAllTasksOfProjectByState,
   _addTask,
   _modifyTask,
   _setTaskDependencies,
