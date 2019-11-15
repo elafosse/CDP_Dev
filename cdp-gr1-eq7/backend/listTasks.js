@@ -12,6 +12,7 @@ const tasks = require('./classes/Task')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))

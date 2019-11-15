@@ -4,12 +4,20 @@ const app = express()
 const session = require('express-session')
 
 /* REQUIRED */
+const path = require('path')
+const ejs = require('ejs')
+let bodyParser = require('body-parser')
 const db = require('./db_connection')
 const newProject = require('./newProject')
 
 /* USE THE REQUIRES */
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
 app.use(newProject.app)
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, './..', '/views'))
 
 const LIST_PROJECTS_ROUTE = '/listProjects'
 const REMOVE_PROJECT_ROUTE = '/removeProject'
