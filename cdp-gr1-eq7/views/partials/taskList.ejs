@@ -6,7 +6,7 @@
     <p class="mb-1"><%= task.description %></p>
     <small><%= task.state %></small>
 </a>
-<div class="modal fade" id="modalInfos<%= task.taskId%>" tabindex="-1" role="dialog"
+<div class="modal" id="modalInfos<%= task.taskId%>" tabindex="-1" role="dialog"
     aria-labelledby="modalInfos<%= task.taskId %>" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -23,13 +23,17 @@
                 <p><%= task.description %></p>
                 <p>Temps de réalisation : <%= task.realisation_time %> </p>
                 <p>Définition of done : <%= task.dod %> </p>
+                <!-- TODO : Formatter la date pour que ce soit plus lisible -->
                 <p>Date de début : <%= task.start_date %> </p>
             </div>
             <div class="modal-footer">
-                <form action="/removeTask?projectId=<%= projectId%>&taskId=<%= task.taskId %>" method="post">
+                <form action="/removeTask?projectId=<%= projectId%>&taskId=<%= task.taskId %>" method="post" 
+                    onsubmit="return confirm('Voulez-vous vraiment supprimer cette tâche ?');">
                     <input type="text" name="taskId" class="form-control" id="name" value="<%= task.taskId %>" hidden>
-                    <button type="submit" class="btn btn-primary" formaction="/removetask?projectId=<%= projectId%>&taskId=<%= task.taskId %>">Supprimer</button>
+                    <button type="submit" class="btn btn-secondary"
+                        formaction="/removetask?projectId=<%= projectId%>&taskId=<%= task.taskId %>">Supprimer</button>
                 </form>
+
                 <button type="button" class="btn btn-primary">Modifier</button>
             </div>
         </div>
