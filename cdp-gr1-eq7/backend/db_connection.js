@@ -18,12 +18,27 @@ var con = mysql.createConnection({
 
 // ================ Projects ================
 
+function emptyParamFound(list) {
+    for (i = 0; i < list.length; i++) {
+        if (list[i] == "") {
+            return true;
+        }
+    }
+    return false;
+}
 
 function _createProject(name, description) {
     return new Promise(function (resolve, reject) {
+        if (emptyParamFound([name, description]) || name.lenght > 20) {
+            reject("Param empty");
+            return;
+        }
         let sql = "INSERT INTO project (name, description) VALUES (".concat("'", name, "'", ',', "'", description, "'", ')');
         con.query(sql, function (err, result) {
-            if (err) reject(-1);
+            if (err) {
+                reject(-1);
+                return;
+            }
             resolve(result.insertId);
         });
     });
@@ -40,9 +55,13 @@ function _deleteProject(id) {
 }
 
 function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
+    
     return new Promise(function (resolve, reject) {
         if (usernameList.length != areAdminsList.length) {
             reject("The usernameList and the areAdminsList lenght must be the same");
+        }
+        if (projectId == "" || usernameList == [] || areAdminsList == []) {
+            reject("Please enter valid parameters");
         }
         let i;
         let sql = "";
@@ -57,6 +76,7 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
         });
     });
 }
+
 
 function _deleteMembersFromProject(projectId, usernameList) {
     return new Promise(function (resolve, reject) {
@@ -186,7 +206,6 @@ function _getProjectsOfMember(username) {
 
 function _getTaskIdsAssignedToMember(username) {
     return new Promise(function (resolve, reject) {
-        // TODO: Vérifier si le couple user/project_id n'existe pas déjà
         let sql = "SELECT task_id FROM assigned_task WHERE username = '"
             .concat(username, "\'");
         con.query(sql, function (err, result) {
@@ -242,7 +261,6 @@ function _doesUsernameExists(username) {
     });
 }
 
-
 function _deleteMember(username) {
     return new Promise(function (resolve, reject) {
         let sql = "DELETE FROM member WHERE username = '"
@@ -254,44 +272,7 @@ function _deleteMember(username) {
     });
 }
 
-/*function _isUsernameAvailable(username) {
-    return new Promise(function (resolve, reject) {
-        let sql = "SELECT username FROM member WHERE username = '"
-            .concat(username, "\'");
-        con.query(sql, function (err, result) {
-            if (err) reject(err);
-            if (result === []) {
-                resolve(true);
-            }
-            else {
-                resolve(false);
-            }
-        });
-    });
-}
-*/
-
 // ================ Issues ================
-
-/*
- * 
-function f(name) {
-    return new Promise(function (resolve, reject) {
-
-    });
-}
-
-f("hello").then((valeur) => {
-    console.log(valeur);
-}, (raison) => {
-    console.log("Pas ajouté");
-});
-
-f("User5").then((valeur) => {
-    console.log(valeur);
-})
-
-*/
 
 function _addIssueToProject(projectId, name, description, priority, difficulty) {
     return new Promise(function (resolve, reject) {
@@ -353,12 +334,15 @@ function _deleteIssue(issueId) {
     });
 }
 
+//TODO : Si result n'est pas bon, le serveur s'arrête
 function _getIssueById(issueId) {
     return new Promise(function (resolve, reject) {
         let sql = "SELECT * FROM issue WHERE id = '"
             .concat(issueId, "\'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
+            if (err) {
+                reject(err); return;
+            }
             let issue = new Issue.Issue(
                 result[0].id,
                 result[0].project_id,
@@ -486,7 +470,9 @@ function _addTask(projectId, name, description, state, date_beginning, realisati
                 "'", realisation_time, "'", ',',
                 "'", DoD, "'", ');');
         con.query(sql, function (err, result) {
-            if (err) throw err;
+            if (err) {
+                reject(err); return;
+            }
             console.log("New task added");
             let taskId = result.insertId;
             _setTaskDependencies(taskId, dependencies).then(_setTaskToMembers(taskId, members));
@@ -505,7 +491,7 @@ function _modifyTask(taskId, name, description, state, startDate, realisationTim
             " description_of_done = '", DoD, "'",
             " WHERE id = '", taskId, "';\n");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
+            if (err) { reject(err); return; }
             resolve(result.affectedRows);
         });
     });
@@ -527,17 +513,17 @@ function _setTaskDependencies(taskId, dependsOnTasksIdList) {
 }
 
 function _setTaskToMembers(taskId, usernameList) {
-    //TODO : check if username exists
     return new Promise(function (resolve, reject) {
         let i;
         let sql = "" //"DELETE FROM assigned_task WHERE task_id = '".concat(taskId, "';\n");
         for (i = 0; i < usernameList.length; i++) {
             sql = sql.concat("INSERT INTO assigned_task (task_id, username) VALUES ('",
                 taskId, "','", usernameList[i], "'", ');\n');
-
         }
         con.query(sql, function (err, result) {
-            if (err) reject(err);
+            if (err) {
+                reject(err); return;
+            }
             resolve("Task assigned to members");
         });
     });
@@ -578,8 +564,10 @@ function _updateTaskState(taskId, state) {
     return new Promise(function (resolve, reject) {
         var sql = "UPDATE task SET state = ".concat("'", state, "'", " WHERE id = '", taskId, "'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
-            result(result.affectedRows);
+            if (err) {
+                reject(err); return;
+            }
+            resolve(result.affectedRows);
         });
     });
 }
@@ -590,7 +578,7 @@ function _deleteTask(taskId) {
             .concat(taskId, "'");
         con.query(sql, function (err, result) {
             if (err) reject(err);
-            resolve("Issue removed");
+            resolve("Task removed");
         });
     });
 }
@@ -604,8 +592,10 @@ function _setTaskChecklist(taskId, description, isDone) {
             description, "',",
             isDone, ");\n");
         con.query(sql, function (err, result) {
-            if (err) (err);
-            resolve("Task assigned to members");
+            if (err) {
+                reject(err); return;
+            }
+            resolve("Checklist item added to task");
         });
     });
 }
@@ -615,7 +605,9 @@ function _modifyTaskDescription(checklistId, description) {
         var sql = "UPDATE task_checklist SET "
             .concat("description = '", description, "'  WHERE id = '", checklistId, "'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
+            if (err) {
+                reject(err); return;
+            }
             resolve("Task modified");
         });
     });
@@ -626,7 +618,9 @@ function _modifyTaskState(checklistId, isDone) {
         var sql = "UPDATE task_checklist SET "
             .concat("is_done = ", isDone, " WHERE id = '", checklistId, "'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
+            if (err) {
+                reject(err); return;
+            }
             resolve(result.affectedRows);
         });
     });
@@ -637,12 +631,14 @@ function _getTaskChecklist(task_id) {
         let sql = "SELECT * FROM task_checklist WHERE task_id = '"
             .concat(task_id, "\'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
-            let id_list = [];
-            for (let i = 0; i < result.length; i++) {
-                id_list.push([result[i].description, result[i].is_done]);
+            if (err) {
+                reject(err); return;
             }
-            resolve(id_list);
+            let list = [];
+            for (let i = 0; i < result.length; i++) {
+                list.push([result[i].description, result[i].is_done]);
+            }
+            resolve(list);
         });
     });
 }
@@ -652,15 +648,10 @@ function _getChecklistItemById(itemId) {
         let sql = "SELECT * FROM task_checklist WHERE id = '"
             .concat(itemId, "\'");
         con.query(sql, function (err, result) {
-            if (err) reject(err);
-            let id_list = [];
-            for (let i = 0; i < result.length; i++) {
-                id_list.push([
-                    result[i].id,
-                    result[i].description,
-                    result[i].is_done]);
+            if (err) {
+                reject(err); return;
             }
-            resolve(id_list);
+            resolve(result);
         });
     });
 }
