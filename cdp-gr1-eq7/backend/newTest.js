@@ -3,15 +3,23 @@ const express = require('express')
 const app = express()
 
 /* REQUIRED */
+const path = require('path')
+const ejs = require('ejs')
+let bodyParser = require('body-parser')
 const session = require('express-session')
 const db = require('./db_connection')
 const listIssues = require('./listIssues')
 const listTasks = require('./listTasks')
 
 /* USE THE REQUIRES */
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
 app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
 app.use(listIssues.app)
 app.use(listTasks.app)
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, './..', '/views'))
 
 const NEW_TEST_ROUTE = '/newTest'
 const ADD_ISSUE_ROUTE = '/addIssueTest'
