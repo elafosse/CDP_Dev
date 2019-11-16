@@ -10,44 +10,82 @@
     <title>Création d'une tâche</title>
 </head>
 
-<body>
-  <%- include ../views/partials/header.ejs %>
+  <body>
+    <%- include ../views/partials/header.ejs %>
     <form>
-        <div class="form-group">
-            <label for="taskName">Nom de la tache</label>
-            <input type="text" class="form-control" id="taskName" placeholder="Nom de la tache">
-        </div>
+      <div class="form-group">
+        <label for="taskName">Nom de la tache</label>
+        <input
+          type="text"
+          class="form-control"
+          id="taskName"
+          placeholder="Nom de la tache"
+        />
+      </div>
 
-        <div class="form-group">
-            <label for="taskDescription">Description de la tache</label>
-            <textarea type="text" class="form-control" id="taskDescription" placeholder="Description"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="taskDescription">Description de la tache</label>
+        <textarea
+          type="text"
+          class="form-control"
+          id="taskDescription"
+          placeholder="Description"
+        ></textarea>
+      </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="taskState1" value="A Faire">
-            <label class="form-check-label" for="taskState1">A faire</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="taskState2" value="En cours">
-            <label class="form-check-label" for="taskState2">En cours</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="taskState3" value="Fait">
-            <label class="form-check-label" for="taskState3">Fait</label>
-        </div>
-        <div class="form-group">
-            <label for="startDate">Date de début</label>
-            <input class="form-control" type="date" id="startDate">
-        </div>
-        <div class="form-group">
-            <label for="taskDuration">Durée de la tache</label>
-            <input type="number" class="form-control" id="taskDuration" placeholder="0">
-        </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="inlineRadioOptions"
+          id="taskState1"
+          value="A Faire"
+        />
+        <label class="form-check-label" for="taskState1">A faire</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="inlineRadioOptions"
+          id="taskState2"
+          value="En cours"
+        />
+        <label class="form-check-label" for="taskState2">En cours</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="inlineRadioOptions"
+          id="taskState3"
+          value="Fait"
+        />
+        <label class="form-check-label" for="taskState3">Fait</label>
+      </div>
+      <div class="form-group">
+        <label for="startDate">Date de début</label>
+        <input class="form-control" type="date" id="startDate" />
+      </div>
+      <div class="form-group">
+        <label for="taskDuration">Durée de la tache</label>
+        <input
+          type="number"
+          class="form-control"
+          id="taskDuration"
+          placeholder="0"
+        />
+      </div>
 
-        <div class="form-group">
-            <label for="taskDoD">Definition of Done</label>
-            <textarea type="text" class="form-control" id="taskDoD" placeholder="Definition of done"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="taskDoD">Definition of Done</label>
+        <textarea
+          type="text"
+          class="form-control"
+          id="taskDoD"
+          placeholder="Definition of done"
+        ></textarea>
+      </div>
 
         <div class="form-group">
             <label for="taskMember">Affectation des membres</label>
@@ -77,8 +115,7 @@
             </select>
         </div>
 
-        <button class="btn btn-primary" type="submit">Créer la tâche</button>
+      <button class="btn btn-primary" type="submit">Créer la tâche</button>
     </form>
-</body>
-
+  </body>
 </html>
