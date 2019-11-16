@@ -17,8 +17,32 @@ app.set('views', path.join(__dirname, './..', '/views'))
 const LIST_TASKS_PATH = '../views/listTasks.ejs'
 const NEW_TASK_PATH = '../views/newTask.ejs'
 
+let sess
+
+let listIssues
+let listProjectMembers
+let listProjectTasks
+
 app.get('/newTask', function(req, res) {
-  res.render(NEW_TASK_PATH)
+  listIssues = []
+  listProjectMembers = []
+  listProjectTasks = []
+  sess = req.session
+
+  db._getAllProjectIssues(req.query.projectId).then(result => {
+    listIssues = result
+    db._getMembersOfProject(req.query.projectId).then(result => {
+      listProjectMembers = result
+      db._getAllTasksOfProject(req.query.projectId).then(result => {
+        listProjectTasks = result
+        res.render(NEW_TASK_PATH, {
+          listIssues: listIssues,
+          listProjectMembers: listProjectMembers,
+          listProjectTasks: listProjectTasks
+        })
+      })
+    })
+  })
 })
 
 /* Test values
@@ -34,7 +58,6 @@ taskList.push(testTask3) */
 let taskToDo
 let taskDoing
 let taskDone
-let sess
 
 app.get('/listTasks', function(req, res) {
   taskToDo = []

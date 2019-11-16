@@ -5,10 +5,9 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
-    <script defer src="../backend/newTask.js"></script>
+    <script src="../backend/listTasks.js"></script>
     <meta name="author" content="gr1_eq7" />
-    <title>Liste des taches</title>
+    <title>Création d'une tâche</title>
 </head>
 
 <body>
@@ -53,28 +52,28 @@
         <div class="form-group">
             <label for="taskMember">Affectation des membres</label>
             <select multiple class="form-control" id="taskMember">
-                <!-- TODO : Remove placeholder once you can get members from project -->
-                <option>Membre 1</option>
-                <option>Membre 2</option>
-                <option>Membre 3</option>
+                <% listProjectMembers.forEach(member => { %>
+                <%  %>
+                    <option value="<%= member %>"> <%= member %></option>
+                <% }); %>
             </select>
         </div>
 
         <div class="form-group">
             <label for="taskRequired">Taches pré-requises</label>
             <select multiple class="form-control" id="taskRequired">
-                <!-- TODO : Remove placeholder once you can get list tasks -->
-                <option>TaskId1 - Nom de la tache</option>
-                <option>TaskId2 - Nom de la tache</option>
+                <% listProjectTasks.forEach(task => { %>
+                    <option value="<%= task.taskId %>"><%= task.name %></option>
+            <% }); %>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="taskIssue">Taches pré-requises</label>
+            <label for="taskIssue">Issues liées</label>
             <select multiple class="form-control" id="taskIssue">
-                <!-- TODO : Remove placeholder once you can get list issues -->
-                <option>IssueId1 - Nom de l'issue</option>
-                <option>IssueId2 - Nom de l'issue</option>
+                <% listIssues.forEach(issue => { %>
+                    <option value="<%= issue.id%>"> <%= issue.name %></option>
+            <% }); %>
             </select>
         </div>
 
