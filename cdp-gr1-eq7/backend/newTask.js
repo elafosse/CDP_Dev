@@ -49,7 +49,6 @@ app.get('/newTask', function(req, res) {
 })
 
 app.post('/newTask', function(req, res) {
-  // TODO : Pourquoi ça redirige sur listIssues sérieux ?!
   db._addTask(
     req.query.projectId,
     req.body.taskName,
