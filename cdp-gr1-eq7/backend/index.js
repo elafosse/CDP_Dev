@@ -15,9 +15,13 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
 const INDEX_PATH = '../views/index'
+let sess
 
-app.get('/', function(req, res){
-  res.render(INDEX_PATH)
+app.get('/', function(req, res) {
+  sess = req.session
+  res.render(INDEX_PATH, {
+    session: sess
+  })
 })
 
 module.exports.app = app

@@ -4,23 +4,26 @@ const app = express()
 
 /* REQUIRED */
 const path = require('path')
-const ejs = require('ejs')
-let bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 
 const signIn = require('./signIn')
 const signUp = require('./signUp')
 const listProjects = require('./listProjects')
 const overviewProject = require('./overviewProject')
 const listIssues = require('./listIssues')
-const listTasks = require("./listTasks")
-const listSprints = require("./listSprints")
+const listTasks = require('./listTasks')
+const listSprints = require('./listSprints')
+const index = require('./index')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
+
+/* Index */
+app.use(index.app)
 
 /* Connexion/deconnexion */
 app.use(signIn.app)
@@ -51,6 +54,6 @@ app.use(newTest.app)
 
 const NUM_PORT = 3000
 
-app.listen(NUM_PORT, function () {
+app.listen(NUM_PORT, function() {
   console.log('App listening on port ' + NUM_PORT + '!')
 })

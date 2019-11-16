@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script defer src="../backend/listTasks.js"></script>
     <meta name="author" content="gr1_eq7" />
@@ -22,31 +22,35 @@
 
 <body>
     <%- include partials/header.ejs %>
-    <div><a class="btn btn-primary" href="./newTask" role="button">Ajouter tache</a></div>
-    <span class="justify-content-center">
-        <div class="list-group d-inline-flex" id="tasks_todo">
-            <p>Taches à faire</p>
+    <div>
+        <div class="row">
+            <% include ./projectSidebar %>
+            <div class="col-9">
+                <a class="btn btn-primary" href="./newTask" role="button">Ajouter tache</a>
+            </div>
+            <span class="justify-content-center">
+                <div class="list-group d-inline-flex" id="tasks_todo">
+                    <p>Taches à faire</p>
 
-            <% taskToDo.forEach(task => { %>
-                <%- include partials/taskList.ejs %>
-            <% }); %>
-        </div>
+                    <% taskToDo.forEach(task => { %> <%- include partials/taskList.ejs %> <%
+        }); %>
+                </div>
 
-        <div class="list-group d-inline-flex" id="tasks_doing">
-            <p>Taches en cours</p>
-            <% taskDoing.forEach(task => { %>
-                <%- include partials/taskList.ejs %>
-            <% }); %>
-        </div>
+                <div class="list-group d-inline-flex" id="tasks_doing">
+                    <p>Taches en cours</p>
+                    <% taskDoing.forEach(task => { %> <%- include partials/taskList.ejs %>
+                    <% }); %>
+                </div>
 
-        <div class="list-group d-inline-flex" id="tasks_done">
-            <p>Taches terminées</p>
-            <% taskDone.forEach(task => { %>
-                <%- include partials/taskList.ejs %>
-            <% }); %>
+                <div class="list-group d-inline-flex" id="tasks_done">
+                    <p>Taches terminées</p>
+                    <% taskDone.forEach(task => { %> <%- include partials/taskList.ejs %> <%
+        }); %>
+                </div>
+            </span>
         </div>
+    </div>
     </span>
-
 </body>
 
 </html>
