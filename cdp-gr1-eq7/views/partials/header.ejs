@@ -29,7 +29,12 @@
         aria-haspopup="true"
         aria-expanded="false"
       >
-        Mes projets
+      <% if (locals.project) { %>
+        <%=project.name%>
+        <%} else{ %>
+        Mes Projets
+      <%}%>
+
       </button>
 
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
