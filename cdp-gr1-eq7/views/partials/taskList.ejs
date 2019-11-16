@@ -1,41 +1,71 @@
-<a href="#modalInfos<%= task.id%>" data-toggle="modal" data-target="#modalInfos<%= task.id%>"
-    class="list-group-item list-group-item-action flex-column align-items-start">
-    <div class="d-flex w-100 justify-content-between">
-        <%= task.name %>
-    </div>
-    <p class="mb-1"><%= task.description %></p>
-    <small><%= task.state %></small>
+<a
+  href="#modalInfos<%= task.taskId%>"
+  data-toggle="modal"
+  data-target="#modalInfos<%= task.taskId%>"
+  class="list-group-item list-group-item-action flex-column align-items-start"
+>
+  <div class="d-flex w-100 justify-content-between">
+    <%= task.name %>
+  </div>
+  <p class="mb-1"><%= task.description %></p>
+  <small><%= task.state %></small>
 </a>
-<div class="modal" id="modalInfos<%= task.taskId%>" tabindex="-1" role="dialog"
-    aria-labelledby="modalInfos<%= task.taskId %>" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitre"><%= task.name %></h5>
-                <small>
-                    <p class="text-right"><%= task.state %></p>
-                </small>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><%= task.description %></p>
-                <p>Temps de réalisation : <%= task.realisation_time %> </p>
-                <p>Définition of done : <%= task.dod %> </p>
-                <!-- TODO : Formatter la date pour que ce soit plus lisible -->
-                <p>Date de début : <%= task.start_date %> </p>
-            </div>
-            <div class="modal-footer">
-                <form action="/removeTask?projectId=<%= projectId%>&taskId=<%= task.taskId %>" method="post" 
-                    onsubmit="return confirm('Voulez-vous vraiment supprimer cette tâche ?');">
-                    <input type="text" name="taskId" class="form-control" id="name" value="<%= task.taskId %>" hidden>
-                    <button type="submit" class="btn btn-secondary"
-                        formaction="/removetask?projectId=<%= projectId%>&taskId=<%= task.taskId %>">Supprimer</button>
-                </form>
+<div
+  class="modal"
+  id="modalInfos<%= task.taskId%>"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalInfos<%= task.taskId %>"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitre"><%= task.name %></h5>
+        <small>
+          <p class="text-right"><%= task.state %></p>
+        </small>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><%= task.description %></p>
+        <p>Temps de réalisation : <%= task.realisation_time %></p>
+        <p>Définition of done : <%= task.dod %></p>
+        <!-- TODO : Formatter la date pour que ce soit plus lisible -->
+        <p>Date de début : <%= task.start_date %></p>
+      </div>
+      <div class="modal-footer">
+        <form
+          action="/removeTask?projectId=<%= projectId%>&taskId=<%= task.taskId %>"
+          method="post"
+          onsubmit="return confirm('Voulez-vous vraiment supprimer cette tâche ?');"
+        >
+          <input
+            type="text"
+            name="taskId"
+            class="form-control"
+            id="name"
+            value="<%= task.taskId %>"
+            hidden
+          />
+          <button
+            type="submit"
+            class="btn btn-secondary"
+            formaction="/removetask?projectId=<%= projectId%>&taskId=<%= task.taskId %>"
+          >
+            Supprimer
+          </button>
+        </form>
 
-                <button type="button" class="btn btn-primary">Modifier</button>
-            </div>
-        </div>
+        <button type="button" class="btn btn-primary">Modifier</button>
+      </div>
     </div>
+  </div>
 </div>
