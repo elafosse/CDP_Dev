@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <script defer src="../backend/listIssues.js"></script>
+    <meta name="author" content="gr1_eq7" />
+    <title><%=project.name + " | issues"%></title>
+</head>
+
+<body>
+    <%- include partials/header.ejs %>
+
+    <div class="row">
+        <% include ./projectSidebar %>
+        <div class="col-9">
+            <h1>Tests</h1>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>To implement</h2>
+                    <!--ICI tout ce qui est à faire-->
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="card">
+                            <h5 class="card-header" role="tab" id="headingOne">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne" class="d-block">
+                                    <i class="fa fa-chevron-down pull-right"></i> Test de moto
+                                </a>
+                            </h5>
+
+                            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong> Desciption :</strong>
+                                            <p>
+                                                Pour tester une moto, il faut aller très vite. Cela permettra de tester
+                                                le moteur
+                                                Le moteur à froid peut pèter. Aller le plus fort possible est une
+                                                solution pour tester ça.
+                                            </p>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong> Resultats Attendus :</strong>
+                                            <p>
+                                                Le moteur fait du bruit mais ne casse pas.
+                                            </p>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong> Dernière version testée :</strong>
+                                            <p>
+                                                V1.0.0
+                                            </p>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong> Issues :</strong>
+                                            <h5>
+                                                <span class="badge badge-info">I35</span>
+                                                <span class="badge badge-info">I24</span>
+                                                <span class="badge badge-info">I7</span>
+                                            </h5>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------------------------------------------------------------------------------->
+
+                <div class="col-sm-6">
+                    <h2>Done</h2>
+                    
+                    <!--ICI tout ce qui est a été fait-->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
