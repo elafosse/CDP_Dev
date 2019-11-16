@@ -5,20 +5,21 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="../backend/listTasks.js"></script>
+    <script src="../backend/newTask.js"></script>
     <meta name="author" content="gr1_eq7" />
     <title>Création d'une tâche</title>
 </head>
 
   <body>
     <%- include ../views/partials/header.ejs %>
-    <form>
+    <form action="/newTask?projectId=<%= projectId%>" method="post" id="new-task">
       <div class="form-group">
         <label for="taskName">Nom de la tache</label>
         <input
           type="text"
           class="form-control"
           id="taskName"
+          name="taskName"
           placeholder="Nom de la tache"
         />
       </div>
@@ -29,6 +30,7 @@
           type="text"
           class="form-control"
           id="taskDescription"
+          name="taskDescription"
           placeholder="Description"
         ></textarea>
       </div>
@@ -37,9 +39,10 @@
         <input
           class="form-check-input"
           type="radio"
-          name="inlineRadioOptions"
+          name="taskState"
           id="taskState1"
-          value="A Faire"
+          name="taskState1"
+          value="To Do"
         />
         <label class="form-check-label" for="taskState1">A faire</label>
       </div>
@@ -47,9 +50,9 @@
         <input
           class="form-check-input"
           type="radio"
-          name="inlineRadioOptions"
+          name="taskState"
           id="taskState2"
-          value="En cours"
+          value="Doing"
         />
         <label class="form-check-label" for="taskState2">En cours</label>
       </div>
@@ -57,15 +60,15 @@
         <input
           class="form-check-input"
           type="radio"
-          name="inlineRadioOptions"
+          name="taskState"
           id="taskState3"
-          value="Fait"
+          value="Done"
         />
         <label class="form-check-label" for="taskState3">Fait</label>
       </div>
       <div class="form-group">
         <label for="startDate">Date de début</label>
-        <input class="form-control" type="date" id="startDate" />
+        <input class="form-control" type="date" id="startDate" name="startDate" />
       </div>
       <div class="form-group">
         <label for="taskDuration">Durée de la tache</label>
@@ -73,6 +76,7 @@
           type="number"
           class="form-control"
           id="taskDuration"
+          name="taskDuration"
           placeholder="0"
         />
       </div>
@@ -83,13 +87,14 @@
           type="text"
           class="form-control"
           id="taskDoD"
+          name="taskDoD"
           placeholder="Definition of done"
         ></textarea>
       </div>
 
         <div class="form-group">
             <label for="taskMember">Affectation des membres</label>
-            <select multiple class="form-control" id="taskMember">
+            <select multiple class="form-control" id="taskMember" name="taskMember">
                 <% listProjectMembers.forEach(member => { %>
                 <%  %>
                     <option value="<%= member %>"> <%= member %></option>
@@ -99,7 +104,7 @@
 
         <div class="form-group">
             <label for="taskRequired">Taches pré-requises</label>
-            <select multiple class="form-control" id="taskRequired">
+            <select multiple class="form-control" id="taskRequired" name="taskRequired">
                 <% listProjectTasks.forEach(task => { %>
                     <option value="<%= task.taskId %>"><%= task.name %></option>
             <% }); %>
@@ -108,7 +113,7 @@
 
         <div class="form-group">
             <label for="taskIssue">Issues liées</label>
-            <select multiple class="form-control" id="taskIssue">
+            <select multiple class="form-control" id="taskIssue" name="taskIssue">
                 <% listIssues.forEach(issue => { %>
                     <option value="<%= issue.id%>"> <%= issue.name %></option>
             <% }); %>
