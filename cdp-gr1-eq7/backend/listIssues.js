@@ -7,7 +7,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const db = require('./db_connection')
 const session = require('express-session')
-const newIssue = require('./newIssue')
 const modifyIssue = require('./modifyIssue')
 
 /* USE THE REQUIRES */
@@ -20,7 +19,6 @@ app.use(
     resave: true
   })
 )
-app.use(newIssue.app)
 app.use(modifyIssue.app)
 
 app.set('view engine', 'ejs')
