@@ -39,7 +39,12 @@
         <p>Temps de réalisation : <%= task.realisation_time %></p>
         <p>Définition of done : <%= task.dod %></p>
         <!-- TODO : Formatter la date pour que ce soit plus lisible -->
-        <p>Date de début : <%= task.start_date %></p>
+        <% 
+        let year = task.start_date.getFullYear()
+        let month = task.start_date.getMonth()
+        let day = task.start_date.getDate()
+        %>
+        <p>Date de début : <%= day %>/<%=month%>/<%=year%></p>
       </div>
       <div class="modal-footer">
         <form

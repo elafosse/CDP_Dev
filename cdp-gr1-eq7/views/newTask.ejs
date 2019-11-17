@@ -90,7 +90,11 @@
           type="date"
           id="startDate"
           name="startDate"
-          <% if (action === 'modify') {%> value="<%= task.start_date %>" <% } %>
+          <% if (action === 'modify') {
+            let year = task.start_date.getFullYear()
+            let month = task.start_date.getMonth()
+            let day = task.start_date.getDate()
+            %> value="<%= year %>-<%= month%>-<%= day%>" <% } %>
         />
       </div>
       <div class="form-group">
