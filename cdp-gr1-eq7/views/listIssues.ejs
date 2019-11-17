@@ -1,65 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+
+<head>
+  <meta charset="utf-8" />
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>-->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <script defer src="../backend/listIssues.js"></script>
-    <meta name="author" content="gr1_eq7" />
-    <title><%=project.name + " | issues"%></title>
-  </head>
-  <body>
-    <%- include partials/header.ejs %>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <script defer src="../backend/listIssues.js"></script>
+  <meta name="author" content="gr1_eq7" />
+  <title><%=project.name + " | issues"%></title>
+</head>
 
-    <div class="row">
-      <% include ./projectSidebar %>
-      <div class="col-9">
-        <a
-          type="button"
-          href="/newIssue?projectId=<%= project.id%>"
-          class="btn btn-success btn-lg"
-          >Nouvelle Issue</a
-        >
+<body>
+  <%- include partials/header.ejs %>
 
-        <h1>Liste des issues</h1>
-        <ul class="list-unstyled">
-          <% listIssues.forEach(issue => { %>
-          <li>
-            <%= issue.id + ': ' + issue.name + ' ' + issue.priority + ' ' +
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-9">
+
+      <h1>Liste des issues</h1>
+      <hr>
+      <a type="button" href="/newIssue?projectId=<%= project.id%>" class="btn btn-success btn-lg">Nouvelle Issue</a>
+
+      <ul class="list-unstyled">
+        <% listIssues.forEach(issue => { %>
+        <li>
+          <%= issue.id + ': ' + issue.name + ' ' + issue.priority + ' ' +
             issue.difficulty %><br />
-            <a
-              type="button"
-              href="/modifyIssue?projectId=<%= project.id%>&issueId=<%= issue.id %>"
-              class="btn btn-success btn-lg"
-              >Modifier</a
-            >
-            <form action="/removeIssue?projectId=<% project.id%>" method="post">
-              <input
-                type="text"
-                name="issueId"
-                class="form-control"
-                id="name"
-                value="<%= issue.id %>"
-                hidden
-              />
-              <button
-                type="submit"
-                class="btn btn-primary"
-                formaction="/removeIssue"
-              >
-                Supprimer
-              </button>
-            </form>
-          </li>
-          <% }); %>
-        </ul>
-      </div>
+          <a type="button" href="/modifyIssue?projectId=<%= project.id%>&issueId=<%= issue.id %>"
+            class="btn btn-success btn-lg">Modifier</a>
+          <form action="/removeIssue?projectId=<% project.id%>" method="post">
+            <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>" hidden />
+            <button type="submit" class="btn btn-primary" formaction="/removeIssue">
+              Supprimer
+            </button>
+          </form>
+        </li>
+        <% }); %>
+      </ul>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
