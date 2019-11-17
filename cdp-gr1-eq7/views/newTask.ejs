@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
     <script src="../backend/newTask.js"></script>
     <meta name="author" content="gr1_eq7" />
-    <title>Création d'une tâche</title>
-</head>
+    <title>
+      <% if(action === 'create') { %>Création d'une tâche<% } else { %>Modification d'une tâche<% } %>
+    </title>
+  </head>
 
   <body>
     <%- include ../views/partials/header.ejs %>
-    <form action="/newTask?projectId=<%= projectId%>" method="post" id="new-task">
+    <form
+    <% if(action === 'create') {%> action="/newTask?projectId=<%= projectId%>"<% } else { %> action="/modifyTask?projectId=<%= projectId%>" <% } %>
+      
+      method="post"
+      id="new-task"
+    >
       <div class="form-group">
         <label for="taskName">Nom de la tache</label>
         <input
@@ -21,6 +31,7 @@
           id="taskName"
           name="taskName"
           placeholder="Nom de la tache"
+          <% if (action === 'modify') {%> value="<%= task.name %>" <% } %>
         />
       </div>
 
@@ -32,6 +43,7 @@
           id="taskDescription"
           name="taskDescription"
           placeholder="Description"
+          <% if (action === 'modify') {%> value="<%= task.description %>" <% } %>
         ></textarea>
       </div>
 
@@ -43,6 +55,8 @@
           id="taskState1"
           name="taskState1"
           value="To Do"
+          <% if (action === 'modify') {
+            if (task.state === 'To Do') {%> checked <% }} %>
         />
         <label class="form-check-label" for="taskState1">A faire</label>
       </div>
@@ -53,6 +67,8 @@
           name="taskState"
           id="taskState2"
           value="Doing"
+          <% if (action === 'modify') {
+            if (task.state === 'Doing') {%> checked <% }} %>
         />
         <label class="form-check-label" for="taskState2">En cours</label>
       </div>
@@ -63,12 +79,20 @@
           name="taskState"
           id="taskState3"
           value="Done"
+          <% if (action === 'modify') {
+            if (task.state === 'Done') {%> checked <% }} %>
         />
         <label class="form-check-label" for="taskState3">Fait</label>
       </div>
       <div class="form-group">
         <label for="startDate">Date de début</label>
-        <input class="form-control" type="date" id="startDate" name="startDate" />
+        <input
+          class="form-control"
+          type="date"
+          id="startDate"
+          name="startDate"
+          <% if (action === 'modify') {%> value="<%= task.start_date %>" <% } %>
+        />
       </div>
       <div class="form-group">
         <label for="taskDuration">Durée de la tache</label>
@@ -78,6 +102,7 @@
           id="taskDuration"
           name="taskDuration"
           placeholder="0"
+          <% if (action === 'modify') {%> value="<%= task.realisation_time %>" <% } %>
         />
       </div>
 
@@ -89,36 +114,59 @@
           id="taskDoD"
           name="taskDoD"
           placeholder="Definition of done"
+          <% if (action === 'modify') {%> value="<%= task.dod %>" <% } %>
         ></textarea>
       </div>
 
-        <div class="form-group">
-            <label for="taskMember">Affectation des membres</label>
-            <select multiple class="form-control" id="taskMember" name="taskMember">
-                <% listProjectMembers.forEach(member => { %>
-                <%  %>
-                    <option value="<%= member %>"> <%= member %></option>
-                <% }); %>
-            </select>
-        </div>
+      <div class="form-group">
+        <label for="taskMember">Affectation des membres</label>
+        <select multiple class="form-control" id="taskMember" name="taskMember">
+          <% listProjectMembers.forEach(member => { %>
+          <option value="<%= member %>" 
+            <%if(action === 'modify' && task.members && task.members.length) {
+              task.members.forEach(element => {
+                if(element === member){ %> 
+                  selected <% 
+                }
+              });  
+            } %>
+            > <%= member %></option>
+          <% }); %>
+        </select>
+      </div>
 
-        <div class="form-group">
-            <label for="taskRequired">Taches pré-requises</label>
-            <select multiple class="form-control" id="taskRequired" name="taskRequired">
-                <% listProjectTasks.forEach(task => { %>
-                    <option value="<%= task.taskId %>"><%= task.name %></option>
-            <% }); %>
-            </select>
-        </div>
+      <div class="form-group">
+        <label for="taskRequired">Taches pré-requises</label>
+        <select
+          multiple
+          class="form-control"
+          id="taskRequired"
+          name="taskRequired"
+        >
+          <% listProjectTasks.forEach(taskDep => { %>
+          <option value="<%= taskDep.taskId %>"
+              <% if(action === 'modify' && task.dependancies && task.dependancies.length){
+                task.dependancies.forEach(element => {
+                  if(element === taskDep.taskId) { %> selected <% }
+                }); 
+              }%> ><%= taskDep.name %></option>
+          <% }); %>
+        </select>
+      </div>
 
-        <div class="form-group">
-            <label for="taskIssue">Issues liées</label>
-            <select multiple class="form-control" id="taskIssue" name="taskIssue">
-                <% listIssues.forEach(issue => { %>
-                    <option value="<%= issue.id%>"> <%= issue.name %></option>
-            <% }); %>
-            </select>
-        </div>
+      <div class="form-group">
+        <label for="taskIssue">Issues liées</label>
+        <select multiple class="form-control" id="taskIssue" name="taskIssue">
+          <% listIssues.forEach(issue => { %>
+          <option value="<%= issue.id%>"
+              <% if(action === 'modify' && task.issues && task.issues.length) {
+                task.issues.forEach(element => {
+                  if(element === issue.id) {%> selected <% }
+                }); 
+              }%> > <%= issue.name %></option>
+          <% }); %>
+        </select>
+      </div>
 
       <button class="btn btn-primary" type="submit">Créer la tâche</button>
     </form>

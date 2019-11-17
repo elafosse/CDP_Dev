@@ -507,25 +507,28 @@ function _getAllTasksIdsByProjectAndState(project_id, state) {
 
 function _getTaskById(task_id) {
   return new Promise(function(resolve, reject) {
-    _getMembersAssignedToTask(task_id).then(
-      members => {
-        _getTaskDependencies(task_id).then(dependencies => {
-          const sql = "SELECT * FROM task WHERE id = '".concat(task_id, "'")
-          con.query(sql, function(err, result) {
-            if (err) reject(err)
-            const task = new Task.Task(
-              result[0].id,
-              result[0].project_id,
-              result[0].name,
-              result[0].description,
-              result[0].state,
-              result[0].start_date,
-              result[0].realisation_time,
-              result[0].description_of_done,
-              dependencies,
-              members
-            )
-            resolve(task)
+    _getIssuesOfTask(task_id).then(
+      issues => {
+        _getMembersAssignedToTask(task_id).then(members => {
+          _getTaskDependencies(task_id).then(dependencies => {
+            const sql = "SELECT * FROM task WHERE id = '".concat(task_id, "'")
+            con.query(sql, function(err, result) {
+              if (err) reject(err)
+              const task = new Task.Task(
+                result[0].id,
+                result[0].project_id,
+                result[0].name,
+                result[0].description,
+                result[0].state,
+                result[0].start_date,
+                result[0].realisation_time,
+                result[0].description_of_done,
+                dependencies,
+                members,
+                issues
+              )
+              resolve(task)
+            })
           })
         })
       },

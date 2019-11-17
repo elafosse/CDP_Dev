@@ -1,11 +1,18 @@
-/* REQUIRED */
-let bodyParser = require('body-parser')
-const mysql = require('mysql')
-
-
-//addTask(projectId, name, description, state, start_date, realisation_time, DoD, List<int> dependancies, List<usernames> members)
+// addTask(projectId, name, description, state, start_date, realisation_time, DoD, List<int> dependancies, List<usernames> members, List<Issue> issues)
 class Task {
-    constructor(taskId, projectId, name, description, state, start_date, realisation_time, dod, dependancies, members){
+  constructor(
+    taskId,
+    projectId,
+    name,
+    description,
+    state,
+    start_date,
+    realisation_time,
+    dod,
+    dependancies,
+    members,
+    issues
+  ) {
     this.taskId = taskId
     this.projectId = projectId
     this.name = name
@@ -16,9 +23,10 @@ class Task {
     this.dod = dod
     this.members = members
     this.dependancies = dependancies
+    this.issues = issues
   }
 }
 
 module.exports = {
-  Task:Task
+  Task: Task
 }
