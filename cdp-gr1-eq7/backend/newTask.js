@@ -102,7 +102,6 @@ app.get('/modifyTask', function(req, res) {
 })
 
 app.post('/modifyTask', function(req, res) {
-  console.log('enter')
   db._modifyTask(
     req.query.taskId,
     req.body.taskName,
@@ -112,15 +111,11 @@ app.post('/modifyTask', function(req, res) {
     req.body.taskDuration,
     req.body.taskDoD
   ).then(() => {
-    console.log(req.body.taskIssue)
     db._setTaskToIssue(req.query.taskId, req.body.taskIssue).then(() => {
-      console.log(req.body.taskRequired)
       db._setTaskDependencies(req.query.taskId, req.body.taskRequired).then(
         () => {
-          console.log(req.body.taskMember)
           db._setTaskToMembers(req.query.taskId, req.body.taskMember).then(
             () => {
-              console.log('then')
               res.redirect('/listTasks?projectId='.concat(req.query.projectId))
             }
           )
