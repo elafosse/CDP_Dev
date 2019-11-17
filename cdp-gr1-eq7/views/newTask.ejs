@@ -161,7 +161,7 @@
           <option value="<%= issue.id%>"
               <% if(action === 'modify' && task.issues && task.issues.length) {
                 task.issues.forEach(element => {
-                  if(element === issue.id) {%> selected <% }
+                  if(element.id === issue.id) {%> selected <% }
                 }); 
               }%> > <%= issue.name %></option>
           <% }); %>
