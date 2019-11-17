@@ -23,12 +23,16 @@ app.set('views', path.join(__dirname, './..', '/views'))
 
 const INDEX_PATH = '../views/index'
 
+let sess
+
 app.get('/', function(req, res) {
-  if (req.session.username === undefined) {
+  sess = req.session
+  if (sess.username === undefined) {
     res.render(INDEX_PATH)
   } else {
     res.render(INDEX_PATH, {
-      session: req.session
+      session: sess,
+      listProjects: sess.listProjects
     })
   }
 })

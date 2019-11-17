@@ -62,11 +62,18 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
   projectId = req.query.projectId
   sess = req.session
 
-  res.render(LIST_ISSUES_VIEW_PATH, {
-    session: sess,
-    listIssues: listIssues,
-    project: sess.project,
-    listProjects: sess.listProjects
+  db._getProjectFromProjectId(projectId).then(result => {
+    currentProject = result
+    db._getAllProjectIssues(result.id).then(issues => {
+      issues.forEach(issue => {
+        listIssues.push(issue)
+      })
+      res.render(LIST_ISSUES_VIEW_PATH, {
+        session: sess,
+        listIssues: listIssues,
+        project: currentProject
+      })
+    })
   })
 })
 
