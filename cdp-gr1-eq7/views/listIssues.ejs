@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <script defer src="../backend/listIssues.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/project.css" />
   <meta name="author" content="gr1_eq7" />
   <title><%=project.name + " | issues"%></title>
 </head>
@@ -18,28 +19,103 @@
   <div class="row">
     <% include ./projectSidebar %>
     <div class="col-9">
-
+      <br>
       <h1>Liste des issues</h1>
       <hr>
-      <a type="button" href="/newIssue?projectId=<%= project.id%>" class="btn btn-success btn-lg">Nouvelle Issue</a>
 
-      <ul class="list-unstyled">
-        <% listIssues.forEach(issue => { %>
-        <li>
-          <%= issue.id + ': ' + issue.name + ' ' + issue.priority + ' ' +
-            issue.difficulty %><br />
-          <a type="button" href="/modifyIssue?projectId=<%= project.id%>&issueId=<%= issue.id %>"
-            class="btn btn-success btn-lg">Modifier</a>
-          <form action="/removeIssue?projectId=<% project.id%>" method="post">
-            <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>" hidden />
-            <button type="submit" class="btn btn-primary" formaction="/removeIssue">
-              Supprimer
-            </button>
-          </form>
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+
+        <ul class="list-unstyled">
+          <% listIssues.forEach(issue => { %>
+          <li>
+            <div class="card">
+              <h5 class="card-header" role="tab" id="heading<%=issue.id%>">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=issue.id%>" aria-expanded="true"
+                  aria-controls="collapse<%=issue.id%>" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                  <span class="badge badge-dark">I<%= issue.id%><br /></span>
+                  <%= issue.name %>
+                  <span class="badge badge-<% if(issue.priority == 'LOW') { %>info<% } else if(issue.priority == 'MEDIUM') {%>warning <% } else {%>danger<% }%> right"><%= issue.priority%><br /></span>
+                  <span class="badge badge-secondary right"><%= issue.difficulty%><br /></span>
+                </a>
+
+              </h5>
+
+              <div id="collapse<%=issue.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%=issue.id%>">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <strong> Description :</strong>
+                      <p>
+                        <%= issue.description %>
+                      </p>
+                    </li>
+                    <li class="list-group-item">
+                      <form action="/removeIssue?projectId=<% project.id%>" method="post">
+                        <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>"
+                          hidden />
+                        <button type="submit" class="btn btn-outline-danger float-right"
+                          formaction="/removeIssue">&#x274C;</button>
+                      </form>
+                      <a href="/modifyIssue?projectId=<%=project.id%>&issueId=<%= issue.id %>"
+                        class="btn btn-outline-warning float-right">&#9998;</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </li>
+          <% }); %>
+          <li>
+
+        </ul>
+
+        <p>
+          <a class="btn btn-primary" data-toggle="collapse" href="#collapseAddIssue" role="button" aria-expanded="false"
+            aria-controls="collapseAddIssue">
+            Add Issue
+          </a>
+        </p>
+        <form action="/createIssue" method="post">
+
+          <div class="collapse" id="collapseAddIssue">
+            <div id="addNewIssue" class="card">
+              <h5 class="card-header" id="headingAddIssue">
+                <i class="fa fa-chevron-down pull-right"></i>
+                <input id="issueName" type="text" name="issueName" required>
+                <span class="badge badge-dark right"><input id="issuePriority" list="priorities" type="text" name="issuePriority" required>
+                  <datalist id="priorities">
+                    <option value="LOW" />
+                    <option value="MEDIUM" />
+                    <option value="HIGH" />
+                  <br />
+                  </datalist> </span>
+                <span class="badge badge-secondary right"><input id="issueDifficulty" type="number" name="issueDifficulty" required/></span>
+                </a>
+              </h5>
+
+              <div id="collapseAddIssue" class="collapse show" role="tabpanel" aria-labelledby="headingAddIssue">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <strong> Description :</strong>
+                      <p>
+                        <input id="issueDescription" type="text" name="issueDescription" required>
+                      </p>
+                    </li>
+                    <li class="list-group-item">
+                      <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
+        </form>
         </li>
-        <% }); %>
-      </ul>
+        </ul>
+      </div>
     </div>
+  </div>
+
+  </li>
+  </div>
+  </div>
   </div>
 </body>
 

@@ -30,6 +30,7 @@ const LIST_ISSUES_ROUTE = '/listIssues'
 const REMOVE_ISSUE_ROUTE = '/removeIssue'
 
 const LIST_ISSUES_VIEW_PATH = '../views/listIssues'
+const CREATE_ISSUE_ROUTE = '/createIssue'
 
 let listIssues = []
 let projectId
@@ -47,15 +48,6 @@ listIssues.push(i2)
 listIssues.push(i3) */
 
 /* FUNCTIONS */
-
-function removeIssue(id, listIssues) {
-  listIssues.forEach(issue => {
-    if (issue.id === id) {
-      const index = listIssues.indexOf(issue)
-      listIssues.splice(index, 1)
-    }
-  })
-}
 
 app.get(LIST_ISSUES_ROUTE, function(req, res) {
   listIssues = []
@@ -80,15 +72,26 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
 app.post(REMOVE_ISSUE_ROUTE, function(req, res) {
   console.log('Removed')
   const issueId = req.body.issueId
-  removeIssue(issueId, listIssues)
   db._deleteIssue(issueId)
 
-  res.render(LIST_ISSUES_VIEW_PATH, {
-    session: sess,
-    listIssues: listIssues,
-    projectId: projectId,
-    project: currentProject
-  })
+  res.redirect('back')
+})
+
+app.post(CREATE_ISSUE_ROUTE, function(req, res) {
+  const issueName = req.body.issueName
+  const issueDescription = req.body.issueDescription
+  const issuePriority = req.body.issuePriority
+  const issueDifficulty = req.body.issueDifficulty
+
+  db._addIssueToProject(
+    projectId,
+    issueName,
+    issueDescription,
+    issuePriority,
+    issueDifficulty
+  )
+
+  res.redirect('back')
 })
 
 module.exports.app = app

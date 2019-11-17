@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script defer src="../backend/modifyIssue.js"></script>
-  <meta name="author" content="gr1_eq7"/>
+  <meta name="author" content="gr1_eq7" />
   <title><%=project.name + " | modifier issue"%></title>
 </head>
+
 <body>
   <%- include ../views/partials/header.ejs %>
-  <form class="px-4 py-3" action="/modifyIssue?projectId=<%= project.id %>&issueId=<%= issue.id %>" method="post">
-    <div class="form-group">
-      <label for="Nom">Nom</label>
-      <input type="text" name="issueName" id="name" value="<%= issue.name %>"> <br>
-      <label for="Description">Description</label>
-      <input type="text" name="issueDescription" id="name" value="<%= issue.description %>"><br>
-      <label for="Nom">Priorité</label>
-      <input type="text" name="issuePriority" id="name" value="<%= issue.priority %>"><br>
-      <label for="Nom">Difficulté</label>
-      <input type="text" name="issueDifficulty" id="name" value="<%= issue.difficulty %>"><br>
-      <button type="submit" class="btn btn-primary" formaction="/modifyIssue">Enregistrer les modifications</button>
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-9">
+      <form class="px-4 py-3" action="/modifyIssue?projectId=<%= project.id %>&issueId=<%= issue.id %>" method="post">
+        <div class="form-group">
+          <label for="Nom">Nom</label>
+          <input type="text" name="issueName" id="name" value="<%= issue.name %>"> <br>
+          <label for="Description">Description</label>
+          <input type="text" name="issueDescription" id="name" value="<%= issue.description %>"><br>
+          <label for="Nom">Priorité</label>
+          <input type="text" name="issuePriority" id="name" value="<%= issue.priority %>"><br>
+          <label for="Nom">Difficulté</label>
+          <input type="text" name="issueDifficulty" id="name" value="<%= issue.difficulty %>"><br>
+          <button type="submit" class="btn btn-primary" formaction="/modifyIssue">Enregistrer les modifications</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </body>
+
 </html>
