@@ -18,7 +18,7 @@
   <body>
     <%- include ../views/partials/header.ejs %>
     <form
-    <% if(action === 'create') {%> action="/newTask?projectId=<%= projectId%>"<% } else { %> action="/modifyTask?projectId=<%= projectId%>" <% } %>
+    <% if(action === 'create') {%> action="/newTask?projectId=<%= projectId%>"<% } else { %> action="/modifyTask?projectId=<%= projectId%>&taskId=<%= task.taskId%>" <% } %>
       
       method="post"
       id="new-task"
@@ -43,8 +43,7 @@
           id="taskDescription"
           name="taskDescription"
           placeholder="Description"
-          <% if (action === 'modify') {%> value="<%= task.description %>" <% } %>
-        ></textarea>
+        ><% if (action === 'modify') {%><%= task.description %><% } %></textarea>
       </div>
 
       <div class="form-check form-check-inline">
@@ -114,8 +113,7 @@
           id="taskDoD"
           name="taskDoD"
           placeholder="Definition of done"
-          <% if (action === 'modify') {%> value="<%= task.dod %>" <% } %>
-        ></textarea>
+        ><% if (action === 'modify') {%><%= task.dod %><% } %></textarea>
       </div>
 
       <div class="form-group">
@@ -168,7 +166,7 @@
         </select>
       </div>
 
-      <button class="btn btn-primary" type="submit">Créer la tâche</button>
+      <button class="btn btn-primary" type="submit"><% if(action === 'create'){%>Créer la tache<%} else { %>Modifier la tache<%}%></button>
     </form>
   </body>
 </html>

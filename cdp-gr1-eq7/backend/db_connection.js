@@ -703,7 +703,10 @@ function _setTaskToMembers(taskId, usernameList) {
   // TODO : check if username exists
   return new Promise(function(resolve, reject) {
     let i
-    let sql = '' // "DELETE FROM assigned_task WHERE task_id = '".concat(taskId, "';\n");
+    let sql = "DELETE FROM assigned_task WHERE task_id = '".concat(
+      taskId,
+      "';\n"
+    )
     for (i = 0; i < usernameList.length; i++) {
       sql = sql.concat(
         "INSERT INTO assigned_task (task_id, username) VALUES ('",
@@ -969,5 +972,6 @@ module.exports = {
   _modifyTaskState,
   _getTaskChecklist,
   _getChecklistItemById,
-  _getIssuesOfTask
+  _getIssuesOfTask,
+  _setTaskToIssue
 }
