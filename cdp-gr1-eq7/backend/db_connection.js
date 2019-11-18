@@ -707,15 +707,26 @@ function _setTaskToMembers(taskId, usernameList) {
       taskId,
       "';\n"
     )
-    for (i = 0; i < usernameList.length; i++) {
+    if (typeof usernameList === 'string') {
       sql = sql.concat(
         "INSERT INTO assigned_task (task_id, username) VALUES ('",
         taskId,
         "','",
-        usernameList[i],
+        usernameList,
         "'",
         ');\n'
       )
+    } else {
+      for (i = 0; i < usernameList.length; i++) {
+        sql = sql.concat(
+          "INSERT INTO assigned_task (task_id, username) VALUES ('",
+          taskId,
+          "','",
+          usernameList[i],
+          "'",
+          ');\n'
+        )
+      }
     }
     con.query(sql, function(err, result) {
       if (err) reject(err)
