@@ -13,7 +13,6 @@ const overviewProject = require('./overviewProject')
 const listIssues = require('./listIssues')
 const listTasks = require('./listTasks')
 const listTests = require('./listTests')
-const newTest = require('./newTest')
 const listSprints = require('./listSprints')
 const index = require('./index')
 
@@ -47,7 +46,6 @@ app.use(listTasks.app)
 
 /* Tests */
 app.use(listTests.app)
-app.use(newTest.app)
 
 /* Sprints */
 app.use(listSprints.app)
