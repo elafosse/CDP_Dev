@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script defer src="../backend/modifyTest.js"></script>
-  <meta name="author" content="gr1_eq7"/>
+  <meta name="author" content="gr1_eq7" />
   <title><%=project.name + " | modifier test"%></title>
 </head>
 
 <body>
   <%- include ../views/partials/header.ejs %>
-  <br>
-  <form class="px-4 py-3" action="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>" method="post">
-    <div class="form-group">
-      <label>Nom : <input id="testName" type="text" name="testName" value="<%= test.name %>"></label><br>
-      <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription" value="<%= test.description %>"></label> <br>
-      <label>Résultats attendus : <input id="testResult" type="text" name="testResult" value="<%= test.resultExpected %>"></label><br>
-      <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion" value="<%= test.lastVersionValidated %>"></label><br>
-      
-      Etat du test :
-      <button class="btn btn-primary" id="toDoState" name="toDoState" formaction="/todoState">A faire</button>
-      <button class="btn btn-primary" id="failedState" name="failedState" formaction="/failedState">Non Réussi</button>
-      <button class="btn btn-primary" id="passedState" name="passedState" formaction="/passedState">Réussi</button>
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-9">
+      <form class="px-4 py-3" action="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>" method="post">
+        <div class="form-group">
+          <label>Nom : <input id="testName" type="text" name="testName" value="<%= test.name %>"></label><br>
+          <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription"
+              value="<%= test.description %>"></label> <br>
+          <label>Résultats attendus : <input id="testResult" type="text" name="testResult"
+              value="<%= test.resultExpected %>"></label><br>
+          <label>Dernière version validée: <input id="testValidVersion" type="text" name="testValidVersion"
+              value="<%= test.lastVersionValidated %>"></label><br>
 
-      <label>Ajouter une issue liée au test :<input id="issueIdToAdd" name="issueIdToAdd"></label>
-      <button type="submit" class="btn btn-primary" formaction="/addIssueTest">Ajouter</button>
-      
-      <ul id="listIssuesTest">Liste des issues liées au test : <%= listIssuesTest.length %>
-        <% listIssuesTest.forEach(issue => { %>
-          <li><%= issue.id + ' : ' + issue.name %>
-            <form action="/removeIssueTest" method="post" id="remove">
-              <input type="text" name="issueIdToRemove" class="form-control" value="<%= issue.id %>" hidden>
-              <button type="submit" class="btn btn-primary" formaction="/removeIssueTest">Supprimer</button>
-            </form>
-          </li>
-        <% }); %>
-      </ul>
+          <label>State:</label>
+          <button class="btn btn-primary" id="toDoState" name="toDoState" formaction="/todoState">A faire</button>
+          <button class="btn btn-primary" id="failedState" name="failedState" formaction="/failedState">Non
+            Réussi</button>
+          <button class="btn btn-primary" id="passedState" name="passedState"
+            formaction="/passedState">Réussi</button><br>
+
+          <label>Issues:</label><br>
+          <ul id="listIssuesTest" class="list-inline">
+            <% listIssues.forEach(issue => { %>
+            <li class="list-inline-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="<%=issue.id%>" id="<%=issue.id%>"
+                  value="<%= issue.id%>" <% if (listIssuesTest.indexOf(issue) > -1 ) {%> checked <% } %> />
+                <label class="custom-control-label" for="<%=issue.id%>">
+                  <%= issue.id + ": " + issue.name %></label>
+              </div>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn btn-primary" formaction="/modifyTest">Enregistrer les modifications</button>
+      </form>
     </div>
-      
-    <button type="submit" class="btn btn-primary" formaction="/modifyTest">Enregistrer les modifications</button>
-  </form>
+  </div>
 </body>
+
 </html>

@@ -58,12 +58,14 @@
                         <% }) %>
                       </h5>
                       <form action="/removeTest" onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
-                        <input type="text" name="testId" class="form-control" id="name" value="<%= test.id %>" hidden>
+                        <input type="text" name="testIdRemove" class="form-control" id="name" value="<%= test.id %>"
+                          hidden>
                         <button href="" class="btn btn-outline-danger float-right"
                           formaction="/removeTest">&#x274C;</button>
                       </form>
                       <button href="" class="btn btn-outline-success float-right">&#10004;</button>
-                      <button href="" class="btn btn-outline-warning float-right">&#9998;</button>
+                      <a href="/modifyTest?projectId=<%= project.id%>&testId=<%= test.id %>"
+                        class="btn btn-outline-warning float-right">&#9998;</a>
                     </li>
                   </ul>
                 </div>
