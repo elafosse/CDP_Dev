@@ -788,13 +788,13 @@ function _deleteTask(taskId) {
 function _setTaskToIssue(task_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
-    var sql = "DELETE FROM task_of_issue WHERE task_id = '".concat(
+    var sql = "DELETE FROM issue_of_task WHERE task_id = '".concat(
       task_id,
       "';\n"
     )
     for (i = 0; i < issueId_list.length; i++) {
       sql = sql.concat(
-        "INSERT INTO task_of_issue (task_id, issue_id) VALUES ('",
+        "INSERT INTO issue_of_task (task_id, issue_id) VALUES ('",
         task_id,
         "','",
         issueId_list[i],
@@ -811,7 +811,7 @@ function _setTaskToIssue(task_id, issueId_list) {
 
 function _getIssuesIdsOfTask(task_id) {
   return new Promise(function(resolve, reject) {
-    const sql = "SELECT issue_id FROM task_of_issue WHERE task_id = '".concat(
+    const sql = "SELECT issue_id FROM issue_of_task WHERE task_id = '".concat(
       task_id,
       "'"
     )
@@ -933,6 +933,38 @@ function _getChecklistItemById(itemId) {
     })
   })
 }
+
+// ================ Tests ================
+
+function _addTest(
+  name,
+  description,
+  expected_result,
+  is_implemented,
+  is_validated,
+  last_version_validated,
+  listIssues
+) {}
+
+function _setIssuesToTest(test_id, listIssues) {}
+
+function _deleteTest(test_id) {}
+
+function _modifyTest(
+  test_id,
+  name,
+  description,
+  expected_result,
+  last_version_validated
+) {}
+
+function _setIsValidated(test_id, is_validated) {}
+
+function _setIsImplemented(test_id, is_implemented) {}
+
+function _getAllTestsIdsFromProject(project_id) {}
+
+function _getAllTestsFromProject(project_id) {}
 
 module.exports = {
   _getProjectsIdsOfMember,
