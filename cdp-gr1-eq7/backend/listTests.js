@@ -32,17 +32,18 @@ const DEFAULT_STATE = 'todo'
 
 let listTests = []
 let listIssuesTest = []
+let listIssues = []
 
 /* TESTS ZONE */
-/*const test = require('./classes/Test')
+const test = require('./classes/Test')
 const issue = require('./classes/Issue')
 const i1 = new issue.Issue('i1', 'i1', '1', 'id1', '1', '1')
 const i2 = new issue.Issue('i2', 'i2', '1', 'id2', '1', '1')
 const i3 = new issue.Issue('i3', 'i3', '1', 'id3', '1', '1')
 
-listIssuesTest.push(i1)
-listIssuesTest.push(i2)
-listIssuesTest.push(i3)
+listIssues.push(i1)
+listIssues.push(i2)
+listIssues.push(i3)
 
 const t1 = new test.Test(
   'id1',
@@ -76,7 +77,7 @@ const t3 = new test.Test(
 )
 listTests.push(t1)
 listTests.push(t2)
-listTests.push(t3)*/
+listTests.push(t3)
 
 let projectId
 let sess
@@ -104,6 +105,7 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
       issues.forEach(issue => {
         listIssues.push(issue)
       })
+      // récupérer les tests depuis la db
       res.render(LIST_TEST_VIEW_PATH, {
         session: sess,
         listTests: listTests,

@@ -108,9 +108,10 @@
                         <label>Last version validated:</label> <br>
                         <input id="testValidVersion" type="text" name="testValidVersion"><br>
 
-                        <ul id="listIssuesTest" class="list-group list-group-flush"><label>Issues:</label>
+                        <label>Issues:</label><br>
+                        <ul id="listIssuesTest" class="list-inline">
                           <% listIssuesTest.forEach(issue => { %>
-                          <li class="list-group-item">
+                          <li class="list-inline-item">
                             <div class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input" name="<%=issue.id%>"
                                 id="<%=issue.id%>" value="<%= issue.id%>">
