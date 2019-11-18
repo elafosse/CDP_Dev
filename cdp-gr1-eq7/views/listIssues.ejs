@@ -18,13 +18,12 @@
 
   <div class="row">
     <% include ./projectSidebar %>
-    <div class="col-9">
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
       <br>
       <h1>Liste des issues</h1>
       <hr>
 
       <div id="accordion" role="tablist" aria-multiselectable="true">
-
         <ul class="list-unstyled">
           <% listIssues.forEach(issue => { %>
           <li>
@@ -35,10 +34,10 @@
                   <i class="fa fa-chevron-down pull-right"></i>
                   <span class="badge badge-dark">I<%= issue.id%><br /></span>
                   <%= issue.name %>
-                  <span class="badge badge-<% if(issue.priority == 'LOW') { %>info<% } else if(issue.priority == 'MEDIUM') {%>warning <% } else {%>danger<% }%> right"><%= issue.priority%><br /></span>
+                  <span
+                    class="badge badge-<% if(issue.priority == 'LOW') { %>info<% } else if(issue.priority == 'MEDIUM') {%>warning <% } else {%>danger<% }%> right"><%= issue.priority%><br /></span>
                   <span class="badge badge-secondary right"><%= issue.difficulty%><br /></span>
                 </a>
-
               </h5>
 
               <div id="collapse<%=issue.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%=issue.id%>">
@@ -51,7 +50,8 @@
                       </p>
                     </li>
                     <li class="list-group-item">
-                      <form action="/removeIssue?projectId=<% project.id%>" method="post">
+                      <form action="/removeIssue?projectId=<% project.id%>" method="post"
+                        onsubmit="return confirm('Voulez-vous vraiment supprimer cette issue ?')">
                         <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>"
                           hidden />
                         <button type="submit" class="btn btn-outline-danger float-right"
@@ -64,11 +64,9 @@
                 </div>
               </div>
             </div>
-
           </li>
           <% }); %>
           <li>
-
         </ul>
 
         <p>
@@ -83,39 +81,43 @@
             <div id="addNewIssue" class="card">
               <h5 class="card-header" id="headingAddIssue">
                 <i class="fa fa-chevron-down pull-right"></i>
+                <label>Name :</label>
                 <input id="issueName" type="text" name="issueName" required>
-                <span class="badge badge-dark right"><input id="issuePriority" list="priorities" type="text" name="issuePriority" required>
-                  <datalist id="priorities">
-                    <option value="LOW" />
-                    <option value="MEDIUM" />
-                    <option value="HIGH" />
-                  <br />
-                  </datalist> </span>
-                <span class="badge badge-secondary right"><input id="issueDifficulty" type="number" name="issueDifficulty" required/></span>
-                </a>
+                <label>Priority :</label>
+                <span class="badge badge-dark right"><input id="issuePriority" list="priorities" type="text"
+                    name="issuePriority" required></span>
+                <datalist id="priorities">
+                  <option value="LOW" />
+                  <option value="MEDIUM" />
+                  <option value="HIGH" />
+                  <br>
+                </datalist>
+                <label>Difficulty :</label>
+                <span class="badge badge-secondary right"><input id="issueDifficulty" type="number"
+                    name="issueDifficulty" required /></span>
               </h5>
 
               <div id="collapseAddIssue" class="collapse show" role="tabpanel" aria-labelledby="headingAddIssue">
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                      <strong> Description :</strong>
+                      <label>Description :</label>
                       <p>
                         <input id="issueDescription" type="text" name="issueDescription" required>
                       </p>
                     </li>
                     <li class="list-group-item">
                       <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-        </li>
         </ul>
       </div>
     </div>
-  </div>
-
-  </li>
-  </div>
-  </div>
   </div>
 </body>
 

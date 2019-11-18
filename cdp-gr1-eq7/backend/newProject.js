@@ -14,8 +14,14 @@ const listSprints = require('./listSprints')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
-app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
+app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(
+  session({
+    secret: 'shhhhhhared-secret',
+    saveUninitialized: true,
+    resave: true
+  })
+)
 
 app.use(listIssues.app)
 app.use(listTasks.app)
@@ -41,30 +47,30 @@ let sess
 let listMembers = []
 let areAdmins = []
 
-function removeMember (username, listMembers){
+function removeMember(username, listMembers) {
   listMembers.forEach(member => {
-    if (member === username){
-      let index = listMembers.indexOf (member)
-      listMembers.splice (index, 1)
+    if (member === username) {
+      let index = listMembers.indexOf(member)
+      listMembers.splice(index, 1)
     }
   })
 }
 
-app.get (NEW_PROJECT_ROUTE, function (req, res){
+app.get(NEW_PROJECT_ROUTE, function(req, res) {
   listMembers = []
   areAdmins = []
   sess = req.session
-  
-  res.render (NEW_PROJECT_VIEW_PATH, {
+
+  res.render(NEW_PROJECT_VIEW_PATH, {
     session: sess,
     listMembers: listMembers
   })
 })
 
-app.post(ADD_MEMBER_ROUTE, function(req, res){
+app.post(ADD_MEMBER_ROUTE, function(req, res) {
   const memberUsernameToAdd = req.body.memberUsernameToAdd
-  console.log("Added member " + memberUsernameToAdd)
-  
+  console.log('Added member ' + memberUsernameToAdd)
+
   listMembers.push(memberUsernameToAdd)
   res.render(NEW_PROJECT_VIEW_PATH, {
     session: sess,
@@ -72,10 +78,10 @@ app.post(ADD_MEMBER_ROUTE, function(req, res){
   })
 })
 
-app.post(REMOVE_MEMBER_ROUTE, function(req, res){
+app.post(REMOVE_MEMBER_ROUTE, function(req, res) {
   const memberUsernameToRemove = req.body.memberUsernameToRemove
-  console.log("Removed member " + memberUsernameToRemove)
-  
+  console.log('Removed member ' + memberUsernameToRemove)
+
   removeMember(memberUsernameToRemove, listMembers)
   res.render(NEW_PROJECT_VIEW_PATH, {
     session: sess,
@@ -83,22 +89,22 @@ app.post(REMOVE_MEMBER_ROUTE, function(req, res){
   })
 })
 
-app.post(CREATE_PROJECT_ROUTE, function(req, res){
+app.post(CREATE_PROJECT_ROUTE, function(req, res) {
   const projectName = req.body.projectName
   const projectDescription = req.body.projectDescription
-  console.log("Project " + projectName + " created")
+  console.log('Project ' + projectName + ' created')
 
-  for (i = 0; i < listMembers.length; i++){
+  for (i = 0; i < listMembers.length; i++) {
     areAdmins.push(0)
   }
 
   listMembers.push(sess.username)
   areAdmins.push(1)
-  
-  db._createProject(projectName, projectDescription).then(projectId =>{
+
+  db._createProject(projectName, projectDescription).then(projectId => {
     db._inviteMembersToProject(projectId, listMembers, areAdmins)
-    
-    db._getProjectFromProjectId(projectId).then(newProject =>{
+
+    db._getProjectFromProjectId(projectId).then(newProject => {
       res.render(PROJECT_OVERVIEW_VIEW_PATH, {
         session: sess,
         project: newProject,

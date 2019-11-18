@@ -2,141 +2,91 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <meta charset="utf-8" />
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <script defer src="../backend/listIssues.js"></script>
-    <meta name="author" content="gr1_eq7" />
-    <title><%=project.name + " | issues"%></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <script defer src="../backend/listIssues.js"></script>
+  <meta name="author" content="gr1_eq7" />
+  <title><%=project.name + " | tests"%></title>
 </head>
 
 <body>
-    <%- include partials/header.ejs %>
+  <%- include partials/header.ejs %>
 
-    <div class="row">
-        <% include ./projectSidebar %>
-        <div class="col-9">
-            <h1>Tests</h1>
-            <hr>
-            <div class="row">
-                <div class="col-sm-6">
-                    <h2>To implement</h2>
-                    <!--ICI tout ce qui est à faire-->
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="card">
-                            <h5 class="card-header" role="tab" id="headingOne">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                    aria-expanded="true" aria-controls="collapseOne" class="d-block">
-                                    <i class="fa fa-chevron-down pull-right"></i> Test de moto
-                                </a>
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+      <h1>List of Tests</h1>
+      <hr>
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <h2>To Do</h2>
+          <!--ICI tout ce qui est à faire-->
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <% listTests.forEach(test => { %>
+            <% if (test.state === 'todo') { %>
+            <div class="card">
+              <h5 class="card-header" role="tab" id="heading<%= test.id%>">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= test.id%>" aria-expanded="true"
+                  aria-controls="collapse<%= test.id%>" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i> <%= test.name %>
+                </a>
+              </h5>
 
-                            </h5>
-
-                            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                                <div class="card-body">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <strong> Description :</strong>
-                                            <p>
-                                                Pour tester une moto, il faut aller très vite. Cela permettra de tester
-                                                le moteur
-                                                Le moteur à froid peut pèter. Aller le plus fort possible est une
-                                                solution pour tester ça.
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong> Resultats Attendus :</strong>
-                                            <p>
-                                                Le moteur fait du bruit mais ne casse pas.
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong> Dernière version testée :</strong>
-                                            <p>
-                                                V1.0.0
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong> Issues :</strong>
-                                            <h5>
-                                                <span class="badge badge-info">I35</span>
-                                                <span class="badge badge-info">I24</span>
-                                                <span class="badge badge-info">I7</span>
-                                            </h5>
-                                            <a href="" class="btn btn-outline-danger float-right">&#x274C;</a>
-                                            <a href="" class="btn btn-outline-success float-right">&#10004;</a>
-                                            <a href="" class="btn btn-outline-warning float-right">&#9998;</a>
-
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                                <h5 class="card-header" role="tab" id="headingOne">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                                        aria-expanded="true" aria-controls="collapseTwo" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i> Test de compétences
-                                    </a>
-                                </h5>
-    
-                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="card-body">
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">
-                                                <strong> Description :</strong>
-                                                <p>
-                                                    Pour tester une moto, il faut aller très vite. Cela permettra de tester
-                                                    le moteur
-                                                    Le moteur à froid peut pèter. Aller le plus fort possible est une
-                                                    solution pour tester ça.
-                                                </p>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <strong> Resultats Attendus :</strong>
-                                                <p>
-                                                    Le moteur fait du bruit mais ne casse pas.
-                                                </p>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <strong> Dernière version testée :</strong>
-                                                <p>
-                                                    V1.0.0
-                                                </p>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <strong> Issues :</strong>
-                                                <h5>
-                                                    <span class="badge badge-info">I35</span>
-                                                    <span class="badge badge-info">I24</span>
-                                                    <span class="badge badge-info">I7</span>
-                                                </h5>
-                                                <a href="" class="btn btn-outline-danger float-right">&#x274C;</a>
-                                                <a href="" class="btn btn-outline-success float-right">&#10004;</a>
-                                                <a href="" class="btn btn-outline-warning float-right">&#9998;</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-
-                    
-                    
+              <div id="collapse<%= test.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%= test.id%>">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <strong> Description :</strong>
+                      <p><%= test.description %></p>
+                    </li>
+                    <li class="list-group-item">
+                      <strong> Resultats Attendus :</strong>
+                      <p><%= test.resultExpected %></p>
+                    </li>
+                    <li class="list-group-item">
+                      <strong> Dernière version testée :</strong>
+                      <p><%= test.lastVersionValidated %></p>
+                    </li>
+                    <li class="list-group-item">
+                      <strong> Issues :</strong>
+                      <h5>
+                        <% test.listIssues.forEach(issue => { %>
+                        <span class="badge badge-info"><%= issue.id%></span>
+                        <% }) %>
+                      </h5>
+                      <form action="/removeTest" onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
+                        <input type="text" name="testId" class="form-control" id="name" value="<%= test.id %>" hidden>
+                        <button href="" class="btn btn-outline-danger float-right"
+                          formaction="/removeTest">&#x274C;</button>
+                      </form>
+                      <button href="" class="btn btn-outline-success float-right">&#10004;</button>
+                      <button href="" class="btn btn-outline-warning float-right">&#9998;</button>
+                    </li>
+                  </ul>
                 </div>
-                <!-------------------------------------------------------------------------------------------------->
-
-                <div class="col-sm-6">
-                    <h2>Done</h2>
-                    
-                    <!--ICI tout ce qui est a été fait-->
-                </div>
+              </div>
             </div>
+            <% } %>
+            <% }) %>
+          </div>
         </div>
+        <!-------------------------------------------------------------------------------------------------->
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <h2>Done</h2>
+          <!--ICI tout ce qui est a été fait-->
+        </div>
+
+        <!-------------------------------------------------------------------------------------------------->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <a type="button" href="/newTest?projectId=<%= project.id%>" class="btn btn-success btn-lg">
+            Add test</a>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 
 </html>
