@@ -40,9 +40,9 @@ let listIssues = []
 /* TESTS ZONE */
 const test = require('./classes/Test')
 const issue = require('./classes/Issue')
-const i1 = new issue.Issue('i1', 'i1', '1', 'id1', '1', '1')
-const i2 = new issue.Issue('i2', 'i2', '1', 'id2', '1', '1')
-const i3 = new issue.Issue('i3', 'i3', '1', 'id3', '1', '1')
+const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
+const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
+const i3 = new issue.Issue('id3', 'i3', '1', 'id3', '1', '1')
 
 listIssues.push(i1)
 listIssues.push(i2)
@@ -91,7 +91,7 @@ function isChecked(req, listIssues) {
   let result = []
   listIssues.forEach(issue => {
     if (req.body['' + issue.id]) {
-      result.push(issue)
+      result.push(issue.id)
     }
   })
   return result
@@ -143,21 +143,19 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
   console.log('Test ' + testName + ' created')
 
   listIssuesTest = isChecked(req, listIssues)
-  console.log(listIssuesTest)
 
-  /*db._addTestToProject(
+  db._addTest(
     projectId,
     testName,
     testDescription,
     resultExpected,
     lastVersionValidated,
-    DEFAULT_STATE,
-    listIssuesTest
+    DEFAULT_STATE
   ).then(testId => {
-    db._addIssuesToTest(testId, listIssuesTest)*/
-
-  res.redirect('back')
-  //})
+    db._setIssuesToTest(testId, listIssuesTest).then(result => {
+      res.redirect('back')
+    })
+  })
 })
 
 module.exports.app = app

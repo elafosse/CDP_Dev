@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt')
 const Project = require('./classes/Project')
 const Issue = require('./classes/Issue')
 const Task = require('./classes/Task')
+const Test = require('./classes/Test')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
 var con = mysql.createConnection({
@@ -948,16 +949,67 @@ function _getChecklistItemById(itemId) {
 // ================ Tests ================
 
 function _addTest(
+  projectId,
   name,
   description,
   expected_result,
-  is_implemented,
-  is_validated,
   last_version_validated,
-  listIssues
-) {}
+  state
+) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'INSERT INTO test (project_id, name, description, expected_result, last_version_validated, state) VALUES ('.concat(
+      "'",
+      projectId,
+      "','",
+      name,
+      "','",
+      description,
+      "','",
+      expected_result,
+      "','",
+      last_version_validated,
+      "','",
+      state,
+      "'",
+      ')'
+    )
+    con.query(sql, function(err, result) {
+      if (err) {
+        console.log('New test added')
+        reject(err)
+        return
+      }
+      resolve(result.insertId)
+    })
+  })
+}
 
-function _setIssuesToTest(test_id, listIssues) {}
+function _setIssuesToTest(test_id, issueId_list) {
+  return new Promise(function(resolve, reject) {
+    let i = 0
+    var sql = "DELETE FROM issue_of_test WHERE test_id = '".concat(
+      test_id,
+      "';\n"
+    )
+    for (i = 0; i < issueId_list.length; i++) {
+      sql = sql.concat(
+        "INSERT INTO issue_of_test (test_id, issue_id) VALUES ('",
+        test_id,
+        "','",
+        issueId_list[i],
+        "'",
+        ');\n'
+      )
+    }
+    con.query(sql, function(err, result) {
+      console.log('New issueId_list added')
+      if (err) reject(err)
+      resolve('Issues linked to test')
+    })
+  })
+}
+
+function _getIssuesOfTest(test_id) {}
 
 function _deleteTest(test_id) {}
 
@@ -975,7 +1027,35 @@ function _setIsImplemented(test_id, is_implemented) {}
 
 function _getAllTestsIdsFromProject(project_id) {}
 
-function _getAllTestsFromProject(project_id) {}
+function _getAllTestsFromProject(project_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = "SELECT * FROM test WHERE project_id = '".concat(
+      project_id,
+      "'"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      const test_list = []
+      for (let i = 0; i < result.length; i++) {
+        _getIssuesOfTest(test_id).then(listIssues => {
+          test_list.push(
+            new Test.Test(
+              result[i].id,
+              result[i].project_id,
+              result[i].name,
+              result[i].description,
+              result[i].expected_result,
+              result[i].last_version_validated,
+              result[i].state,
+              listIssues
+            )
+          )
+        })
+      }
+      resolve(test_list)
+    })
+  })
+}
 
 module.exports = {
   _getProjectsIdsOfMember,
@@ -1016,5 +1096,7 @@ module.exports = {
   _getTaskChecklist,
   _getChecklistItemById,
   _getIssuesOfTask,
-  _setTaskToIssue
+  _setTaskToIssue,
+  _addTest,
+  _setIssuesToTest
 }
