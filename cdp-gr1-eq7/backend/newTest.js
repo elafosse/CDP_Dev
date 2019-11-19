@@ -123,7 +123,18 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
   let lastVersionValidated = req.body.testLastVersionValidated
   console.log('Test ' + testName + ' created')
 
-  db._addTestToProject(
+  db._addTest(
+    1,
+    'test1',
+    'description',
+    'expected_result',
+    0,
+    0,
+    '0.0.1',
+    'todo'
+  )
+
+  /*db._addTestToProject(
     projectId,
     testName,
     testDescription,
@@ -132,10 +143,10 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
     DEFAULT_STATE,
     listIssuesTest
   ).then(testId => {
-    db._addIssuesToTest(testId, listIssuesTest)
+    db._addIssuesToTest(testId, listIssuesTest)*/
 
-    res.redirect(LIST_TESTS_REDIRECT_URL + projectId)
-  })
+  res.redirect(LIST_TESTS_REDIRECT_URL + projectId)
+  //})
 })
 
 module.exports.app = app

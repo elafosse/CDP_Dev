@@ -104,17 +104,18 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
   listIssuesTest = []
   listIssues = []
   db._getProjectFromProjectId(projectId).then(result => {
-    db._getAllProjectIssues(result.id).then(issues => {
+    db._getAllProjectIssues(projectId).then(issues => {
       issues.forEach(issue => {
         listIssues.push(issue)
       })
-      // récupérer les tests depuis la db
-      res.render(LIST_TEST_VIEW_PATH, {
-        session: sess,
-        listTests: listTests,
-        project: sess.project,
-        listProjects: sess.listProjects,
-        listIssuesTest: listIssues
+      db._getAllTestsFromProject(projectId).then(listTests => {
+        res.render(LIST_TEST_VIEW_PATH, {
+          session: sess,
+          listTests: listTests,
+          project: sess.project,
+          listProjects: sess.listProjects,
+          listIssuesTest: listIssues
+        })
       })
     })
   })

@@ -1009,21 +1009,84 @@ function _setIssuesToTest(test_id, issueId_list) {
   })
 }
 
-function _getIssuesOfTest(test_id) {}
+function _getIssuesIdsOfTest(test_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = "SELECT issue_id FROM issue_of_test WHERE test_id = '".concat(
+      test_id,
+      "'"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      const id_list = []
+      for (let i = 0; i < result.length; i++) {
+        id_list.push(result[i].issue_id)
+      }
+      resolve(id_list)
+    })
+  })
+}
+
+function _getIssuesOfTest(test_id) {
+  return new Promise(function(resolve, reject) {
+    _getIssuesIdsOfTest(test_id).then(
+      id_list => {
+        const promise_list = []
+        for (let i = 0; i < id_list.length; i++) {
+          const promise = _getIssueById(id_list[i])
+          promise_list.push(promise)
+        }
+        Promise.all(promise_list).then(function(test_list) {
+          resolve(test_list)
+        })
+      },
+      raison => {
+        console.log(raison)
+      }
+    )
+  })
+}
 
 function _deleteTest(test_id) {}
 
+// TO TEST
 function _modifyTest(
-  test_id,
+  testId,
   name,
   description,
   expected_result,
-  last_version_validated
-) {}
+  last_version_validated,
+  state
+) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE test SET'.concat(
+      " name = '",
+      name,
+      "',",
+      " description = '",
+      description,
+      "',",
+      " expected_result = '",
+      expected_result,
+      "',",
+      " last_version_validated = '",
+      last_version_validated,
+      "',",
+      " state = '",
+      state,
+      "'",
+      " WHERE id = '",
+      testId,
+      "';\n"
+    )
+    con.query(sql, function(err, result) {
+      console.log('Test updated')
+      if (err) reject(err)
+      resolve(result.affectedRows)
+    })
+  })
+}
 
-function _setIsValidated(test_id, is_validated) {}
-
-function _setIsImplemented(test_id, is_implemented) {}
+function _setState(test_id, state) {}
 
 function _getAllTestsIdsFromProject(project_id) {}
 
@@ -1034,23 +1097,23 @@ function _getAllTestsFromProject(project_id) {
       "'"
     )
     con.query(sql, function(err, result) {
-      if (err) reject(err)
       const test_list = []
       for (let i = 0; i < result.length; i++) {
-        _getIssuesOfTest(test_id).then(listIssues => {
-          test_list.push(
-            new Test.Test(
-              result[i].id,
-              result[i].project_id,
-              result[i].name,
-              result[i].description,
-              result[i].expected_result,
-              result[i].last_version_validated,
-              result[i].state,
-              listIssues
-            )
+        //_getIssuesOfTest(result[i].id).then(listIssues => {
+        test_list.push(
+          new Test.Test(
+            result[i].id,
+            result[i].project_id,
+            result[i].name,
+            result[i].description,
+            result[i].expected_result,
+            result[i].last_version_validated,
+            result[i].state,
+            []
+            //listIssues
           )
-        })
+        )
+        //})
       }
       resolve(test_list)
     })
@@ -1098,5 +1161,10 @@ module.exports = {
   _getIssuesOfTask,
   _setTaskToIssue,
   _addTest,
-  _setIssuesToTest
+  _setIssuesToTest,
+  _deleteTest,
+  _modifyTest,
+  _getIssuesIdsOfTest,
+  _getIssuesOfTest,
+  _getAllTestsFromProject
 }

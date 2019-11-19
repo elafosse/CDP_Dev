@@ -64,7 +64,7 @@ let testId
 let projectId
 let sess
 let listIssues = []
-let newState
+let newState = 'todo'
 
 function isChecked(req, listIssues) {
   let result = []
@@ -145,17 +145,17 @@ app.post(MODIFY_TEST_ROUTE, function(req, res) {
 
   listIssuesTest = isChecked(req, listIssues)
 
-  /*db._modifyTest(
+  db._modifyTest(
     testId,
     newName,
     newDescription,
     newResultExpected,
     newLastVersionValidated,
-    newState,
-    listIssuesTest
-  ).then(result => {*/
-  res.redirect(MODIFY_TEST_REDIRECT_URL + projectId)
-  //})
+    newState
+  ).then(result => {
+    // update listIssues in db
+    res.redirect(MODIFY_TEST_REDIRECT_URL + projectId)
+  })
 })
 
 module.exports.app = app
