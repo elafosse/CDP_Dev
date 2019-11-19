@@ -30,7 +30,7 @@
             Issues du sprint :
             <ul class="list-unstyled">
               <% sprint.listIssuesSprint.forEach(issue => { %>
-              <li id='listIssuesSprint'><%= issue.id + ': ' + <%= issue.name %>
+              <li id='listIssuesSprint'><%= issue.id + ': ' + issue.name %>
               </li>
               <% }); %>
             </ul>
