@@ -23,7 +23,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="modalTitre"><%= task.name %></h5>
         <small>
-          <p class="text-right"><%= task.state %></p>
+          <p class="text-right"> <%= task.state %></p>
         </small>
         <button
           type="button"
@@ -45,6 +45,66 @@
         let day = task.start_date.getDate()
         %>
         <p>Date de début : <%= day %>/<%=month%>/<%=year%></p>
+        <p>Membres assignés : 
+        <% if(task.members){
+          switch (task.members.length) {
+            case 0:
+              %>Aucun<%
+              break;
+            case 1:
+              %><%=task.members[0]%><%
+            default:
+              if(task.members.length > 1){%>
+                <ul><%
+                for(i = 0; i < task.members.length; i++) {
+                  %><li><%=task.members[i]%></li><%
+                  }
+                %></ul><%
+                }
+              break;
+          }
+        }%>
+        </p>
+        <p>Issues associées : 
+        <% if(task.issues){
+          switch (task.issues.length) {
+            case 0:
+              %>Aucune<%
+              break;
+            case 1:
+              %>I<%=task.issues[0].id%> - <%=task.issues[0].name%><%
+            default:
+              if(task.issues.length > 1){%>
+                <ul><%
+                for(i = 0; i < task.issues.length; i++) {
+                  %><li>I<%=task.issues[i].id%> - <%=task.issues[i].name%></li><%
+                  }
+                %></ul><%
+                }
+              break;
+          }
+        }%>
+        </p>
+        <p>Taches pré-requises : 
+        <% if(task.dependancies){
+          switch (task.dependancies.length) {
+            case 0:
+              %>Aucune<%
+              break;
+            case 1:
+              %><%=task.dependancies[0]%><%
+            default:
+              if(task.dependancies.length > 1){%>
+                <ul><%
+                for(i = 0; i < task.dependancies.length; i++) {
+                  %><li><%=task.dependancies[i]%></li><%
+                  }
+                %></ul><%
+                }
+              break;
+          }
+        }%>
+        </p>
       </div>
       <div class="modal-footer">
         <form
