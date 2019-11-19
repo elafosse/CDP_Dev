@@ -4,10 +4,11 @@
   data-target="#modalInfos<%= task.taskId%>"
   class="list-group-item list-group-item-action flex-column align-items-start"
 >
-  <div class="d-flex w-100 justify-content-between">
+  <p class="h5 d-flex w-100 justify-content-between">
     <%= task.name %>
-  </div>
+  </p>
   <p class="mb-1"><%= task.description %></p>
+  <hr>
   <small><%= task.state %></small>
 </a>
 <div
@@ -21,7 +22,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitre"><%= task.name %></h5>
+        <h5 class="modal-title" id="modalTitre"><%= task.name %> </h5>
         <small>
           <p class="text-right"> <%= task.state %></p>
         </small>
