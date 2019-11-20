@@ -1,5 +1,14 @@
-class Test{
-  constructor(id, projectId, name, description, resultExpected, lastVersionValidated, state, listIssues){
+class Test {
+  constructor(
+    id,
+    projectId,
+    name,
+    description,
+    resultExpected,
+    lastVersionValidated,
+    state,
+    listIssues
+  ) {
     this.name = name
     this.description = description
     this.projectId = projectId
@@ -12,5 +21,5 @@ class Test{
 }
 
 module.exports = {
-  Test:Test
+  Test: Test
 }

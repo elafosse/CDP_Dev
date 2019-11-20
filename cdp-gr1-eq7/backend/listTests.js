@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 /* CONFIG */
 const express = require('express')
 const app = express()
@@ -29,19 +28,17 @@ app.set('views', path.join(__dirname, './..', '/views'))
 const LIST_TEST_ROUTE = '/listTests'
 const REMOVE_TEST_ROUTE = '/removeTest'
 const CREATE_TEST_ROUTE = '/createTest'
+const PUT_IN_DONE_ROUTE = '/putInDone'
 
 const LIST_TEST_VIEW_PATH = '../views/listTests'
 
 const DEFAULT_STATE = 'todo'
 
-let listTests = []
 let listIssuesTest = []
 let listIssues = []
 
 /* TESTS ZONE */
-/*
-
-const test = require('./classes/Test')
+/*const test = require('./classes/Test')
 const issue = require('./classes/Issue')
 const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
 const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
@@ -81,11 +78,10 @@ const t3 = new test.Test(
   'failed',
   listIssuesTest
 )
+let listTests = []
 listTests.push(t1)
 listTests.push(t2)
-listTests.push(t3)
-
-*/
+listTests.push(t3)*/
 
 let projectId
 let sess
@@ -129,8 +125,6 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
 app.post(REMOVE_TEST_ROUTE, function(req, res) {
   const testIdToRemove = req.body.testIdToRemove
   db._deleteTest(testIdToRemove).then(result => {
-    console.log(testIdToRemove)
-
     res.redirect('back')
   })
 })
@@ -157,5 +151,7 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
     })
   })
 })
+
+app.post(PUT_IN_DONE_ROUTE, function(req, res) {})
 
 module.exports.app = app

@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 /* eslint-disable camelcase */
 var mysql = require('mysql')
 var bcrypt = require('bcrypt')
@@ -338,7 +337,7 @@ function _deleteMember(username) {
 // ================ Issues ================
 
 /*
-
+ * 
 function f(name) {
     return new Promise(function (resolve, reject) {
 
@@ -1121,8 +1120,6 @@ function _modifyTest(
   })
 }
 
-function _setState(test_id, state) {}
-
 function _getAllTestsIdsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = "SELECT id FROM test WHERE project_id = '".concat(
@@ -1204,6 +1201,7 @@ module.exports = {
   _setIssuesToTest,
   _deleteTest,
   _modifyTest,
+  _getTestById,
   _getIssuesIdsOfTest,
   _getIssuesOfTest,
   _getAllTestsFromProject
