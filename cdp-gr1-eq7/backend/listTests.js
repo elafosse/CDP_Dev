@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 /* CONFIG */
 const express = require('express')
 const app = express()
@@ -38,7 +39,9 @@ let listIssuesTest = []
 let listIssues = []
 
 /* TESTS ZONE */
-/*const test = require('./classes/Test')
+/*
+
+const test = require('./classes/Test')
 const issue = require('./classes/Issue')
 const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
 const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
@@ -80,7 +83,9 @@ const t3 = new test.Test(
 )
 listTests.push(t1)
 listTests.push(t2)
-listTests.push(t3)*/
+listTests.push(t3)
+
+*/
 
 let projectId
 let sess
@@ -88,7 +93,7 @@ let sess
 /* FUNCTIONS */
 
 function isChecked(req, listIssues) {
-  let result = []
+  const result = []
   listIssues.forEach(issue => {
     if (req.body['' + issue.id]) {
       result.push(issue.id)
@@ -109,7 +114,6 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
         listIssues.push(issue)
       })
       db._getAllTestsFromProject(projectId).then(listTests => {
-        console.log(listTests)
         res.render(LIST_TEST_VIEW_PATH, {
           session: sess,
           listTests: listTests,
@@ -122,26 +126,20 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
   })
 })
 
-app.get(REMOVE_TEST_ROUTE, function(req, res) {
-  /*
-  console.log('Removed')
-  const issueId = req.body.issueId
-  removeIssue(issueId, listIssues)
-  db._deleteIssue(issueId)
+app.post(REMOVE_TEST_ROUTE, function(req, res) {
+  const testIdToRemove = req.body.testIdToRemove
+  db._deleteTest(testIdToRemove).then(result => {
+    console.log(testIdToRemove)
 
-  res.render(LIST_ISSUES_VIEW_PATH, {
-    session: sess,
-    listTests: listTests,
-    projectId: projectId,
-    project: currentProject
-  }) */
+    res.redirect('back')
+  })
 })
 
 app.post(CREATE_TEST_ROUTE, function(req, res) {
   const testName = req.body.testName
   const testDescription = req.body.testDescription
-  let resultExpected = req.body.testResultExpected
-  let lastVersionValidated = req.body.testLastVersionValidated
+  const resultExpected = req.body.testResultExpected
+  const lastVersionValidated = req.body.testLastVersionValidated
   console.log('Test ' + testName + ' created')
 
   listIssuesTest = isChecked(req, listIssues)

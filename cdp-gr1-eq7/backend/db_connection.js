@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 /* eslint-disable camelcase */
 var mysql = require('mysql')
 var bcrypt = require('bcrypt')
@@ -337,7 +338,7 @@ function _deleteMember(username) {
 // ================ Issues ================
 
 /*
- * 
+
 function f(name) {
     return new Promise(function (resolve, reject) {
 
@@ -1073,7 +1074,15 @@ function _getIssuesOfTest(test_id) {
   })
 }
 
-function _deleteTest(test_id) {}
+function _deleteTest(test_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = "DELETE FROM test WHERE id = '".concat(test_id, "'")
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve('Test removed')
+    })
+  })
+}
 
 function _modifyTest(
   testId,
