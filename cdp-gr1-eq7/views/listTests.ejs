@@ -27,30 +27,30 @@
           <div id="accordion" role="tablist" aria-multiselectable="true">
             <% listTests.forEach(test => { %>
             <% if (test.state === 'todo') { %>
-            <div class="card">
+            <div class="card bg-light mb-3">
               <h5 class="card-header" role="tab" id="heading<%= test.id%>">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= test.id%>" aria-expanded="true"
-                  aria-controls="collapse<%= test.id%>" class="d-block">
+                  aria-controls="collapse<%= test.id%>" class="d-block text-black">
                   <i class="fa fa-chevron-down pull-right"></i> <%= test.id + ": " + test.name %>
                 </a>
               </h5>
 
               <div id="collapse<%= test.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%= test.id%>">
-                <div class="card-body">
+                <div class="card-body bg-light mb-3">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      <strong> Description :</strong>
+                    <li class="list-group-item bg-light mb-3">
+                      <strong> Description:</strong>
                       <p><%= test.description %></p>
                     </li>
-                    <li class="list-group-item">
-                      <strong> Resultats Attendus :</strong>
+                    <li class="list-group-item bg-light mb-3">
+                      <strong> Expected results:</strong>
                       <p><%= test.resultExpected %></p>
                     </li>
-                    <li class="list-group-item">
-                      <strong> Dernière version testée :</strong>
+                    <li class="list-group-item bg-light mb-3">
+                      <strong> Last version validated:</strong>
                       <p><%= test.lastVersionValidated %></p>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-light mb-3">
                       <strong> Issues :</strong>
                       <h5>
                         <% test.listIssues.forEach(issue => { %>
