@@ -78,33 +78,32 @@
         <form action="/createIssue" method="post">
 
           <div class="collapse" id="collapseAddIssue">
-            <div id="addNewIssue" class="card">
+            <div id="addNewIssue" class="card form-group">
               <h5 class="card-header" id="headingAddIssue">
                 <i class="fa fa-chevron-down pull-right"></i>
-                <label>Name :</label>
-                <input id="issueName" type="text" name="issueName" required>
-                <label>Priority :</label>
-                <span class="badge badge-dark right"><input id="issuePriority" list="priorities" type="text"
-                    name="issuePriority" required></span>
-                <datalist id="priorities">
-                  <option value="LOW" />
-                  <option value="MEDIUM" />
-                  <option value="HIGH" />
-                  <br>
-                </datalist>
-                <label>Difficulty :</label>
-                <span class="badge badge-secondary right"><input id="issueDifficulty" type="number"
-                    name="issueDifficulty" required /></span>
+                <div class="form-row form-inline">
+                  <label class="col-form-label" for="issueName">Name :</label>
+                  <input class="form-control" id="issueName" type="text" name="issueName" placeholder="Name" required>
+                  <label class="col-form-label" for="issuePriority">Priority :</label>
+                  <span class="badge badge-dark right"><select class="form-control" id="issuePriority" list="priorities"
+                      type="text" name="issuePriority" placeholder="Priority" required>
+                      <option>LOW</option>
+                      <option>MEDIUM</option>
+                      <option>HIGH</option>
+                    </select></span>
+                  <label class="col-form-label" for="issueDifficulty">Difficulty :</label>
+                  <span class="badge badge-secondary right"><input class="form-control" id="issueDifficulty"
+                      type="number" min="0" name="issueDifficulty" placeholder="Difficulty" required /></span>
+                </div>
               </h5>
 
               <div id="collapseAddIssue" class="collapse show" role="tabpanel" aria-labelledby="headingAddIssue">
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                      <label>Description :</label>
-                      <p>
-                        <input id="issueDescription" type="text" name="issueDescription" required>
-                      </p>
+                      <label class="col-form-label" for="issueDescription">Description :</label>
+                      <input class="form-control" id="issueDescription" type="text" name="issueDescription"
+                        value="As... I want to... In order to..." placeholder="description" required>
                     </li>
                     <li class="list-group-item">
                       <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
