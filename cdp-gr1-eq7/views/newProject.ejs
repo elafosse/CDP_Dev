@@ -15,8 +15,8 @@
   <br>
   <form action="/createProject" method="post" id="create-project">
     <div class="form-group">
-      <label>Name: <input id="projectName" type="text" name="projectName"></label> <br>
-      <label>Description: <input id="projectDescription" type="text" name="projectDescription"></label> <br>
+      <label>Name: <input id="projectName" type="text" name="projectName" required></label> <br>
+      <label>Description: <input id="projectDescription" type="text" name="projectDescription" required></label> <br>
 
       <label>Add a member to the project: <input id="usernameMemberToAdd" name="memberUsernameToAdd"></label>
       <button type="submit" class="btn btn-primary" formaction="/addMember">Add</button>

@@ -16,16 +16,37 @@
     <% include ./projectSidebar %>
     <div class="col-9">
       <form class="px-4 py-3" action="/modifyIssue?projectId=<%= project.id %>&issueId=<%= issue.id %>" method="post">
-        <div class="form-group">
-          <label for="Nom">Nom</label>
-          <input type="text" name="issueName" id="name" value="<%= issue.name %>"> <br>
-          <label for="Description">Description</label>
-          <input type="text" name="issueDescription" id="name" value="<%= issue.description %>"><br>
-          <label for="Nom">Priorité</label>
-          <input type="text" name="issuePriority" id="name" value="<%= issue.priority %>"><br>
-          <label for="Nom">Difficulté</label>
-          <input type="text" name="issueDifficulty" id="name" value="<%= issue.difficulty %>"><br>
-          <button type="submit" class="btn btn-primary" formaction="/modifyIssue">Enregistrer les modifications</button>
+        <div id="modifyIssue" class="card form-group">
+          <h5 class="card-header" id="headingModifyIssue">
+            <i class="fa fa-chevron-down pull-right"></i>
+            <div class="form-row form-inline">
+              <label class="col-form-label" for="issueName">Name :</label>
+              <input class="form-control" id="issueName" type="text" name="issueName" placeholder="Name"
+                value="<%= issue.name %>" required>
+              <label class=" col-form-label" for="issuePriority">Priority :</label>
+              <select class="form-control" id="issuePriority" list="priorities" type="text" name="issuePriority"
+                placeholder="Priority" value="<%= issue.priority %>"" required>
+                  <option>LOW</option>
+                  <option>MEDIUM</option>
+                  <option>HIGH</option>
+                </select>
+              <label class=" col-form-label" for="issueDifficulty">Difficulty :</label>
+                <input class="form-control" id="issueDifficulty" type="number" min="0" name="issueDifficulty"
+                  placeholder="Difficulty" value="<%= issue.difficulty %>" required />
+            </div>
+          </h5>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <label class="col-form-label" for="issueDescription">Description :</label>
+                <input class="form-control" id="issueDescription" type="text" name="issueDescription"
+                  value="<%= issue.description %>" placeholder="description" required>
+              </li>
+              <li class="list-group-item">
+                <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </form>
     </div>

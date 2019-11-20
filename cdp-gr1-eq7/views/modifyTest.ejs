@@ -17,13 +17,13 @@
     <div class="col-9">
       <form class="px-4 py-3" action="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>" method="post">
         <div class="form-group">
-          <label>Nom : <input id="testName" type="text" name="testName" value="<%= test.name %>"></label><br>
+          <label>Nom : <input id="testName" type="text" name="testName" value="<%= test.name %>" required></label><br>
           <label>Description de la fonction à tester : <input id="testDescription" type="text" name="testDescription"
-              value="<%= test.description %>"></label> <br>
+              value="<%= test.description %>" required></label> <br>
           <label>Résultats attendus : <input id="testResult" type="text" name="testResultExpected"
-              value="<%= test.resultExpected %>"></label><br>
+              value="<%= test.resultExpected %>" required></label><br>
           <label>Dernière version validée: <input id="testValidVersion" type="text" name="testLastVersionValidated"
-              value="<%= test.lastVersionValidated %>"></label><br>
+              value="<%= test.lastVersionValidated %>" required></label><br>
 
           <label>State:</label>
           <div class="form-check form-check-inline">

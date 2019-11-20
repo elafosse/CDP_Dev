@@ -24,17 +24,10 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
 const MODIFY_TEST_ROUTE = '/modifyTest'
-const TO_DO_STATE_ROUTE = '/todoState'
-const FAILED_STATE_ROUTE = '/failedState'
-const PASSED_STATE_ROUTE = '/passedState'
 
 const MODIFY_TEST_VIEW_PATH = '../views/modifyTest'
 
 const MODIFY_TEST_REDIRECT_URL = '/listTests?projectId='
-
-const TO_DO_STATE = 'todo'
-const FAILED_STATE = 'failed'
-const PASSED_STATE = 'passed'
 
 let listIssuesTest = []
 
