@@ -38,7 +38,7 @@ let listIssuesTest = []
 let listIssues = []
 
 /* TESTS ZONE */
-const test = require('./classes/Test')
+/*const test = require('./classes/Test')
 const issue = require('./classes/Issue')
 const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
 const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
@@ -80,7 +80,7 @@ const t3 = new test.Test(
 )
 listTests.push(t1)
 listTests.push(t2)
-listTests.push(t3)
+listTests.push(t3)*/
 
 let projectId
 let sess
@@ -109,6 +109,7 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
         listIssues.push(issue)
       })
       db._getAllTestsFromProject(projectId).then(listTests => {
+        console.log(listTests)
         res.render(LIST_TEST_VIEW_PATH, {
           session: sess,
           listTests: listTests,
@@ -121,7 +122,7 @@ app.get(LIST_TEST_ROUTE, function(req, res) {
   })
 })
 
-app.post(REMOVE_TEST_ROUTE, function(req, res) {
+app.get(REMOVE_TEST_ROUTE, function(req, res) {
   /*
   console.log('Removed')
   const issueId = req.body.issueId

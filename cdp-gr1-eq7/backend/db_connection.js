@@ -984,6 +984,33 @@ function _addTest(
   })
 }
 
+function _getTestById(test_id) {
+  return new Promise(function(resolve, reject) {
+    _getIssuesOfTest(test_id).then(
+      issues => {
+        const sql = "SELECT * FROM test WHERE id = '".concat(test_id, "'")
+        con.query(sql, function(err, result) {
+          if (err) reject(err)
+          const test = new Test.Test(
+            result[0].id,
+            result[0].project_id,
+            result[0].name,
+            result[0].description,
+            result[0].expected_result,
+            result[0].last_version_validated,
+            result[0].state,
+            issues
+          )
+          resolve(test)
+        })
+      },
+      raison => {
+        reject(raison)
+      }
+    )
+  })
+}
+
 function _setIssuesToTest(test_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -1040,7 +1067,7 @@ function _getIssuesOfTest(test_id) {
         })
       },
       raison => {
-        console.log(raison)
+        reject(raison)
       }
     )
   })
@@ -1048,7 +1075,6 @@ function _getIssuesOfTest(test_id) {
 
 function _deleteTest(test_id) {}
 
-// TO TEST
 function _modifyTest(
   testId,
   name,
@@ -1088,35 +1114,40 @@ function _modifyTest(
 
 function _setState(test_id, state) {}
 
-function _getAllTestsIdsFromProject(project_id) {}
-
-function _getAllTestsFromProject(project_id) {
+function _getAllTestsIdsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
-    const sql = "SELECT * FROM test WHERE project_id = '".concat(
+    const sql = "SELECT id FROM test WHERE project_id = '".concat(
       project_id,
       "'"
     )
     con.query(sql, function(err, result) {
-      const test_list = []
+      if (err) reject(err)
+      const id_list = []
       for (let i = 0; i < result.length; i++) {
-        //_getIssuesOfTest(result[i].id).then(listIssues => {
-        test_list.push(
-          new Test.Test(
-            result[i].id,
-            result[i].project_id,
-            result[i].name,
-            result[i].description,
-            result[i].expected_result,
-            result[i].last_version_validated,
-            result[i].state,
-            []
-            //listIssues
-          )
-        )
-        //})
+        id_list.push(result[i].id)
       }
-      resolve(test_list)
+      resolve(id_list)
     })
+  })
+}
+
+function _getAllTestsFromProject(project_id) {
+  return new Promise(function(resolve, reject) {
+    _getAllTestsIdsFromProject(project_id).then(
+      id_list => {
+        const promise_list = []
+        for (let i = 0; i < id_list.length; i++) {
+          const promise = _getTestById(id_list[i])
+          promise_list.push(promise)
+        }
+        Promise.all(promise_list).then(function(test_list) {
+          resolve(test_list)
+        })
+      },
+      raison => {
+        reject(raison)
+      }
+    )
   })
 }
 

@@ -31,7 +31,7 @@
               <h5 class="card-header" role="tab" id="heading<%= test.id%>">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= test.id%>" aria-expanded="true"
                   aria-controls="collapse<%= test.id%>" class="d-block">
-                  <i class="fa fa-chevron-down pull-right"></i> <%= test.name %>
+                  <i class="fa fa-chevron-down pull-right"></i> <%= test.id + ": " + test.name %>
                 </a>
               </h5>
 
@@ -54,7 +54,7 @@
                       <strong> Issues :</strong>
                       <h5>
                         <% test.listIssues.forEach(issue => { %>
-                        <span class="badge badge-info"><%= issue.id%></span>
+                        <span class="badge badge-info"><%= issue.id + ": " + issue.name%></span>
                         <% }) %>
                       </h5>
                       <form action="/removeTest" onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
