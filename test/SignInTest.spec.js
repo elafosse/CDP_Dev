@@ -8,12 +8,12 @@ describe('Index', function() {
   beforeEach(async function() {
     driver = await new Builder().forBrowser('firefox').build()
     vars = {}
-  }.catch(err){
+  }catch(err){
     done(err)
   })
   afterEach(async function() {
     await driver.quit();
-  }.catch(err){
+  }catch(err){
     done(err)
   })
   it('Index', async function() {
@@ -25,7 +25,7 @@ describe('Index', function() {
     await driver.findElement(By.id("password")).sendKeys("h")
     await driver.findElement(By.id("password")).sendKeys(Key.ENTER)
     await driver.findElement(By.linkText("ScrumHelper")).click()
-  }.catch(err){
+  }catch(err){
     done(err)
   })
 })
