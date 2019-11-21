@@ -4,8 +4,8 @@ const assert = require('assert')
 
 describe('indexWithoutSession', function() {
   this.timeout(30000)
-  var driver
-  var vars
+  let driver
+  let vars
   beforeEach(async function() {
     driver = await new Builder().forBrowser('firefox').build()
     vars = {}
