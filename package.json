@@ -26,4 +26,9 @@
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1"
   }
+"scripts": {
+            "start": "SET NODE_ENV=dev && node ./bin/www",
+            "devstart": "SET NODE_ENV=dev && nodemon ./bin/www",
+            "test": "mocha --timeout 10000"  <= increase this from 1000 to 10000
+        }
 }
