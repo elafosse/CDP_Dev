@@ -9,7 +9,9 @@
   </p>
   <p class="mb-1"><%= task.description %></p>
   <hr>
-  <small><%= task.state %></small>
+  <% task.issues.forEach(issue => { %>
+    <span class="badge badge-info"><%= issue.id + ": " + issue.name%></span>
+    <% }) %>
 </a>
 <div
   class="modal"
@@ -98,7 +100,7 @@
               if(task.dependancies.length > 1){%>
                 <ul><%
                 for(i = 0; i < task.dependancies.length; i++) {
-                  %><li><%=task.dependancies[i]%></li><%
+                  %><li><%=task.dependancies[i].taskId%> - <%=task.dependancies[i].name%></li><%
                   }
                 %></ul><%
                 }

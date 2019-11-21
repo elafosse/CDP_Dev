@@ -680,23 +680,27 @@ function _setTaskDependencies(taskId, dependsOnTasksIdList) {
       taskId,
       "';\n"
     )
-    for (let i = 0; i < dependsOnTasksIdList.length; i++) {
-      sql = sql.concat(
-        'INSERT INTO task_dependencies (task_id, depend_on_task_id) VALUES (',
-        "'",
-        taskId,
-        "'",
-        ',',
-        "'",
-        dependsOnTasksIdList[i],
-        "'",
-        '); \n'
-      )
+    if (dependsOnTasksIdList) {
+      for (let i = 0; i < dependsOnTasksIdList.length; i++) {
+        sql = sql.concat(
+          'INSERT INTO task_dependencies (task_id, depend_on_task_id) VALUES (',
+          "'",
+          taskId,
+          "'",
+          ',',
+          "'",
+          dependsOnTasksIdList[i],
+          "'",
+          '); \n'
+        )
+      }
+      con.query(sql, function(err, result) {
+        if (err) reject(err)
+        resolve('New dependencies added')
+      })
+    } else {
+      resolve('No dependency to add')
     }
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      resolve('New dependencies added')
-    })
   })
 }
 
@@ -708,31 +712,35 @@ function _setTaskToMembers(taskId, usernameList) {
       taskId,
       "';\n"
     )
-    if (typeof usernameList === 'string') {
-      sql = sql.concat(
-        "INSERT INTO assigned_task (task_id, username) VALUES ('",
-        taskId,
-        "','",
-        usernameList,
-        "'",
-        ');\n'
-      )
-    } else {
-      for (i = 0; i < usernameList.length; i++) {
+    if (usernameList) {
+      if (typeof usernameList === 'string') {
         sql = sql.concat(
           "INSERT INTO assigned_task (task_id, username) VALUES ('",
           taskId,
           "','",
-          usernameList[i],
+          usernameList,
           "'",
           ');\n'
         )
+      } else {
+        for (i = 0; i < usernameList.length; i++) {
+          sql = sql.concat(
+            "INSERT INTO assigned_task (task_id, username) VALUES ('",
+            taskId,
+            "','",
+            usernameList[i],
+            "'",
+            ');\n'
+          )
+        }
       }
+      con.query(sql, function(err, result) {
+        if (err) reject(err)
+        resolve('Task assigned to members')
+      })
+    } else {
+      resolve('No member to assign the task')
     }
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      resolve('Task assigned to members')
-    })
   })
 }
 
@@ -755,17 +763,31 @@ function _getMembersAssignedToTask(taskId) {
 
 function _getTaskDependencies(taskId) {
   return new Promise(function(resolve, reject) {
-    const sql = "SELECT depend_on_task_id FROM task_dependencies WHERE task_id = '".concat(
+    const sql = "SELECT * FROM task WHERE id IN (SELECT depend_on_task_id FROM task_dependencies WHERE task_id ='".concat(
       taskId,
-      "'"
+      "')"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
-      const id_list = []
+      const deps = []
       for (let i = 0; i < result.length; i++) {
-        id_list.push(result[i].depend_on_task_id)
+        deps.push(
+          new Task.Task(
+            result[i].id,
+            result[i].project_id,
+            result[i].name,
+            result[i].description,
+            result[i].state,
+            result[i].start_date,
+            result[i].realisation_time,
+            result[i].description_of_done,
+            [],
+            [],
+            []
+          )
+        )
       }
-      resolve(id_list)
+      resolve(deps)
     })
   })
 }
@@ -804,20 +826,24 @@ function _setTaskToIssue(task_id, issueId_list) {
       task_id,
       "';\n"
     )
-    for (i = 0; i < issueId_list.length; i++) {
-      sql = sql.concat(
-        "INSERT INTO issue_of_task (task_id, issue_id) VALUES ('",
-        task_id,
-        "','",
-        issueId_list[i],
-        "'",
-        ');\n'
-      )
+    if (issueId_list) {
+      for (i = 0; i < issueId_list.length; i++) {
+        sql = sql.concat(
+          "INSERT INTO issue_of_task (task_id, issue_id) VALUES ('",
+          task_id,
+          "','",
+          issueId_list[i],
+          "'",
+          ');\n'
+        )
+      }
+      con.query(sql, function(err, result) {
+        if (err) reject(err)
+        resolve('Issues linked to task')
+      })
+    } else {
+      resolve('No issues to link')
     }
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      resolve('Issues linked to task')
-    })
   })
 }
 
