@@ -18,11 +18,12 @@
   <div class="row">
     <% include ./projectSidebar %>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+      <br>
       <h1>List of Tests</h1>
       <hr>
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <h2>To Do</h2>
+          <h2>To Implement</h2>
           <!--ICI tout ce qui est à faire-->
           <div id="accordion" role="tablist" aria-multiselectable="true">
             <% listTests.forEach(test => { %>
@@ -69,9 +70,9 @@
                         <label>Description of the function to test:</label><br>
                         <input id="testDescription" type="text" name="testDescription" required><br>
                         <label>Résults expected:</label><br>
-                        <input id="testResult" type="text" name="testResult" required><br>
+                        <input id="testResultExpected" type="text" name="testResultExpected" required><br>
                         <label>Last version validated:</label> <br>
-                        <input id="testValidVersion" type="text" name="testValidVersion" required><br>
+                        <input id="testLastVersionValidated" type="text" name="testLastVersionValidated" required><br>
 
                         <label>Issues:</label><br>
                         <ul id="listIssuesTest" class="list-inline">

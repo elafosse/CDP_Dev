@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 /* eslint-disable camelcase */
 var mysql = require('mysql')
 var bcrypt = require('bcrypt')
@@ -46,7 +47,7 @@ function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM project WHERE id = '.concat("'", id, "'")
     con.query(sql, function(err, result) {
-      if (err) result(err)
+      if (err) resolve(err)
       resolve('Project Deleted')
     })
   })
@@ -337,7 +338,6 @@ function _deleteMember(username) {
 // ================ Issues ================
 
 /*
- * 
 function f(name) {
     return new Promise(function (resolve, reject) {
 
@@ -804,7 +804,7 @@ function _updateTaskState(taskId, state) {
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
-      result(result.affectedRows)
+      resolve(result.affectedRows)
     })
   })
 }
@@ -1183,6 +1183,23 @@ function _getAllTestsFromProject(project_id) {
   })
 }
 
+function _updateTestState(testId, state) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE test SET state = '.concat(
+      "'",
+      state,
+      "'",
+      " WHERE id = '",
+      testId,
+      "'"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result.affectedRows)
+    })
+  })
+}
+
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1230,5 +1247,6 @@ module.exports = {
   _getTestById,
   _getIssuesIdsOfTest,
   _getIssuesOfTest,
-  _getAllTestsFromProject
+  _getAllTestsFromProject,
+  _updateTestState
 }

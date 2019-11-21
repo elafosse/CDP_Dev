@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 /* CONFIG */
 const express = require('express')
 const app = express()
@@ -28,7 +29,9 @@ app.set('views', path.join(__dirname, './..', '/views'))
 const LIST_TEST_ROUTE = '/listTests'
 const REMOVE_TEST_ROUTE = '/removeTest'
 const CREATE_TEST_ROUTE = '/createTest'
-const PUT_IN_DONE_ROUTE = '/putInDone'
+const SET_TEST_TO_FAILED = '/setTestToFailed'
+const SET_TEST_TO_PASSED = '/setTestToPassed'
+const SET_TEST_TO_TODO = '/setTestToTodo'
 
 const LIST_TEST_VIEW_PATH = '../views/listTests'
 
@@ -36,52 +39,6 @@ const DEFAULT_STATE = 'todo'
 
 let listIssuesTest = []
 let listIssues = []
-
-/* TESTS ZONE */
-/* const test = require('./classes/Test')
-const issue = require('./classes/Issue')
-const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
-const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
-const i3 = new issue.Issue('id3', 'i3', '1', 'id3', '1', '1')
-
-listIssues.push(i1)
-listIssues.push(i2)
-listIssues.push(i3)
-
-const t1 = new test.Test(
-  'id1',
-  'projectId',
-  't1',
-  'test 1',
-  're 1',
-  'v 0.0.1',
-  'todo',
-  []
-)
-const t2 = new test.Test(
-  'id2',
-  'projectId',
-  't2',
-  'test 2',
-  're 2',
-  'v 0.0.1',
-  'todo',
-  []
-)
-const t3 = new test.Test(
-  'id3',
-  'projectId',
-  't3',
-  'test 3',
-  're 3',
-  'v 0.0.1',
-  'failed',
-  listIssuesTest
-)
-let listTests = []
-listTests.push(t1)
-listTests.push(t2)
-listTests.push(t3) */
 
 let projectId
 let sess
@@ -134,7 +91,6 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
   const testDescription = req.body.testDescription
   const resultExpected = req.body.testResultExpected
   const lastVersionValidated = req.body.testLastVersionValidated
-  console.log('Test ' + testName + ' created')
 
   listIssuesTest = isChecked(req, listIssues)
 
@@ -152,6 +108,31 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
   })
 })
 
-app.post(PUT_IN_DONE_ROUTE, function(req, res) {})
+app.get(SET_TEST_TO_FAILED, function(req, res) {
+  const testId = req.query.testId
+  db._updateTestState(testId, 'failed').then(testId => {
+    db._setIssuesToTest(testId, listIssuesTest).then(result => {
+      res.redirect('back')
+    })
+  })
+})
+
+app.get(SET_TEST_TO_PASSED, function(req, res) {
+  const testId = req.query.testId
+  db._updateTestState(testId, 'passed').then(testId => {
+    db._setIssuesToTest(testId, listIssuesTest).then(result => {
+      res.redirect('back')
+    })
+  })
+})
+
+app.get(SET_TEST_TO_TODO, function(req, res) {
+  const testId = req.query.testId
+  db._updateTestState(testId, 'todo').then(testId => {
+    db._setIssuesToTest(testId, listIssuesTest).then(result => {
+      res.redirect('back')
+    })
+  })
+})
 
 module.exports.app = app
