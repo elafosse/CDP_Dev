@@ -11,13 +11,15 @@ describe('Index', function() {
     vars = {}
   }catch(err){
     done(err)
-  })
+  }
+})
   afterEach(async function() {
     try{
     await driver.quit();
   }catch(err){
     done(err)
-  })
+  }
+})
   it('Index', async function() {
     try{
     await driver.get("http://localhost:3000/")
@@ -30,5 +32,6 @@ describe('Index', function() {
     await driver.findElement(By.linkText("ScrumHelper")).click()
   }catch(err){
     done(err)
-  })
+  }
+})
 })
