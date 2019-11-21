@@ -38,7 +38,7 @@ let listIssuesTest = []
 let listIssues = []
 
 /* TESTS ZONE */
-/*const test = require('./classes/Test')
+/* const test = require('./classes/Test')
 const issue = require('./classes/Issue')
 const i1 = new issue.Issue('id1', 'i1', '1', 'id1', '1', '1')
 const i2 = new issue.Issue('id2', 'i2', '1', 'id2', '1', '1')
@@ -81,7 +81,7 @@ const t3 = new test.Test(
 let listTests = []
 listTests.push(t1)
 listTests.push(t2)
-listTests.push(t3)*/
+listTests.push(t3) */
 
 let projectId
 let sess

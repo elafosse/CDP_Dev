@@ -1,0 +1,46 @@
+<div class="card bg-light mb-3">
+    <h5 class="card-header" role="tab" id="heading<%= test.id%>">
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= test.id%>" aria-expanded="true"
+        aria-controls="collapse<%= test.id%>" class="d-block text-black">
+        <i class="fa fa-chevron-down pull-right"></i> <%= test.id + ": " + test.name %>
+      </a>
+    </h5>
+
+    <div id="collapse<%= test.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%= test.id%>">
+      <div class="card-body bg-light mb-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item bg-light mb-3">
+            <strong> Description:</strong>
+            <p><%= test.description %></p>
+          </li>
+          <li class="list-group-item bg-light mb-3">
+            <strong> Expected results:</strong>
+            <p><%= test.resultExpected %></p>
+          </li>
+          <li class="list-group-item bg-light mb-3">
+            <strong> Last version validated:</strong>
+            <p><%= test.lastVersionValidated %></p>
+          </li>
+          <li class="list-group-item bg-light mb-3">
+            <strong> Issues :</strong>
+            <h5>
+              <% test.listIssues.forEach(issue => { %>
+              <span class="badge badge-info"><%= issue.id + ": " + issue.name%></span>
+              <% }) %>
+            </h5>
+            <form action="/removeTest" method="post"
+              onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
+              <input type="text" name="testIdToRemove" class="form-control" id="testIdToRemove"
+                value="<%= test.id %>" hidden>
+              <button href="" class="btn btn-outline-danger float-right"
+                formaction="/removeTest">&#x274C;</button>
+            </form>
+            <button href="" class="btn btn-outline-success float-right"
+              formaction="/putInDone">&#10004;</button>
+            <a href="/modifyTest?projectId=<%= project.id%>&testId=<%= test.id %>"
+              class="btn btn-outline-warning float-right">&#9998;</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
