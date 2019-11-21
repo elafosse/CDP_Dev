@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script defer src="../backend/listTasks.js"></script>
-    <meta name="author" content="gr1_eq7" />
-    
-    <title>Liste des taches</title>
-  </head>
-  <!-- Template pour les tasks :
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script defer src="../backend/listTasks.js"></script>
+  <meta name="author" content="gr1_eq7" />
+
+  <title>Liste des taches</title>
+</head>
+<!-- Template pour les tasks :
             <div class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     Titre de la tâche
@@ -24,15 +21,15 @@
             <div>
 -->
 
-  <body>
-    <%- include partials/header.ejs %>
-    <div class="row">
-      <div class="row">
-        <% include ./projectSidebar %>
-        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
-          <br>
-          <h1>List of Tasks</h1>
-          <hr />
+<body>
+  <%- include partials/header.ejs %>
+
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+      <br>
+      <h1>List of Tests</h1>
+      <hr>
       <div class="col-9">
         <div class="row">
           <div class="list-group d-inline-flex w-25 m-2" id="tasks_todo">
@@ -55,12 +52,9 @@
           </div>
         </div>
       </div>
-      <a
-          class="btn btn-primary"
-          href="./newTask?projectId=<%=projectId %>&action=create"
-          role="button"
-          >Ajouter tache</a
-        >
+      <a class="btn btn-primary" href="./newTask?projectId=<%=projectId %>&action=create" role="button">Ajouter
+        tache</a>
     </div>
-  </body>
+</body>
+
 </html>
