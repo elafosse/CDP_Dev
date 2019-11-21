@@ -8,9 +8,11 @@ describe('Index', function() {
   beforeEach(async function() {
     driver = await new Builder().forBrowser('firefox').build()
     vars = {}
+    done();
   })
   afterEach(async function() {
     await driver.quit();
+    done();
   })
   it('Index', async function() {
     await driver.get("http://localhost:3000/")
@@ -21,5 +23,6 @@ describe('Index', function() {
     await driver.findElement(By.id("password")).sendKeys("h")
     await driver.findElement(By.id("password")).sendKeys(Key.ENTER)
     await driver.findElement(By.linkText("ScrumHelper")).click()
+    done();
   })
 })
