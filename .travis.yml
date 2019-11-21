@@ -15,6 +15,10 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start || echo \"Unable to start virtual display.\""
   - sleep 3 # give xvfb some time to start
+cache:
+  directories:
+    - node_modules
+    - ~/.selenium-assistant
 script:
   - npm run test
 
