@@ -1,4 +1,4 @@
 language: node_js
 
 script:
-- "node cdp-gr1-eq7/testsSeleniumSprint2/*.java"
+- "node cdp-gr1-eq7/testsSeleniumSprint2/*.js"
