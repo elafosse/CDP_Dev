@@ -755,17 +755,31 @@ function _getMembersAssignedToTask(taskId) {
 
 function _getTaskDependencies(taskId) {
   return new Promise(function(resolve, reject) {
-    const sql = "SELECT depend_on_task_id FROM task_dependencies WHERE task_id = '".concat(
+    const sql = "SELECT * FROM task WHERE id IN (SELECT depend_on_task_id FROM task_dependencies WHERE task_id ='".concat(
       taskId,
-      "'"
+      "')"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
-      const id_list = []
+      const deps = []
       for (let i = 0; i < result.length; i++) {
-        id_list.push(result[i].depend_on_task_id)
+        deps.push(
+          new Task.Task(
+            result[i].id,
+            result[i].project_id,
+            result[i].name,
+            result[i].description,
+            result[i].state,
+            result[i].start_date,
+            result[i].realisation_time,
+            result[i].description_of_done,
+            [],
+            [],
+            []
+          )
+        )
       }
-      resolve(id_list)
+      resolve(deps)
     })
   })
 }

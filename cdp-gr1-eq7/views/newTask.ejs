@@ -149,7 +149,7 @@
           <option value="<%= taskDep.taskId %>"
               <% if(action === 'modify' && task.dependancies && task.dependancies.length){
                 task.dependancies.forEach(element => {
-                  if(element === taskDep.taskId) { %> selected <% }
+                  if(element.taskId === taskDep.taskId) { %> selected <% }
                 }); 
               }%> ><%= taskDep.name %></option>
           <% }); %>
