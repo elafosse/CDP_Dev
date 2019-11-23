@@ -62,9 +62,4 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   })
 })
 
-// Usefull ???
-/* app.get(LIST_ISSUES_ROUTE, function (req, res) {
-    res.redirect(MODIFY_ISSUE_REDIRECT_URL + projectId)
-}) */
-
 module.exports.app = app

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <script defer src="../backend/listReleases.js"></script>
+  <meta name="author" content="gr1_eq7" />
+  <title><%=project.name + " | releases"%></title>
+</head>
+
+<body>
+  <%- include partials/header.ejs %>
+
+  <div class="row">
+    <% include ./projectSidebar %>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+      <div class="row justify-content-between">
+        <div class="col-md-auto align-self-start">
+          <h1>List of Releases</h1>
+        </div>
+        <div class="col-md-auto align-self-end">
+          <a type="button" href="/setGitHub?userName=<%= session.username%>" class="btn btn-primary btn-lg">
+            Set GitHub</a>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+          <h2>Releases</h2>
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <% listReleases.forEach(release => { %>
+            <% if (release.prerelease === Boolean(false)) { %>
+            <%- include partials/releaseList.ejs %>
+            <% } %>
+            <% }) %>
+          </div>
+        </div>
+        <!-------------------------------------------------------------------------------------------------->
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <h2>Pre-releases</h2>
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <% listReleases.forEach(release => { %>
+            <% if (release.prerelease) { %>
+            <%- include partials/releaseList.ejs %>
+            <% } %>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

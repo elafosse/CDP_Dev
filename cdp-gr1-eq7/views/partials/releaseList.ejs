@@ -1,0 +1,62 @@
+<div class="card <% if(release.prerelease) { %> border-secondary<% }
+  else { %> border-success <% } %> mb-3">
+  <h5 class="card-header <% if(release.prerelease) { %> bg-secondary<% }
+    else { %> bg-success <% } %>" role="tab" id="heading<%= release.id%>">
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= release.id%>" aria-expanded="true"
+      aria-controls="collapse<%= release.id%>" class="d-block text-white">
+      <i class="fa fa-chevron-down pull-right"></i> <%=release.name %> <%=release.tag_name %>
+    </a>
+  </h5>
+
+  <div id="collapse<%= release.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%= release.id%>">
+    <div class="card-body">
+      <ul class="list-group text-black list-group-flush">
+        <li class="list-group-item">
+          <strong> Description:</strong>
+          <p><%= release.body %></p>
+        </li>
+        <li class="list-group-item"><strong> Sprint :</strong>
+          <!--SPRINT + afficher la liste des issues du sprint-->
+        </li>
+        <li class="list-group-item">
+          <strong> Created :</strong>
+          <p><%= release.created_at %></p>
+        </li>
+        <li class="list-group-item"><strong> Assets :</strong>
+          <ul class="list-inline text-black">
+            <% release.assets.forEach(asset => { %>
+            <li class="list-inline-item"><a href="<%=asset.browser_download_url %>"><%= asset.name%></a></li>
+            <% }) %>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          <div class="row justify-content-between">
+            <div class="col-md-auto align-self-start">
+              <a href="" target="_blank">Documentation</a>
+            </div>
+            <div class="col-md-auto align-self-end">
+              <a href="<%= release.html_url%>" target="_blank"> See on GitHub</a>
+            </div>
+          </div>
+          <br>
+          <form action="/removeRelease" method="post"
+            onsubmit="return confirm('Voulez-vous vraiment supprimer cette release ?')">
+            <input type="text" name="releaseIdToRemove" class="form-control" id="releaseIdToRemove"
+              value="<%= release.id %>" hidden>
+            <button href="" class="btn btn-outline-danger float-right" formaction="/removeRelease">&#x274C;</button>
+          </form>
+          <a href="/modifyRelease?projectId=<%= project.id %>&releaseId=<%= release.id %>"
+            class="btn btn-outline-warning float-right">&#9998;</a>
+          <% if(release.prerelease) { %>
+          <a href="/setReleaseToRelease?&releaseId=<%= release.id %>" class="btn btn-outline-success float-right">Move
+            as release</a>
+          <% } else {%>
+          <a href="/setReleaseToPrerelease?&releaseId=<%= release.id %>"
+            class="btn btn-outline-secondary float-right">Move
+            as prerelease</a>
+          <% } %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

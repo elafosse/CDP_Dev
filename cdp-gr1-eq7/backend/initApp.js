@@ -14,6 +14,7 @@ const listIssues = require('./listIssues')
 const listTasks = require('./listTasks')
 const listTests = require('./listTests')
 const listSprints = require('./listSprints')
+const listReleases = require('./listReleases')
 const index = require('./index')
 
 /* USE THE REQUIRES */
@@ -41,6 +42,7 @@ app.use(listIssues.app)
 app.use(listTasks.app)
 
 /* Releases */
+app.use(listReleases.app)
 
 /* Documentation */
 
