@@ -3,7 +3,7 @@
 **Liste des tâches assignées au sprint 3 :**
 
 | Id  | Description | Definition of Done | Etat | Durée | Issues | Dépendances| Développeur |
-|:---:|---|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|---|:---:|:---:|:---:|:---:|:---:|
 
 | T40 | CRUD des releases dans la db | | A faire | 1 | I12, I13 | X | Estelle |
 | T41 | Backend des releases | | A faire | 1 | I12, I13 | X | Estelle |
