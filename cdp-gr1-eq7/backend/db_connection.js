@@ -21,12 +21,16 @@ var con = mysql.createConnection({
 
 // ================ Projects ================
 
-function _createProject(name, description) {
+function _createProject(name, description, userGitHub, repositoryGitHub) {
   return new Promise(function(resolve, reject) {
-    const sql = 'INSERT INTO project (name, description) VALUES ('.concat(
+    const sql = 'INSERT INTO project (name, description, userGitHub, repositoryGitHub) VALUES ('.concat(
       con.escape(name),
       ',',
       con.escape(description),
+      ',',
+      con.escape(userGitHub),
+      ',',
+      con.escape(repositoryGitHub),
       ')'
     )
     con.query(sql, function(err, result) {
@@ -35,6 +39,37 @@ function _createProject(name, description) {
         return
       }
       resolve(result.insertId)
+    })
+  })
+}
+
+function _modifyProject(
+  projectId,
+  name,
+  description,
+  userGitHub,
+  repositoryGitHub
+) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE project SET'.concat(
+      ' name = ',
+      con.escape(name),
+      ',',
+      ' description = ',
+      con.escape(description),
+      ',',
+      ' userGitHub = ',
+      con.escape(userGitHub),
+      ',',
+      ' repositoryGitHub = ',
+      con.escape(repositoryGitHub),
+      ' WHERE id = ',
+      con.escape(projectId),
+      ';\n'
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result.affectedRows)
     })
   })
 }
@@ -193,7 +228,9 @@ function _getProjectFromProjectId(project_id) {
                   result[0].name,
                   result[0].description,
                   members,
-                  admins
+                  admins,
+                  result[0].userGitHub,
+                  result[0].repositoryGitHub
                 )
                 resolve(project)
               })
@@ -1123,6 +1160,7 @@ module.exports = {
   _getTaskIdsAssignedToMember,
   _areUsernameAndPasswordCorrect,
   _createProject,
+  _modifyProject,
   _deleteProject,
   _inviteMembersToProject,
   _deleteMembersFromProject,

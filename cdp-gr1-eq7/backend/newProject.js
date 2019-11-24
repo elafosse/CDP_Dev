@@ -39,6 +39,8 @@ const PROJECT_OVERVIEW_ROUTE = '../overviewProject'
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
+const DEFAULT_GITHUB = ''
+
 /* TESTS ZONE */
 
 /* FUNCTIONS */
@@ -101,7 +103,12 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res) {
   listMembers.push(sess.username)
   areAdmins.push(1)
 
-  db._createProject(projectName, projectDescription).then(projectId => {
+  db._createProject(
+    projectName,
+    projectDescription,
+    DEFAULT_GITHUB,
+    DEFAULT_GITHUB
+  ).then(projectId => {
     db._inviteMembersToProject(projectId, listMembers, areAdmins)
 
     db._getProjectFromProjectId(projectId).then(newProject => {

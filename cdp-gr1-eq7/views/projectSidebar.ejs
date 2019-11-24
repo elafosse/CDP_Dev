@@ -1,11 +1,13 @@
-<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css"/>
+<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css" />
 
 <div class="d-flex" id="wrapper">
-  
+
   <!-- Sidebar -->
-  <div class="bg-light border-right col-12" id="sidebar-wrapper">
-    <div class="sidebar-heading col-12"><h1><%= project.name %></h1></div>
-    <div class="list-group list-group-flush col-12">
+  <div class="bg-light border-right col-auto" id="sidebar-wrapper">
+    <div class="sidebar-heading col-auto">
+      <h1><%= project.name %></h1>
+    </div>
+    <div class="list-group list-group-flush col-auto">
       <a class="nav-link sidebar-item btn-dark" href="/listIssues?projectId=<%= project.id %>">Issues</a>
       <a class="nav-link sidebar-item btn-light" href="/listTasks?projectId=<%= project.id %>">Tasks</a>
       <a class="nav-link sidebar-item btn-dark" href="/listSprints?projectId=<%= project.id %>">Sprints</a>
@@ -15,5 +17,3 @@
     </div>
   </div>
 </div>
-
-

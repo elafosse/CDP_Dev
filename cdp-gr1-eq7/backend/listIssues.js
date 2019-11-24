@@ -11,7 +11,7 @@ const modifyIssue = require('./modifyIssue')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(express.static('../public'))
 app.use(
   session({
     secret: 'shhhhhhared-secret',

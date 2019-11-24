@@ -48,8 +48,6 @@
                       <p>
                         <%= issue.description %>
                       </p>
-                    </li>
-                    <li class="list-group-item">
                       <form action="/removeIssue?projectId=<% project.id%>" method="post"
                         onsubmit="return confirm('Voulez-vous vraiment supprimer cette issue ?')">
                         <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>"
@@ -85,15 +83,15 @@
                   <label class="col-form-label" for="issueName">Name :</label>
                   <input class="form-control" id="issueName" type="text" name="issueName" placeholder="Name" required>
                   <label class="col-form-label" for="issuePriority">Priority :</label>
-                  <span class="badge badge-dark right"><select class="form-control" id="issuePriority" list="priorities"
-                      type="text" name="issuePriority" placeholder="Priority" required>
-                      <option>LOW</option>
-                      <option>MEDIUM</option>
-                      <option>HIGH</option>
-                    </select></span>
+                  <select class="form-control" id="issuePriority" list="priorities" type="text" name="issuePriority"
+                    placeholder="Priority" required>
+                    <option>LOW</option>
+                    <option>MEDIUM</option>
+                    <option>HIGH</option>
+                  </select>
                   <label class="col-form-label" for="issueDifficulty">Difficulty :</label>
-                  <span class="badge badge-secondary right"><input class="form-control" id="issueDifficulty"
-                      type="number" min="0" name="issueDifficulty" placeholder="Difficulty" required /></span>
+                  <input class="form-control" id="issueDifficulty" type="number" min="0" name="issueDifficulty"
+                    placeholder="Difficulty" required />
                 </div>
               </h5>
 

@@ -18,18 +18,11 @@
   <div class="row">
     <% include ./projectSidebar %>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
-      <div class="row justify-content-between">
-        <div class="col-md-auto align-self-start">
-          <h1>List of Releases</h1>
-        </div>
-        <div class="col-md-auto align-self-end">
-          <a type="button" href="/setGitHub?userName=<%= session.username%>" class="btn btn-primary btn-lg">
-            Set GitHub</a>
-        </div>
-      </div>
+      <br>
+      <h1>List of Releases</h1>
       <hr>
       <div class="row">
-        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <h2>Releases</h2>
           <div id="accordion" role="tablist" aria-multiselectable="true">
             <% listReleases.forEach(release => { %>
@@ -49,6 +42,44 @@
             <% } %>
             <% }) %>
           </div>
+        </div>
+
+        <!-------------------------------------------------------------------------------------------------->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseSetGitHub" role="button"
+              aria-expanded="false" aria-controls="collapseSetGitHub">
+              Set GitHub
+            </a>
+          </p>
+          <form action="/setGitHub" method="post">
+            <div class="collapse" id="collapseSetGitHub">
+              <div id="setGitHub" class="card form-group">
+                <h5 class="card-header" id="headingAddIssue">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                  Set GitHub link for releases
+                </h5>
+
+                <div id="collapseSetGitHub" class="collapse show" role="tabpanel" aria-labelledby="headingSetGitHub">
+                  <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        <label class="col-form-label" for="userGitHub">User:</label>
+                        <input class="form-control" id="userGitHub" type="text" name="userGitHub" placeholder="User"
+                          required>
+                        <label class="col-form-label" for="repositoryGitHub">Repository name:</label>
+                        <input class="form-control" id="repositoryGitHub" type="text" name="repositoryGitHub"
+                          placeholder="Repository name" required>
+                      </li>
+                      <li class="list-group-item">
+                        <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

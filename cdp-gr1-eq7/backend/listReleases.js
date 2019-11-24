@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 /* CONFIG */
 const express = require('express')
 const app = express()
@@ -27,21 +26,25 @@ app.use(
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
+const SET_GITHUB_ROUTE = '/setGitHub'
+
 const LIST_RELEASE_ROUTE = '/listReleases'
 const REMOVE_RELEASE_ROUTE = '/removeRelease'
 const CREATE_RELEASE_ROUTE = '/createRelease'
 
 const LIST_RELEASE_VIEW_PATH = '../views/listReleases'
 
-const DEFAULT_STATE = 'todo'
+const DEFAULT_STATE = Boolean(true)
 
-let repo
 const git = new GitHub()
+let repo = git.getRepo('', '')
 let listReleases = []
 let listSprintsRelease = []
 let listSprints = []
 
 let projectId
+let userGitHub
+let repositoryGitHub
 let sess
 
 /* FUNCTIONS */
@@ -56,30 +59,45 @@ function isChecked(req, listSprints) {
   return result
 }
 
-function linkReleaseToSprint(req, releaseId, sprintId) {}
-
 app.get(LIST_RELEASE_ROUTE, function(req, res) {
   projectId = req.query.projectId
   sess = req.session
-
-  // faire un truc dans la db pour récupérer le user et le nom du repo
 
   listReleases = []
   listSprintsRelease = []
   listSprints = []
 
-  repo = git.getRepo('elafosse', 'CDP_Tests')
+  userGitHub = ''
+  repositoryGitHub = ''
 
-  repo.listReleases(null).then(list => {
-    listReleases = list.data
+  db._getProjectFromProjectId(projectId).then(project => {
+    repo = git.getRepo(project.userGitHub, project.repositoryGitHub)
 
-    res.render(LIST_RELEASE_VIEW_PATH, {
-      session: sess,
-      listReleases: listReleases,
-      project: sess.project,
-      listProjects: sess.listProjects,
-      listSprintsRelease: listSprints
-    })
+    userGitHub = project.userGitHub
+    repositoryGitHub = project.repositoryGitHub
+
+    repo
+      .listReleases(null)
+      .then(list => {
+        listReleases = list.data
+
+        res.render(LIST_RELEASE_VIEW_PATH, {
+          session: sess,
+          listReleases: listReleases,
+          project: sess.project,
+          listProjects: sess.listProjects,
+          listSprintsRelease: listSprints
+        })
+      })
+      .catch(list => {
+        res.render(LIST_RELEASE_VIEW_PATH, {
+          session: sess,
+          listReleases: listReleases,
+          project: sess.project,
+          listProjects: sess.listProjects,
+          listSprintsRelease: listSprints
+        })
+      })
   })
 })
 
@@ -109,6 +127,21 @@ app.post(CREATE_RELEASE_ROUTE, function(req, res) {
     db._setSprintsToRelease(releaseId, listSprintsRelease).then(result => {
       res.redirect('back')
     })
+  })
+})
+
+app.post(SET_GITHUB_ROUTE, function(req, res) {
+  userGitHub = req.body.userGitHub
+  repositoryGitHub = req.body.repositoryGitHub
+
+  db._modifyProject(
+    projectId,
+    sess.project.name,
+    sess.project.description,
+    userGitHub,
+    repositoryGitHub
+  ).then(project => {
+    res.redirect('back')
   })
 })
 
