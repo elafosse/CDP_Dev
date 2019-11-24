@@ -7,6 +7,7 @@ const Project = require('./classes/Project')
 const Issue = require('./classes/Issue')
 const Task = require('./classes/Task')
 const Test = require('./classes/Test')
+const Sprint = require('./classes/Sprint')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
 var con = mysql.createConnection({
@@ -1011,7 +1012,6 @@ function _setIssuesToTest(test_id, issueId_list) {
       )
     }
     con.query(sql, function(err, result) {
-      console.log('New issueId_list added')
       if (err) reject(err)
       resolve('Issues linked to test')
     })
@@ -1153,6 +1153,204 @@ function _updateTestState(testId, state) {
   })
 }
 
+// ================ Sprints ================
+
+/*
+_addSprint(3, 'Un objectif fort en couleur 2 !', '2019-06-10', '2019-06-20', [
+  125,
+  122
+])
+
+_getAllSprintFromProject(3).then(
+  valeur => {
+    console.log(valeur)
+  },
+  raison => {
+    console.log(raison)
+  }
+)
+
+*/
+
+function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'INSERT INTO sprint (project_id, objective, date_begin, date_end) VALUES ('.concat(
+      con.escape(project_id),
+      ',',
+      con.escape(objective),
+      ',',
+      con.escape(date_begin),
+      ',',
+      con.escape(date_end),
+      ')'
+    )
+    con.query(sql, function(err, result) {
+      if (err) {
+        reject(err)
+        return
+      }
+      _setIssuesToSprint(result.insertId, issue_list).then(value => {
+        resolve(result.insertId)
+      })
+    })
+  })
+}
+
+function _modifySprint(sprint_id, objective, date_begin, date_end, issue_list) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE sprint SET'.concat(
+      ' objective = ',
+      con.escape(objective),
+      ',',
+      ' date_begin = ',
+      con.escape(date_begin),
+      ',',
+      ' date_end = ',
+      con.escape(date_end),
+      ' WHERE id = ',
+      con.escape(sprint_id),
+      ';\n'
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      _setIssuesToSprint(sprint_id, issue_list).then(value =>
+        resolve(result.affectedRows)
+      )
+    })
+  })
+}
+
+function _setIssuesToSprint(sprint_id, issueId_list) {
+  return new Promise(function(resolve, reject) {
+    let i = 0
+    var sql = 'DELETE FROM issue_of_sprint WHERE sprint_id = '.concat(
+      con.escape(sprint_id),
+      ';\n'
+    )
+    for (i = 0; i < issueId_list.length; i++) {
+      sql = sql.concat(
+        'INSERT INTO issue_of_sprint (sprint_id, issue_id) VALUES (',
+        con.escape(sprint_id),
+        ',',
+        con.escape(issueId_list[i]),
+        ');\n'
+      )
+    }
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve('Issues linked to test')
+    })
+  })
+}
+
+function _deleteSprint(id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'DELETE FROM sprint WHERE id = '.concat(con.escape(id))
+    con.query(sql, function(err, result) {
+      if (err) resolve(err)
+      resolve('Project Deleted')
+    })
+  })
+}
+
+function _getAllSprintFromProject(project_id) {
+  return new Promise(function(resolve, reject) {
+    _getAllSprintIdsOfProject(project_id).then(
+      id_list => {
+        const promise_list = []
+        for (let i = 0; i < id_list.length; i++) {
+          const promise = _getSprintById(id_list[i])
+          promise_list.push(promise)
+        }
+        Promise.all(promise_list).then(function(sprint_list) {
+          resolve(sprint_list)
+        })
+      },
+      raison => {
+        console.log(raison)
+      }
+    )
+  })
+}
+
+function _getAllSprintIdsOfProject(project_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'SELECT id FROM sprint WHERE project_id = '.concat(
+      con.escape(project_id)
+    )
+    con.query(sql, function(err, result) {
+      if (err) {
+        reject(err)
+        return
+      }
+      const id_list = []
+      for (let i = 0; i < result.length; i++) {
+        id_list.push(result[i].id)
+      }
+      resolve(id_list)
+    })
+  })
+}
+
+function _getSprintById(sprint_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'SELECT * FROM sprint WHERE id = '.concat(con.escape(sprint_id))
+    con.query(sql, function(err, result) {
+      if (err) {
+        reject(err)
+        return
+      }
+      _getIssuesOfSprint(sprint_id).then(issue_list => {
+        const sprint = new Sprint.Sprint(
+          result[0].id,
+          result[0].project_id,
+          result[0].objective,
+          result[0].date_begin,
+          result[0].date_end,
+          issue_list
+        )
+        resolve(sprint)
+      })
+    })
+  })
+}
+
+function _getIssuesIdsOfSprint(sprint_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'SELECT issue_id FROM issue_of_sprint WHERE sprint_id = '.concat(
+      con.escape(sprint_id)
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      const id_list = []
+      for (let i = 0; i < result.length; i++) {
+        id_list.push(result[i].issue_id)
+      }
+      resolve(id_list)
+    })
+  })
+}
+
+function _getIssuesOfSprint(sprint_id) {
+  return new Promise(function(resolve, reject) {
+    _getIssuesIdsOfSprint(sprint_id).then(
+      id_list => {
+        const promise_list = []
+        for (let i = 0; i < id_list.length; i++) {
+          const promise = _getIssueById(id_list[i])
+          promise_list.push(promise)
+        }
+        Promise.all(promise_list).then(function(task_list) {
+          resolve(task_list)
+        })
+      },
+      raison => {
+        console.log(raison)
+      }
+    )
+  })
+}
+
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1202,5 +1400,9 @@ module.exports = {
   _getIssuesIdsOfTest,
   _getIssuesOfTest,
   _getAllTestsFromProject,
-  _updateTestState
+  _updateTestState,
+  _addSprint,
+  _getAllSprintFromProject,
+  _deleteSprint,
+  _modifySprint
 }
