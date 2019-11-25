@@ -15,7 +15,6 @@ describe('addTest', function() {
   })
   it('addTest', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 725)
     await driver.findElement(By.id("dropdownMenuButton")).click()
     await driver.findElement(By.linkText("Bonjour")).click()
     await driver.findElement(By.linkText("Tests")).click()

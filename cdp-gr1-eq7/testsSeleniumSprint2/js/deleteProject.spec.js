@@ -15,7 +15,6 @@ describe('deleteProject', function() {
   })
   it('deleteProject', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 722)
     await driver.findElement(By.linkText("Manage Projects")).click()
     await driver.findElement(By.linkText("New Project")).click()
     await driver.findElement(By.id("projectName")).click()

@@ -15,7 +15,6 @@ describe('modifyTaskFailedAfter;', function() {
   })
   it('modifyTaskFailedAfter;', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 726)
     await driver.findElement(By.id("dropdownMenuButton")).click()
     await driver.findElement(By.linkText("Bonjour")).click()
     await driver.findElement(By.linkText("Tasks")).click()

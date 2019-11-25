@@ -15,7 +15,6 @@ describe('listTests', function() {
   })
   it('listTests', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 725)
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("coucou")
     await driver.findElement(By.id("password")).sendKeys("h")

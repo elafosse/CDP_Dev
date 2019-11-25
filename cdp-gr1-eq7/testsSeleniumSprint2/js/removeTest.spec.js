@@ -15,7 +15,6 @@ describe('removeTest', function() {
   })
   it('removeTest', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 725)
     await driver.findElement(By.css(".btn-outline-success")).click()
     await driver.findElement(By.id("dropdownMenuButton")).click()
     await driver.findElement(By.linkText("Bonjour")).click()

@@ -15,7 +15,6 @@ describe('Index', function() {
   })
   it('Index', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 722)
     await driver.findElement(By.linkText("ScrumHelper")).click()
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("coucou")
