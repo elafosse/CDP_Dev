@@ -30,7 +30,6 @@ app.get(MODIFY_ISSUE_ROUTE, function(req, res){
   projectId = req.query.projectId
   issueId = req.query.issueId
   sess = req.session
-  
   db._getProjectFromProjectId(projectId).then(currentProject =>{
     db._getIssueById(issueId).then(issue =>{
       res.render(MODIFY_ISSUE_VIEW_PATH, {

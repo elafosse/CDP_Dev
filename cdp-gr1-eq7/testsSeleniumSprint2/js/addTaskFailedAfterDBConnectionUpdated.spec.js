@@ -8,7 +8,6 @@ describe('addTaskFailedAfterDBConnectionUpdated', function() {
   let vars
   beforeEach(async function() {
     driver = await new Builder().forBrowser('firefox').build()
-    vars = {}
   })
   afterEach(async function() {
     await driver.quit();

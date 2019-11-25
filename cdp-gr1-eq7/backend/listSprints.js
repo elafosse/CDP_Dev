@@ -48,7 +48,6 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
   listSprints = []
   projectId = req.query.projectId
   sess = req.session
-  
   db._getProjectFromProjectId(projectId).then(result =>{
     currentProject = result
     /*db._getAllProjectSprints(result.id).then(Sprints => {
@@ -69,7 +68,6 @@ app.post(REMOVE_SPRINT_ROUTE, function(req, res) {
   const sprintId = req.body.sprintId;
   removeSprint (sprintId, listSprints)
   //db._deleteSprint(sprintId)
-  
   res.render(LIST_SPRINTS_VIEW_PATH, {
     session: sess,
     listSprints: listSprints,

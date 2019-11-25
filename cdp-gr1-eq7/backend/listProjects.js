@@ -61,7 +61,6 @@ app.get (LIST_PROJECTS_ROUTE, function (req, res){
             listProjects: listProjects,
         })
     })
-  
 })
 // require newProject here causes an error if newProject requireq listProjects too
 /*app.get (NEW_PROJECT_ROUTE, function (req, res){
@@ -76,9 +75,7 @@ app.post (REMOVE_PROJECT_ROUTE, function (req, res){
     session: sess,
     listProjects: listProjects,
   })
-  
   db._deleteProject(projectId)
 })
-
 
 module.exports.app = app
