@@ -15,7 +15,7 @@ describe('indexWithoutSession', function() {
   })
   it('indexWithoutSession', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 727)
+    // await driver.setRect(1251, 727)
     await driver.findElement(By.css(".jumbotron")).click()
   })
 })
