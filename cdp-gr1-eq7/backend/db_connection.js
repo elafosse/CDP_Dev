@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 /* eslint-disable camelcase */
 var mysql = require('mysql')
 var bcrypt = require('bcrypt')
@@ -956,7 +955,6 @@ function _addTest(
       '',
       ')'
     )
-    console.log(sql)
     con.query(sql, function(err, result) {
       if (err) {
         console.log('New test added')
@@ -1196,7 +1194,7 @@ function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
   })
 }
 
-function _modifySprint(sprint_id, objective, date_begin, date_end, issue_list) {
+function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE sprint SET'.concat(
       ' objective = ',
@@ -1212,7 +1210,10 @@ function _modifySprint(sprint_id, objective, date_begin, date_end, issue_list) {
       ';\n'
     )
     con.query(sql, function(err, result) {
-      if (err) reject(err)
+      if (err) {
+        reject(err)
+        return
+      }
       _setIssuesToSprint(sprint_id, issue_list).then(value =>
         resolve(result.affectedRows)
       )
@@ -1236,6 +1237,7 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
         ');\n'
       )
     }
+
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issues linked to test')
@@ -1276,7 +1278,8 @@ function _getAllSprintFromProject(project_id) {
 function _getAllSprintIdsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM sprint WHERE project_id = '.concat(
-      con.escape(project_id)
+      con.escape(project_id),
+      'ORDER BY date_begin'
     )
     con.query(sql, function(err, result) {
       if (err) {
@@ -1404,5 +1407,7 @@ module.exports = {
   _addSprint,
   _getAllSprintFromProject,
   _deleteSprint,
-  _modifySprint
+  _updateSprint,
+  _getSprintById,
+  _getIssuesIdsOfSprint
 }

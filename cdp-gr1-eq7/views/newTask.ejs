@@ -50,9 +50,9 @@
           <label for="startDate">Start date</label>
           <input class="form-control" type="date" id="startDate" name="startDate" <% if (action === 'modify') {
             let year = task.start_date.getFullYear()
-            let month = task.start_date.getMonth()
+            let month = task.start_date.getMonth() + 1
             let day = task.start_date.getDate()
-            %> value="<%= year %>-<%= month%>-<%= day%>" <% } %> required />
+            %> value="<%= year %>-<% if(month < 10){%>0<%}%><%= month%>-<% if(day < 10){%>0<%}%><%= day%>" <% } %> required />
         </div>
         <div class="form-group">
           <label for="taskDuration">Task duration</label>
