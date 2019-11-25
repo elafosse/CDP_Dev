@@ -39,16 +39,15 @@
       </div>
       <div class="modal-body">
         <p><%= task.description %></p>
-        <p>Temps de réalisation : <%= task.realisation_time %></p>
-        <p>Définition of done : <%= task.dod %></p>
-        <!-- TODO : Formatter la date pour que ce soit plus lisible -->
+        <p>Estimated time : <%= task.realisation_time %></p>
+        <p>Definition of done : <%= task.dod %></p>
         <% 
         let year = task.start_date.getFullYear()
         let month = task.start_date.getMonth()
         let day = task.start_date.getDate()
         %>
-        <p>Date de début : <%= day %>/<%=month%>/<%=year%></p>
-        <p>Membres assignés : 
+        <p>Start date  : <%= day %>/<%=month%>/<%=year%></p>
+        <p>Assigned members : 
         <% if(task.members){
           switch (task.members.length) {
             case 0:
@@ -68,7 +67,7 @@
           }
         }%>
         </p>
-        <p>Issues associées : 
+        <p>Related issues : 
         <% if(task.issues){
           switch (task.issues.length) {
             case 0:
@@ -88,7 +87,7 @@
           }
         }%>
         </p>
-        <p>Taches pré-requises : 
+        <p>Required tasks : 
         <% if(task.dependancies){
           switch (task.dependancies.length) {
             case 0:
@@ -128,10 +127,10 @@
             class="btn btn-secondary"
             formaction="/removetask?projectId=<%= projectId%>&taskId=<%= task.taskId %>"
           >
-            Supprimer
+            Remove
           </button>
         </form>
-        <a class="btn btn-primary" href="/modifyTask?projectId=<%= projectId %>&taskId=<%= task.taskId %>&action=modify" role="button">Modifier</a>
+        <a class="btn btn-primary" href="/modifyTask?projectId=<%= projectId %>&taskId=<%= task.taskId %>&action=modify" role="button">Modify</a>
             
       </div>
     </div>
