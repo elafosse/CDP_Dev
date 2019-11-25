@@ -22,7 +22,7 @@
       <h1>List of Releases</h1>
       <hr>
       <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
           <h2>Releases</h2>
           <div id="accordion" role="tablist" aria-multiselectable="true">
             <% listReleases.forEach(release => { %>
@@ -33,19 +33,49 @@
           </div>
         </div>
         <!-------------------------------------------------------------------------------------------------->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <h2>Pre-releases</h2>
-          <div id="accordion" role="tablist" aria-multiselectable="true">
-            <% listReleases.forEach(release => { %>
-            <% if (release.prerelease) { %>
-            <%- include partials/releaseList.ejs %>
-            <% } %>
-            <% }) %>
-          </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+          <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseAddRelease" role="button"
+              aria-expanded="false" aria-controls="collapseAddRelease">
+              Add Release
+            </a>
+          </p>
+          <form action="/addRelease" method="post">
+            <div class="collapse" id="collapseAddRelease">
+              <div id="addRelease" class="card form-group">
+                <h5 class="card-header" id="headingAddRelease">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                  <!--Voir listTests.ejs-->
+                  Set GitHub link for releases
+                </h5>
+
+                <div id="collapseAddRelease" class="collapse show" role="tabpanel" aria-labelledby="headingAddRelease">
+                  <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        <label class="col-form-label" for="userGitHub">User:</label>
+                        <input class="form-control" id="userGitHub" type="text" name="userGitHub" placeholder="User"
+                          required>
+                        <label class="col-form-label" for="repositoryGitHub">Repository name:</label>
+                        <input class="form-control" id="repositoryGitHub" type="text" name="repositoryGitHub"
+                          placeholder="Repository name" required>
+                      </li>
+                      <li class="list-group-item">
+                        <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
 
-        <!-------------------------------------------------------------------------------------------------->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+          <a class="btn btn-primary" href="/gitHubLogin?projectId=<%= project.id %>">Manage releases</a>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
           <p>
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseSetGitHub" role="button"
               aria-expanded="false" aria-controls="collapseSetGitHub">
@@ -55,7 +85,7 @@
           <form action="/setGitHub" method="post">
             <div class="collapse" id="collapseSetGitHub">
               <div id="setGitHub" class="card form-group">
-                <h5 class="card-header" id="headingAddIssue">
+                <h5 class="card-header" id="headingSetGitHub">
                   <i class="fa fa-chevron-down pull-right"></i>
                   Set GitHub link for releases
                 </h5>
