@@ -8,12 +8,13 @@ const bodyParser = require('body-parser')
 const db = require('./db_connection')
 const session = require('express-session')
 const GitHub = require('github-api')
+const githublogin = require('./gitHubLogin')
 
 //const modifyRelease = require('./modifyRelease')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(express.static('../public'))
 app.use(
   session({
     secret: 'shhhhhhared-secret',
@@ -21,6 +22,7 @@ app.use(
     resave: true
   })
 )
+app.use(githublogin.app)
 //app.use(modifyRelease.app)
 
 app.set('view engine', 'ejs')
@@ -36,13 +38,14 @@ const LIST_RELEASE_VIEW_PATH = '../views/listReleases'
 
 const DEFAULT_STATE = Boolean(true)
 
-const git = new GitHub()
-let repo = git.getRepo('', '')
+let git = new GitHub('', '')
+let repo
 let listReleases = []
 let listSprintsRelease = []
 let listSprints = []
 
 let projectId
+let project
 let userGitHub
 let repositoryGitHub
 let sess
@@ -70,9 +73,19 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
   userGitHub = ''
   repositoryGitHub = ''
 
-  db._getProjectFromProjectId(projectId).then(project => {
-    repo = git.getRepo(project.userGitHub, project.repositoryGitHub)
+  db._getProjectFromProjectId(projectId).then(p => {
+    if (
+      sess.usernameGitHub !== undefined &&
+      sess.passwordGitHub !== undefined
+    ) {
+      git = new GitHub({
+        username: sess.usernameGitHub,
+        password: sess.passwordGitHub
+      })
+    }
 
+    project = p
+    repo = git.getRepo(project.userGitHub, project.repositoryGitHub)
     userGitHub = project.userGitHub
     repositoryGitHub = project.repositoryGitHub
 
@@ -103,9 +116,12 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
 
 app.post(REMOVE_RELEASE_ROUTE, function(req, res) {
   const releaseIdToRemove = req.body.releaseIdToRemove
-  db._deleteRelease(releaseIdToRemove).then(result => {
-    res.redirect('back')
-  })
+
+  repo = git.getRepo(project.userGitHub, project.repositoryGitHub)
+
+  repo.deleteRelease(releaseIdToRemove)
+
+  res.redirect('back')
 })
 
 app.post(CREATE_RELEASE_ROUTE, function(req, res) {
