@@ -19,13 +19,14 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "chart.js": "^2.9.3",
+    "chromedriver": "^2.41.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
     "mocha": "^6.2.2",
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1",
-    "chromedriver": "^2.41.0",
     "selenium-webdriver": "^4.0.0-alpha.5"
   }
 }

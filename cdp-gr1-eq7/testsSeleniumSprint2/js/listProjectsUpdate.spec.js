@@ -5,7 +5,6 @@ const assert = require('assert')
 describe('listProjectsUpdate', function() {
   this.timeout(30000)
   let driver
-  let vars
   beforeEach(async function() {
     driver = await new Builder().forBrowser('firefox').build()
   })
