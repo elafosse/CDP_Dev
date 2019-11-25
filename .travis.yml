@@ -15,5 +15,8 @@ install:
   - npm install geckodriver
   - npm install
 
+before_script:
+  - node cdp-gr1-eq7/backend/initApp.js &
+
 script:
 - "npm test"
