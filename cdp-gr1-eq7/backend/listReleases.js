@@ -83,15 +83,24 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
       .then(list => {
         listReleases = list.data
 
-        db._getDocsFromReleases(listReleases).then(result => {
-          listDoc = result
-          res.render(LIST_RELEASE_VIEW_PATH, {
-            session: sess,
-            listReleases: listReleases,
-            project: sess.project,
-            listProjects: sess.listProjects,
-            listSprintsRelease: listSprints,
-            listDoc: listDoc
+        db._getAllSprintFromProject(project_id).then(sprints => {
+          listSprints = sprints
+          listSprints.forEach(sprint => {
+            db._getAllReleasesOfSprintId(sprint.id).then(listSprintReleases => {
+              sprint.listReleases = listSprintReleases
+            })
+          })
+
+          db._getDocsFromReleases(listReleases).then(result => {
+            listDoc = result
+            res.render(LIST_RELEASE_VIEW_PATH, {
+              session: sess,
+              listReleases: listReleases,
+              project: sess.project,
+              listProjects: sess.listProjects,
+              listSprints: listSprints,
+              listDoc: listDoc
+            })
           })
         })
       })
@@ -101,7 +110,7 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
           listReleases: listReleases,
           project: sess.project,
           listProjects: sess.listProjects,
-          listSprintsRelease: listSprints,
+          listSprints: listSprints,
           listDoc: listDoc
         })
       })

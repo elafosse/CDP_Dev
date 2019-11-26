@@ -5,7 +5,6 @@ const app = express()
 /* REQUIRED */
 const bodyParser = require('body-parser')
 const session = require('express-session')
-const GitHub = require('github-api')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static('../public'))
@@ -42,10 +41,6 @@ app.post(GITHUB_LOGIN_ROUTE, function(req, res) {
   const usernameGitHub = req.body.usernameGitHub
   const passwordGitHub = req.body.passwordGitHub
 
-  const git = new GitHub({
-    username: usernameGitHub,
-    passwordGitHub: passwordGitHub
-  })
   sess.usernameGitHub = usernameGitHub
   sess.passwordGitHub = passwordGitHub
   req.session = sess
