@@ -10,7 +10,6 @@ const session = require('express-session')
 const GitHub = require('github-api')
 const githublogin = require('./gitHubLogin')
 const modifyDoc = require('./modifyDoc')
-const Doc = require('./classes/Doc')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -32,7 +31,6 @@ const SET_GITHUB_ROUTE = '/setGitHub'
 
 const LIST_RELEASE_ROUTE = '/listReleases'
 const REMOVE_RELEASE_ROUTE = '/removeRelease'
-//const CREATE_RELEASE_ROUTE = '/createRelease'
 
 const LIST_RELEASE_VIEW_PATH = '../views/listReleases'
 
@@ -49,16 +47,6 @@ let repositoryGitHub
 let sess
 
 /* FUNCTIONS */
-
-function isChecked(req, listSprints) {
-  const result = []
-  listSprints.forEach(sprint => {
-    if (req.body['' + sprint.id]) {
-      result.push(sprint.id)
-    }
-  })
-  return result
-}
 
 app.get(LIST_RELEASE_ROUTE, function(req, res) {
   projectId = req.query.projectId
