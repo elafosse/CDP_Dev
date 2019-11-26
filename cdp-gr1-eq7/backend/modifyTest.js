@@ -79,7 +79,7 @@ app.get(MODIFY_TEST_ROUTE, function(req, res) {
     db._getAllProjectIssues(projectId).then(issues => {
       listIssues = issues
       db._getIssuesIdsOfTest(testId).then(issuesTest => {
-        listIssuesIdsTest = issuesTest
+        const listIssuesIdsTest = issuesTest
         res.render(MODIFY_TEST_VIEW_PATH, {
           listIssues: listIssues,
           listIssuesTest: listIssuesIdsTest,

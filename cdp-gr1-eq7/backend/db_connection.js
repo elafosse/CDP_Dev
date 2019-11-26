@@ -1433,10 +1433,10 @@ function _getDocsFromReleases(list_releases) {
   })
 }
 
-function _deleteDoc(id) {
+function _deleteDoc(release_id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM documentation_of_release WHERE id = '.concat(
-      con.escape(id)
+    const sql = 'DELETE FROM documentation_of_release WHERE release_id = '.concat(
+      con.escape(release_id)
     )
     con.query(sql, function(err, result) {
       if (err) resolve(err)

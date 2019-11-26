@@ -55,6 +55,15 @@ function isChecked(req, listIssues) {
   return result
 }
 
+function changeStateTest(req, res, newState) {
+  const testId = req.query.testId
+  db._updateTestState(testId, newState).then(testId => {
+    db._setIssuesToTest(testId, listIssuesTest).then(result => {
+      res.redirect('back')
+    })
+  })
+}
+
 app.get(LIST_TEST_ROUTE, function(req, res) {
   projectId = req.query.projectId
   sess = req.session
@@ -109,30 +118,15 @@ app.post(CREATE_TEST_ROUTE, function(req, res) {
 })
 
 app.get(SET_TEST_TO_FAILED, function(req, res) {
-  const testId = req.query.testId
-  db._updateTestState(testId, 'failed').then(testId => {
-    db._setIssuesToTest(testId, listIssuesTest).then(result => {
-      res.redirect('back')
-    })
-  })
+  changeStateTest(req, res, 'failed')
 })
 
 app.get(SET_TEST_TO_PASSED, function(req, res) {
-  const testId = req.query.testId
-  db._updateTestState(testId, 'passed').then(testId => {
-    db._setIssuesToTest(testId, listIssuesTest).then(result => {
-      res.redirect('back')
-    })
-  })
+  changeStateTest(req, res, 'passed')
 })
 
 app.get(SET_TEST_TO_TODO, function(req, res) {
-  const testId = req.query.testId
-  db._updateTestState(testId, 'todo').then(testId => {
-    db._setIssuesToTest(testId, listIssuesTest).then(result => {
-      res.redirect('back')
-    })
-  })
+  changeStateTest(req, res, 'todo')
 })
 
 module.exports.app = app

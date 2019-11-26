@@ -3,7 +3,6 @@ const express = require('express')
 const app = express()
 
 /* REQUIRED */
-const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const GitHub = require('github-api')
@@ -43,7 +42,10 @@ app.post(GITHUB_LOGIN_ROUTE, function(req, res) {
   const usernameGitHub = req.body.usernameGitHub
   const passwordGitHub = req.body.passwordGitHub
 
-  git = new GitHub({ username: usernameGitHub, passwordGitHub: passwordGitHub })
+  const git = new GitHub({
+    username: usernameGitHub,
+    passwordGitHub: passwordGitHub
+  })
   sess.usernameGitHub = usernameGitHub
   sess.passwordGitHub = passwordGitHub
   req.session = sess

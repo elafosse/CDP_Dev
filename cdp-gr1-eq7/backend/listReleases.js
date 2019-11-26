@@ -112,6 +112,7 @@ app.post(REMOVE_RELEASE_ROUTE, function(req, res) {
   const releaseIdToRemove = req.body.releaseIdToRemove
   repo = git.getRepo(project.userGitHub, project.repositoryGitHub)
 
+  db._deleteDoc(releaseIdToRemove)
   repo.deleteRelease(releaseIdToRemove)
 
   res.redirect('back')
