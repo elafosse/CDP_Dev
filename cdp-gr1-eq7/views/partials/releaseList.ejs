@@ -32,10 +32,13 @@
         </li>
         <li class="list-group-item">
           <div class="row justify-content-between">
-            <div class="col-md-auto align-self-start">
-              <a href="" target="_blank">Documentation</a>
+            <div class="col-md-auto">
+              <a href="<% listDoc.forEach(doc => {
+                if (doc.releaseId === (release.id + '')) { %> <%=doc.url%> <% }}) %>" target="_blank">Documentation</a>
+              <a href="/modifyDoc?projectId=<%= project.id %>&releaseId=<%=release.id%>"
+                class="btn btn-outline-warning">&#9998;</a>
             </div>
-            <div class="col-md-auto align-self-end">
+            <div class="col-md-auto">
               <a href="<%= release.html_url%>" target="_blank">See on GitHub</a>
             </div>
           </div>
@@ -46,8 +49,8 @@
               value="<%=release.id%>" hidden>
             <button href="" class="btn btn-outline-danger float-right" formaction="/removeRelease">&#x274C;</button>
           </form>
-          <a href="/modifyRelease?projectId=<%= project.id %>&releaseId=<%=release.id%>"
-            class="btn btn-outline-warning float-right">&#9998;</a>
+          <a href="<%='https://github.com/' + session.userGitHub + '/' + session.repositoryGitHub + '/releases/edit/' + release.tag_name%>"
+            class="btn btn-outline-warning float-right" target="_blank">&#9998;</a>
         </li>
       </ul>
     </div>

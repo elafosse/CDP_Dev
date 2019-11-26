@@ -7,6 +7,7 @@ const Issue = require('./classes/Issue')
 const Task = require('./classes/Task')
 const Test = require('./classes/Test')
 const Sprint = require('./classes/Sprint')
+const Doc = require('./classes/Doc')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
 var con = mysql.createConnection({
@@ -1354,6 +1355,96 @@ function _getIssuesOfSprint(sprint_id) {
   })
 }
 
+//-------------- Documentation ---------------
+
+function _addDocToRelease(release_id, url) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'INSERT INTO documentation_of_release (url, release_id) VALUES ('.concat(
+      con.escape(url),
+      ',',
+      con.escape(release_id),
+      ')'
+    )
+    con.query(sql, function(err, result) {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(result.insertId)
+    })
+  })
+}
+
+function _updateDoc(release_id, url) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE documentation_of_release SET'.concat(
+      ' url = ',
+      con.escape(url),
+      ' WHERE release_id = ',
+      con.escape(release_id),
+      ';\n'
+    )
+    con.query(sql, function(err, result) {
+      console.log('Doc updated')
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(result.affectedRows)
+    })
+  })
+}
+
+function _getDocById(release_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'SELECT * FROM documentation_of_release WHERE release_id = '.concat(
+      con.escape(release_id)
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      if (result.length !== 0) {
+        const doc = new Doc.Doc(
+          result[0].id,
+          result[0].url,
+          result[0].release_id
+        )
+        resolve(doc)
+      } else {
+        const doc = new Doc.Doc('', '', release_id)
+        resolve(doc)
+      }
+    })
+  })
+}
+
+function _getDocsFromReleases(list_releases) {
+  return new Promise(function(resolve, reject) {
+    const promise_list = []
+    for (let i = 0; i < list_releases.length; i++) {
+      const promise = _getDocById(list_releases[i].id)
+      promise_list.push(promise)
+    }
+    Promise.all(promise_list).then(function(test_list) {
+      resolve(test_list)
+    }),
+      raison => {
+        reject(raison)
+      }
+  })
+}
+
+function _deleteDoc(id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'DELETE FROM documentation_of_release WHERE id = '.concat(
+      con.escape(id)
+    )
+    con.query(sql, function(err, result) {
+      if (err) resolve(err)
+      resolve('Doc Deleted')
+    })
+  })
+}
+
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1409,5 +1500,10 @@ module.exports = {
   _deleteSprint,
   _updateSprint,
   _getSprintById,
-  _getIssuesIdsOfSprint
+  _getIssuesIdsOfSprint,
+  _addDocToRelease,
+  _updateDoc,
+  _getDocById,
+  _deleteDoc,
+  _getDocsFromReleases
 }

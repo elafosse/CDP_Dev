@@ -21,8 +21,7 @@
       <br>
       <div class="alert alert-primary" role="alert">
         <%if (session.usernameGitHub === undefined || session.passwordGitHub === undefined) { %>You need to enter your
-        GitHub
-        username and password in order to see the releases of a private repository or manage the
+        GitHub username and password in order to see the releases of a private repository or manage the
         releases<% } else { %>You are using <a
           href="https://github.com/<%=session.userGitHub + '/' + session.repositoryGitHub%>" class="alert-link"
           target="_blank"><%=session.userGitHub + '/' + session.repositoryGitHub%></a><% } %>
@@ -42,52 +41,9 @@
         </div>
         <!-------------------------------------------------------------------------------------------------->
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-          <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseAddRelease" role="button"
-              aria-expanded="false" aria-controls="collapseAddRelease">
-              Add Release
-            </a>
-          </p>
-          <form action="/createRelease" method="post">
-            <div class="collapse" id="collapseAddRelease">
-              <div id="createRelease" class="card form-group">
-                <h5 class="card-header" id="headingAddRelease">
-                  <i class="fa fa-chevron-down pull-right"></i>
-                  <label class="col-form-label" for="releaseName">Name: </label>
-                  <input class="form-control" id="releaseName" type="text" name="releaseName" required>
-                  <label class="col-form-label" for="releaseTag">Tag: </label>
-                  <input class="form-control" id="releaseName" type="text" name="releaseName" placeholder="v.0.0.0"
-                    required><br>
-                </h5>
-
-                <div id="collapseAddRelease" class="collapse show" role="tabpanel" aria-labelledby="headingAddRelease">
-                  <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <label class="col-form-label" for="releaseDescription">Description:</label><br>
-                        <input class="form-control" id="releaseDescription" type="text" name="releaseDescription"
-                          required><br>
-                        <label class="col-form-label" for="releaseDocumentation">Documentation:</label><br>
-                        <input class="form-control" id="releaseDocumentation" type="url" name="releaseDocumentation"
-                          required><br>
-                        <!--<form id="uploadAssets">
-                          <div class="form-group">-->
-                        <label class="col-form-label" for="releaseAssets">Assets:</label>
-                        <input class="form-control" type="file" class="form-control-file" id="uploadAssets">
-                        <!--</div>
-                        </form>-->
-                        <br>
-
-                      </li>
-                      <li class="list-group-item">
-                        <button type="submit" href="" class="btn btn-outline-success float-right">&#10004;</button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+          <a type="button" class="btn btn-primary"
+            href="<%='https://github.com/' + session.userGitHub + '/' + session.repositoryGitHub + "/releases/new"%>"
+            target="_blank">Add release</a>
         </div>
 
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
