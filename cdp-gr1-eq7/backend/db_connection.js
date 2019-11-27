@@ -1171,7 +1171,14 @@ _getAllSprintFromProject(3).then(
 
 */
 
-function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
+function _addSprint(
+  project_id,
+  objective,
+  date_begin,
+  date_end,
+  issue_list,
+  release_id
+) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO sprint (project_id, objective, date_begin, date_end, release_id) VALUES ('.concat(
       con.escape(project_id),
@@ -1182,7 +1189,7 @@ function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
       ',',
       con.escape(date_end),
       ',',
-      con.escape('-1'),
+      con.escape(release_id),
       ')'
     )
     con.query(sql, function(err, result) {
@@ -1263,7 +1270,7 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
 
     con.query(sql, function(err, result) {
       if (err) reject(err)
-      resolve('Issues linked to test')
+      resolve('Issues linked to sprint')
     })
   })
 }

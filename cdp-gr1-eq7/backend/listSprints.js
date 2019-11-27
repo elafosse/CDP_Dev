@@ -63,7 +63,7 @@ app.post(ADD_SPRINT_ROUTE, function(req, res) {
   const dateEnd = req.body.date_end
   const issueList = req.body.sprintIssue
 
-  db._addSprint(projectId, objective, dateBegin, dateEnd, issueList).then(
+  db._addSprint(projectId, objective, dateBegin, dateEnd, issueList, -1).then(
     value => {
       res.redirect('back')
     }

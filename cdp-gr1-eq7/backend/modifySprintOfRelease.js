@@ -33,22 +33,10 @@ let listSprints = []
 function sprintIdChecked(req, listSprints) {
   let result = -1
   listSprints.forEach(sprint => {
-    if (req.body['' + sprint.id] != undefined) {
+    if (req.body['' + sprint.id] !== undefined) {
       result = sprint.id
     }
   })
-  return result
-}
-
-function linkedToSprintId(releaseId, listSprints) {
-  let result = -1
-  listSprints.forEach(sprint => {
-    if (sprint.release.id === releaseId) {
-      console.log(result)
-      result = sprint.id
-    }
-  })
-  console.log('end ' + result)
   return result
 }
 
@@ -57,8 +45,7 @@ app.get(MODIFY_SPRINT_OF_RELEASE_ROUTE, function(req, res) {
   releaseId = req.query.releaseId
   sess = req.session
 
-  db._getProjectFromProjectId(projectId).then(p => {
-    project = p
+  db._getProjectFromProjectId(projectId).then(project => {
     req.session = sess
     db._getAllSprintFromProject(projectId).then(sprints => {
       listSprints = sprints

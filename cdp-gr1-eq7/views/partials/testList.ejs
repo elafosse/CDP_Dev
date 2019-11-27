@@ -29,7 +29,9 @@
           <strong> Issues :</strong>
           <h5>
             <% test.listIssues.forEach(issue => { %>
-            <span class="badge badge-info"><%= "I"+ issue.id%></span>
+            <a href="/listIssues?projectId=<%= project.id + "#heading" + issue.id%>">
+              <span class="badge badge-info"><%= "I"+ issue.id%></span>
+            </a>
             <% }) %>
           </h5>
           <form action="/removeTest" method="post"
@@ -40,19 +42,16 @@
           </form>
           <a href="/modifyTest?projectId=<%= project.id %>&testId=<%= test.id %>"
             class="btn btn-outline-warning float-right">&#9998;</a>
-            <% if(test.state === "failed" || test.state === "todo") { %>
-              <a href="/setTestToPassed?&testId=<%= test.id %>"
-              class="btn btn-outline-success float-right">Passed</a>
-            <% } %>
-            <% if(test.state === "passed" || test.state === "todo") { %>
-              <a href="/setTestToFailed?&testId=<%= test.id %>"
-              class="btn btn-outline-danger float-right">Failed</a>
-            <% } %>
-            <% if(test.state !== "todo") { %>
-              <a href="/setTestToTodo?&testId=<%= test.id %>"
-              class="btn btn-outline-secondary float-right">To Implement</a>
-            <% } %>
-            
+          <% if(test.state === "failed" || test.state === "todo") { %>
+          <a href="/setTestToPassed?&testId=<%= test.id %>" class="btn btn-outline-success float-right">Passed</a>
+          <% } %>
+          <% if(test.state === "passed" || test.state === "todo") { %>
+          <a href="/setTestToFailed?&testId=<%= test.id %>" class="btn btn-outline-danger float-right">Failed</a>
+          <% } %>
+          <% if(test.state !== "todo") { %>
+          <a href="/setTestToTodo?&testId=<%= test.id %>" class="btn btn-outline-secondary float-right">To Implement</a>
+          <% } %>
+
         </li>
       </ul>
     </div>

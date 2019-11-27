@@ -24,19 +24,16 @@
       <hr>
       <% let i = 1 %>
       <% listSprints.forEach(sprint => { %>
-
-
       <div id="accordion" role="tablist" aria-multiselectable="true">
         <ul class="list-unstyled">
           <li>
             <div class="card">
-              <h5 class="card-header" role="tab" id="heading<%= sprint.id %>">
+              <h5 class="card-header anchor" role="tab" id="heading<%= sprint.id %>">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sprint.id %>" aria-expanded="true"
                   aria-controls="collapse<%= sprint.id %>" class="d-block">
                   <i class="fa fa-chevron-down pull-right">Sprint <%= i %></i>
                   <span class="badge badge-primary right"><%= sprint.date_end.toDateString() %><br /></span>
                   <span class="badge badge-primary right"><%= sprint.date_begin.toDateString() %><br /></span>
-
                 </a>
               </h5>
 
@@ -56,7 +53,9 @@
                       <% sprint.listIssues.forEach(issue => { %>
 
                       <p>
-                        <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %>
+                        <a href="/listIssues?projectId=<%= project.id + "#heading" + issue.id%>">
+                          <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %>
+                        </a>
                       </p>
 
                       <% }) %>

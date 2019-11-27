@@ -23,7 +23,9 @@
             <% listSprints.forEach(sprint => { %>
             <%if (sprint.release === release.id) { %>
             <li class="list-inline-item">
-              <span class="badge badge-info"><%= "Sprint " + (listSprints.indexOf(sprint) + 1)%></span>
+              <a href="/listSprints?projectId=<%= project.id + "#heading" + sprint.id%>">
+                <span class="badge badge-info"><%= "Sprint " + (listSprints.indexOf(sprint) + 1)%></span>
+              </a>
             </li>
             <% }}); %>
           </ul>
