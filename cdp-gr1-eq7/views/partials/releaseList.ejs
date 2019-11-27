@@ -17,18 +17,15 @@
           <p><%= release.body %></p>
         </li>
         <li class="list-group-item"><strong> Sprint:</strong>
+          <a href="/modifySprintOfRelease?projectId=<%= project.id %>&releaseId=<%= release.id %>"
+            class="btn btn-outline-warning">&#9998;</a>
           <ul id="listSprints" class="list-inline">
-            <% listSprints.forEach(sprint => { 
-              if (sprint.listReleases.indexOf(release.id) !== -1) %>
+            <% listSprints.forEach(sprint => { %>
+            <%if (sprint.release === release.id) { %>
             <li class="list-inline-item">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" name="<%=sprint.id%>" id="<%=sprint.id%>"
-                  value="<%= sprint.id%>">
-                <label class="custom-control-label" for="<%=sprint.id%>">
-                  <%= sprint.id + ": " + sprint.name %></label>
-              </div>
+              <span class="badge badge-info"><%= "Sprint " + (listSprints.indexOf(sprint) + 1)%></span>
             </li>
-            <% }); %>
+            <% }}); %>
           </ul>
         </li>
         <li class="list-group-item">

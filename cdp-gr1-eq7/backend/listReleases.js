@@ -10,6 +10,7 @@ const session = require('express-session')
 const GitHub = require('github-api')
 const githublogin = require('./gitHubLogin')
 const modifyDoc = require('./modifyDoc')
+const modifySprintOfRelease = require('./modifySprintOfRelease')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -23,6 +24,7 @@ app.use(
 )
 app.use(githublogin.app)
 app.use(modifyDoc.app)
+app.use(modifySprintOfRelease.app)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
@@ -83,21 +85,14 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
       .then(list => {
         listReleases = list.data
 
-        db._getAllSprintFromProject(project_id).then(sprints => {
+        db._getAllSprintFromProject(projectId).then(sprints => {
           listSprints = sprints
-          listSprints.forEach(sprint => {
-            db._getAllReleasesOfSprintId(sprint.id).then(listSprintReleases => {
-              sprint.listReleases = listSprintReleases
-            })
-          })
-
           db._getDocsFromReleases(listReleases).then(result => {
             listDoc = result
             res.render(LIST_RELEASE_VIEW_PATH, {
               session: sess,
               listReleases: listReleases,
               project: sess.project,
-              listProjects: sess.listProjects,
               listSprints: listSprints,
               listDoc: listDoc
             })

@@ -9,7 +9,7 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <script defer src="../backend/listSprints.js"></script>
   <link rel="stylesheet" type="text/css" href="css/project.css" />
-
+  <title><%=project.name + " | sprints"%></title>
   <meta name="author" content="gr1_eq7" />
 </head>
 
@@ -40,7 +40,8 @@
                 </a>
               </h5>
 
-              <div id="collapse<%= sprint.id %>" class="collapse" role="tabpanel" aria-labelledby="heading<%= sprint.id %>">
+              <div id="collapse<%= sprint.id %>" class="collapse" role="tabpanel"
+                aria-labelledby="heading<%= sprint.id %>">
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -55,18 +56,20 @@
                       <% sprint.listIssues.forEach(issue => { %>
 
                       <p>
-                        <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %> 
+                        <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %>
                       </p>
 
                       <% }) %>
 
                       <form action="/deleteSprint" method="post"
                         onsubmit="return confirm('Do you really want to remove this sprint ?')">
-                        <input type="text" name="sprintId" class="form-control" id="name" value="<%= sprint.id %>" hidden />
+                        <input type="text" name="sprintId" class="form-control" id="name" value="<%= sprint.id %>"
+                          hidden />
                         <button type="submit" class="btn btn-outline-danger float-right"
                           formaction="/deleteSprint">&#x274C;</button>
                       </form>
-                      <a href="/modifySprint?sprintId=<%= sprint.id %>" class="btn btn-outline-warning float-right">&#9998;</a>
+                      <a href="/modifySprint?sprintId=<%= sprint.id %>"
+                        class="btn btn-outline-warning float-right">&#9998;</a>
                     </li>
                   </ul>
                 </div>
@@ -111,7 +114,7 @@
                     <br>
                     <select multiple class="form-control" id="sprintIssue" name="sprintIssue">
                       <% projectIssues.forEach(issue => { %>
-                        <option value="<%= issue.id %>"><%= issue.name %></option>
+                      <option value="<%= issue.id %>"><%= issue.name %></option>
                       <% }) %>
                     </select>
                   </li>
@@ -125,7 +128,7 @@
                       </div>
                       <label for="example-date-input" class="col-2 col-form-label">Sprint end on :</label>
                       <div class="col-4">
-                        <input class="form-control" type="date" id="date_end" name="date_end"required>
+                        <input class="form-control" type="date" id="date_end" name="date_end" required>
                       </div>
                     </div>
                   </li>

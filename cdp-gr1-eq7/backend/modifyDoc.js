@@ -38,7 +38,7 @@ app.get(MODIFY_DOC_ROUTE, function(req, res) {
   releaseId = req.query.releaseId
   sess = req.session
 
-  db._getDocById(releaseId).then(doc => {
+  db._getDocFromReleaseId(releaseId).then(doc => {
     docOldUrl = doc.url
 
     res.render(MODIFY_DOC_VIEW_PATH, {

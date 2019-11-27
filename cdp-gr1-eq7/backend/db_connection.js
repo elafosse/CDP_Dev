@@ -1173,7 +1173,7 @@ _getAllSprintFromProject(3).then(
 
 function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
   return new Promise(function(resolve, reject) {
-    const sql = 'INSERT INTO sprint (project_id, objective, date_begin, date_end) VALUES ('.concat(
+    const sql = 'INSERT INTO sprint (project_id, objective, date_begin, date_end, release_id) VALUES ('.concat(
       con.escape(project_id),
       ',',
       con.escape(objective),
@@ -1181,6 +1181,8 @@ function _addSprint(project_id, objective, date_begin, date_end, issue_list) {
       con.escape(date_begin),
       ',',
       con.escape(date_end),
+      ',',
+      con.escape('-1'),
       ')'
     )
     con.query(sql, function(err, result) {
@@ -1218,6 +1220,26 @@ function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
       _setIssuesToSprint(sprint_id, issue_list).then(value =>
         resolve(result.affectedRows)
       )
+    })
+  })
+}
+
+function _updateSprintRelease(sprint_id, release_id) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'UPDATE sprint SET'.concat(
+      ' release_id = ',
+      con.escape(release_id),
+      ' WHERE id = ',
+      con.escape(sprint_id),
+      ';\n'
+    )
+    con.query(sql, function(err, result) {
+      console.log('Sprint release updated')
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(result.affectedRows)
     })
   })
 }
@@ -1305,16 +1327,30 @@ function _getSprintById(sprint_id) {
         return
       }
       _getIssuesOfSprint(sprint_id).then(issue_list => {
-        const sprint = new Sprint.Sprint(
-          result[0].id,
-          result[0].project_id,
-          result[0].objective,
-          result[0].date_begin,
-          result[0].date_end,
-          issue_list,
-          []
-        )
-        resolve(sprint)
+        let sprint
+        if (result[0].release_id === undefined) {
+          sprint = new Sprint.Sprint(
+            result[0].id,
+            result[0].project_id,
+            result[0].objective,
+            result[0].date_begin,
+            result[0].date_end,
+            issue_list,
+            -1
+          )
+          resolve(sprint)
+        } else {
+          sprint = new Sprint.Sprint(
+            result[0].id,
+            result[0].project_id,
+            result[0].objective,
+            result[0].date_begin,
+            result[0].date_end,
+            issue_list,
+            result[0].release_id
+          )
+          resolve(sprint)
+        }
       })
     })
   })
@@ -1356,6 +1392,22 @@ function _getIssuesOfSprint(sprint_id) {
   })
 }
 
+function _getReleaseIdOfSprint(sprint_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'SELECT release_id FROM issue_of_sprint WHERE sprint_id = '.concat(
+      con.escape(sprint_id)
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      const id_list = []
+      for (let i = 0; i < result.length; i++) {
+        id_list.push(result[i].release_id)
+      }
+      resolve(id_list)
+    })
+  })
+}
+
 // ================ Documentation ================
 
 function _addDocToRelease(release_id, url) {
@@ -1378,7 +1430,7 @@ function _addDocToRelease(release_id, url) {
 
 function _updateDoc(release_id, url) {
   return new Promise(function(resolve, reject) {
-    var sql = 'UPDATE documentation_of_release SET'.concat(
+    let sql = 'UPDATE documentation_of_release SET'.concat(
       ' url = ',
       con.escape(url),
       ' WHERE release_id = ',
@@ -1446,71 +1498,6 @@ function _deleteDoc(release_id) {
   })
 }
 
-// ================ Releases ================
-
-function _addReleaseToSprint(release_id, sprint_id) {
-  return new Promise(function(resolve, reject) {
-    const sql = 'INSERT INTO sprint_of_release (sprint_id, release_id) VALUES ('.concat(
-      con.escape(sprint_id),
-      ',',
-      con.escape(release_id),
-      ')'
-    )
-    con.query(sql, function(err, result) {
-      if (err) {
-        reject(err)
-        return
-      }
-      resolve(result.insertId)
-    })
-  })
-}
-
-function _getAllReleasesOfSprintId(sprint_id) {
-  return new Promise(function(resolve, reject) {
-    const sql = 'SELECT release_id FROM sprint_of_release WHERE sprint_id = '.concat(
-      con.escape(sprint_id)
-    )
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      const id_list = []
-      for (let i = 0; i < result.length; i++) {
-        id_list.push(result[i].release_id)
-      }
-      resolve(id_list)
-    })
-  })
-}
-
-function _removeAllReleasesOfSprintId(sprint_id) {
-  return new Promise(function(resolve, reject) {
-    var sql = 'DELETE FROM sprint_of_release WHERE sprint_id = '.concat(
-      con.escape(sprint_id),
-      ';\n'
-    )
-  })
-}
-
-function _setReleasesToSprints(sprint_id, releaseId_list) {
-  return new Promise(function(resolve, reject) {
-    let i = 0
-    _removeAllReleasesOfSprintId(sprint_id)
-    for (i = 0; i < issueId_list.length; i++) {
-      sql = sql.concat(
-        'INSERT INTO sprint_of_release (sprint_id, release_id) VALUES (',
-        con.escape(releaseId_list[i]),
-        ',',
-        con.escape(sprint_id),
-        ');\n'
-      )
-    }
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      resolve('Sprints linked to release')
-    })
-  })
-}
-
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1565,15 +1552,13 @@ module.exports = {
   _getAllSprintFromProject,
   _deleteSprint,
   _updateSprint,
+  _updateSprintRelease,
   _getSprintById,
   _getIssuesIdsOfSprint,
+  _getReleaseIdOfSprint,
   _addDocToRelease,
   _updateDoc,
   _getDocFromReleaseId,
   _deleteDoc,
-  _getDocsFromReleases,
-  _addReleaseToSprint,
-  _getAllReleasesOfSprintId,
-  _removeAllReleasesOfSprintId,
-  _setReleasesToSprints
+  _getDocsFromReleases
 }

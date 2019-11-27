@@ -6,7 +6,7 @@ class Sprint {
     date_begin,
     date_end,
     listIssues,
-    listReleases
+    release
   ) {
     this.id = id
     this.project_id = project_id
@@ -14,7 +14,7 @@ class Sprint {
     this.date_begin = date_begin
     this.date_end = date_end
     this.listIssues = listIssues
-    this.listReleases = listReleases
+    this.release = release
   }
 }
 
