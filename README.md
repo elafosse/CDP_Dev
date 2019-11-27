@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/elafosse/CDP_Dev.svg?branch=master)](https://travis-ci.org/elafosse/CDP_Dev)
+
 # CDP_Dev
 #Github for development
 
