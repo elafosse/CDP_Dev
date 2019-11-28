@@ -1528,7 +1528,6 @@ function _getCountIssuesLastSprint(projectId) {
           projectId,
           "'))"
     )
-    console.log(sql)
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve(result)
