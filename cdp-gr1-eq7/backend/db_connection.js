@@ -1505,6 +1505,69 @@ function _deleteDoc(release_id) {
   })
 }
 
+// ================ Overview ================
+
+function _getCountIssuesProject(projectId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT count(*) FROM issue WHERE issue.project_id ='"
+      .concat(projectId, "';")
+    con.query(sql, function (err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
+function _getCountIssuesProjectByState(projectId, state) {
+  return new Promise(function (resolve, reject) {
+    let sqlToDo = "SELECT count(*) FROM issue, issue_of_task WHERE issue.project_id ='"
+      .concat(
+        projectId, 
+        "' AND issue.id NOT IN (SELECT issue_of_task.issue_id FROM issue_of_task, task WHERE issue_of_task.task_id = task.id AND task.state = '",
+        state,
+        "')")
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
+function _getCountIssuesLastSprint(projectId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT count(*) FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
+      projectId,
+      "' AND issue.id = issue_of_sprint.issue_id",
+      "AND issue_of_sprint.sprint_id IN",
+        "(SELECT id FROM sprint WHERE project_id ='",
+        projectId,
+        "' AND date_end IN ",
+          "(SELECT max(date_end) FROM sprin WHERE project_id = '",
+          projectId,
+          "'))"
+    )
+    con.query(sql, function (err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
+function _getCountTaskStateFromIssues(issueId, state) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT count(*) FROM task, issue_of_task  WHERE task.id = issue_of_task.task_id AND task.state ='".concat(
+      state,
+      "' AND issue_of_task.issue_id = '",
+      issueId,
+      "'"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1567,5 +1630,9 @@ module.exports = {
   _updateDoc,
   _getDocFromReleaseId,
   _deleteDoc,
-  _getDocsFromReleases
+  _getDocsFromReleases,
+  _getCountIssuesProject,
+  _getCountIssuesProjectByState,
+  _getCountIssuesLastSprint,
+  _getCountTaskStateFromIssues
 }
