@@ -12,9 +12,15 @@ const newProject = require('./newProject')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')); // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
 app.use(newProject.app)
-app.use(session({secret: 'shhhhhhared-secret', saveUninitialized: true,resave: true}))
+app.use(
+  session({
+    secret: 'shhhhhhared-secret',
+    saveUninitialized: true,
+    resave: true
+  })
+)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
@@ -38,42 +44,38 @@ user.listProjects.push (p2)*/
 
 /* FUNCTIONS */
 
-function removeProject (id, listProjects){
+function removeProject(id, listProjects) {
   listProjects.forEach(project => {
-    if (project.id == id){
-      let index = listProjects.indexOf (project)
-      listProjects.splice (index, 1)
+    if (project.id == id) {
+      let index = listProjects.indexOf(project)
+      listProjects.splice(index, 1)
     }
   })
 }
 
-app.get (LIST_PROJECTS_ROUTE, function (req, res){
-    listProjects = []
-    sess = req.session
+app.get(LIST_PROJECTS_ROUTE, function(req, res) {
+  listProjects = []
+  sess = req.session
 
-    db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
-        listProjectsMembers.forEach(element => {
-            listProjects.push(element)
-        })
-
-        res.render(LIST_PROJECTS_VIEW_PATH, {
-            session: sess,
-            listProjects: listProjects,
-        })
+  db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
+    listProjectsMembers.forEach(element => {
+      listProjects.push(element)
     })
+
+    res.render(LIST_PROJECTS_VIEW_PATH, {
+      session: sess,
+      listProjects: listProjects
+    })
+  })
 })
-// require newProject here causes an error if newProject requireq listProjects too
-/*app.get (NEW_PROJECT_ROUTE, function (req, res){
-  res.render (NEW_PROJECT_VIEW_PATH)
-})*/
 
-app.post (REMOVE_PROJECT_ROUTE, function (req, res){
-  const projectId = req.body.projectId;
-  removeProject (projectId, listProjects)
+app.post(REMOVE_PROJECT_ROUTE, function(req, res) {
+  const projectId = req.body.projectId
+  removeProject(projectId, listProjects)
 
-  res.render (LIST_PROJECTS_VIEW_PATH, {
+  res.render(LIST_PROJECTS_VIEW_PATH, {
     session: sess,
-    listProjects: listProjects,
+    listProjects: listProjects
   })
   db._deleteProject(projectId)
 })

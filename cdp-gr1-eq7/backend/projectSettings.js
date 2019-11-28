@@ -70,21 +70,25 @@ app.get(PROJECT_SETTINGS_ROUTE, function(req, res) {
     userGitHub = project.userGitHub
     repositoryGitHub = project.repositoryGitHub
 
-    db._getMembersOfProject(projectId).then(members => {
-      oldMembers = members
-      db._deleteMembersFromProject(projectId, oldMembers).then(resul => {
-        creatorUsername = members.pop()
-        newMembers = oldMembers
-        res.render(PROJECT_SETTINGS_VIEW_PATH, {
-          projectName: projectName,
-          projectDescription: projectDescription,
-          userGitHub: userGitHub,
-          repositoryGitHub: repositoryGitHub,
-          project: sess.project,
-          session: sess,
-          listMembers: newMembers
+    db._getAdminsOfProject(projectId).then(admins => {
+      if (admins.indexOf(sess.username) !== -1) {
+        db._getMembersOfProject(projectId).then(members => {
+          oldMembers = members
+          db._deleteMembersFromProject(projectId, oldMembers).then(resul => {
+            creatorUsername = members.pop()
+            newMembers = oldMembers
+            res.render(PROJECT_SETTINGS_VIEW_PATH, {
+              projectName: projectName,
+              projectDescription: projectDescription,
+              userGitHub: userGitHub,
+              repositoryGitHub: repositoryGitHub,
+              project: sess.project,
+              session: sess,
+              listMembers: newMembers
+            })
+          })
         })
-      })
+      }
     })
   })
 })
