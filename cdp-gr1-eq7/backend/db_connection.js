@@ -1551,9 +1551,11 @@ function _getCountTasksStatesFromIssues(issueId) {
 
 function _getCurrentSprint(projectId) {
   return new Promise(function (resolve, reject) {
-    let sql = "SELECT max(date_end) FROM sprint WHERE project_id = '".concat(
+    let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
       projectId,
-      "'"
+      "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
+      projectId,
+      "')"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
