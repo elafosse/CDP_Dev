@@ -1,20 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <meta name="author" content="gr1_eq7"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta name="author" content="gr1_eq7" />
   <title><%=project.name%></title>
 </head>
+
 <body>
   <%- include ../views/partials/header.ejs %>
-  
+
   <div class="row">
-  <% include ./projectSidebar %>
+    <% include ./projectSidebar %>
     <div class="col-9">
-      OVERVIEW PROJECT
+      <div>
+        Current Sprint overview :
+        <div class="row"><div><strong>Task summary :</strong>
+          <ul class="list-group text-black list-group-flush">
+            <li class="list-group-item">
+              Number of tasks :
+              
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Tasks done :
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Tasks issues :
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Tasks to do :
+              <strong>0</strong>
+            </li>
+          </ul>
+        </div>
+        <div><strong>Issues summary :</strong>
+          <ul class="list-group text-black list-group-flush">
+            <li class="list-group-item">
+              Number of issues :
+              
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Issues done :
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Ongoing issues :
+              <strong>0</strong>
+            </li>
+            <li class="list-group-item">
+              Issues to do :
+              <strong>0</strong>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+
+      <div>
+          Project Summary :
+          <div><strong>Issues summary :</strong>
+            <ul class="list-group text-black list-group-flush">
+              <li class="list-group-item">
+                Number of issues :
+                <strong>0</strong>
+              </li>
+              <li class="list-group-item">
+                Issues done :
+                <strong>0</strong>
+              </li>
+              <li class="list-group-item">
+                Ongoing issues :
+                <strong>0</strong>
+              </li>
+              <li class="list-group-item">
+                Issues to do :
+                <strong>0</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
     </div>
   </div>
 </body>
+
 </html>
