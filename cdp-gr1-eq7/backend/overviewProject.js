@@ -96,14 +96,12 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
       promiseList.push(
         new Promise((resolve, reject) => {
           issues.forEach((issue, index, array) => {
-            promiseList.push(
               db._getCountTasksStatesFromIssues(issue.id).then(result => {
                 console.log('asyncForEachProjectIssues')
                 let status = getIssueState(result[0])
                 ++projectIssuesSummary[status]
                 if (index === array.length - 1) resolve()
               })
-            )
           })
         })
       )
@@ -124,14 +122,12 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
         promiseList.push(
           new Promise((resolve, reject) => {
             issuesId.forEach((issueId, index, array) => {
-              promiseList.push(
                 db._getCountTasksStatesFromIssues(issueId).then(result => {
                   console.log('asyncForEachSprint')
                   let status = getIssueState(result[0])
                   ++sprintIssuesSummary[status]
                   if (index === array.length - 1) resolve()
                 })
-              )
             })
           })
         )
