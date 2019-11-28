@@ -1528,6 +1528,7 @@ function _getCountIssuesLastSprint(projectId) {
           projectId,
           "'))"
     )
+    console.log(sql)
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve(result)
@@ -1540,6 +1541,19 @@ function _getCountTasksStatesFromIssues(issueId) {
     let sql = "SELECT issue_of_task.issue_id, count(*) AS total, sum(case when state = 'To Do' then 1 else 0 end) AS totalToDo, sum(case when state = 'Doing' then 1 else 0 end) AS totalDoing, sum(case when state = 'Done' then 1 else 0 end) AS totalDone FROM task, issue_of_task WHERE task.id = issue_of_task.task_id AND issue_of_task.issue_id = '".concat(
       issueId,
       "' GROUP BY issue_of_task.issue_id"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
+function _getCurrentSprint(projectId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT max(date_end) FROM sprint WHERE project_id = '".concat(
+      projectId,
+      "'"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1613,5 +1627,6 @@ module.exports = {
   _getDocsFromReleases,
   _getCountIssuesProject,
   _getCountIssuesLastSprint,
-  _getCountTasksStatesFromIssues
+  _getCountTasksStatesFromIssues,
+  _getCurrentSprint
 }
