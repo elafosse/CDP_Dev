@@ -32,7 +32,10 @@ const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
 function getIssueState(taskStatus) {
-  if (!taskStatus.total) {
+  if(taskStatus === undefined){
+    return 4
+  }
+  if ( !taskStatus.total) {
     return 4
   }
   if (taskStatus.totalDoing) {
@@ -51,16 +54,21 @@ let projectId
 let listProjects = []
 let sess
 let projectIssuesSummary = [0, 0, 0, 0, 0]
+let sprintIssuesSummary = [0, 0, 0, 0, 0]
+let sprintTasksSummary = [0, 0, 0, 0]
 
 let promiseList = []
 
 app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   projectId = req.query.projectId
-  let promise1 = db._getProjectFromProjectId(projectId).then(project => {
+  projectIssuesSummary = [0, 0, 0, 0, 0]
+  sprintIssuesSummary = [0, 0, 0, 0, 0]
+  sprintTasksSummary = [0, 0, 0, 0]
+
+  let promiseProjectInfo = db._getProjectFromProjectId(projectId).then(project => {
     projectId = req.query.projectId
 
     listProjects = []
-    projectIssuesSummary = [0, 0, 0, 0, 0]
     sess = req.session
     sess.project = project
 
@@ -70,26 +78,33 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
       })
     })
   })
-  promiseList.push(promise1)
+  promiseList.push(promiseProjectInfo)
 
-  let promise2 = db._getCountIssuesProject(projectId).then(count => {
+  let promiseProjectIssuesCount = db._getCountIssuesProject(projectId).then(count => {
     projectIssuesSummary[0] = count[0].total
-    db._getAllProjectIssues(projectId).then(issues => {
-      let asyncForEach = new Promise((resolve, reject) => {
-        issues.forEach((issue, index, array) => {
-          db._getCountTasksStatesFromIssues(issue.id)
-            .then(result => {
-              let status = getIssueState(result[0])
-              ++projectIssuesSummary[status]
-            })
-            .then(() => {
-              if (index === array.length - 1) resolve()
-            })
-        })
+  })
+  promiseList.push(promiseProjectIssuesCount)
+
+  let promiseProjectIssuesState = db._getAllProjectIssues(projectId).then(issues => {
+    let asyncForEach = new Promise((resolve, reject) => {
+      issues.forEach((issue, index, array) => {
+        db._getCountTasksStatesFromIssues(issue.id)
+          .then(result => {
+            let status = getIssueState(result[0])
+            ++projectIssuesSummary[status]
+          })
+          .then(() => {
+            if (index === array.length - 1) resolve()
+          })
       })
     })
   })
-  promiseList.push(promise2)
+  promiseList.push(promiseProjectIssuesState)
+
+  let promiseSprintIssuesCount = db._getCountIssuesLastSprint(projectId).then(count => {
+    sprintIssuesSummary[0] = count[0].total
+  })
+  promiseList.push(promiseSprintIssuesCount);
 
   Promise.all(promiseList).then(() => {
     sess.listProjects = listProjects
@@ -98,7 +113,9 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
       project: sess.project,
       projectId: projectId,
       listProjects: sess.listProjects,
-      projectIssuesSummary: projectIssuesSummary
+      projectIssuesSummary: projectIssuesSummary,
+      sprintIssuesSummary: sprintIssuesSummary,
+      sprintTasksSummary: sprintTasksSummary
     })
   })
 })
