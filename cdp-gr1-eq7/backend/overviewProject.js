@@ -32,13 +32,13 @@ const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
 function getIssueState(taskStatus) {
-  if(taskStatus === undefined){
+  if (taskStatus === undefined) {
     return 4
   }
-  if ( !taskStatus.total) {
+  if (!taskStatus.total) {
     return 4
   }
-  if (taskStatus.totalDoing) {
+  if (taskStatus.totalDoing || (taskStatus.totalToDo && taskStatus.totalDone)) {
     return 2
   }
   if (taskStatus.totalToDo) {
@@ -64,49 +64,83 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   projectIssuesSummary = [0, 0, 0, 0, 0]
   sprintIssuesSummary = [0, 0, 0, 0, 0]
   sprintTasksSummary = [0, 0, 0, 0]
+  promiseList = []
 
-  let promiseProjectInfo = db._getProjectFromProjectId(projectId).then(project => {
-    projectId = req.query.projectId
+  let promiseProjectInfo = db
+    ._getProjectFromProjectId(projectId)
+    .then(project => {
+      projectId = req.query.projectId
 
-    listProjects = []
-    sess = req.session
-    sess.project = project
+      listProjects = []
+      sess = req.session
+      sess.project = project
 
-    db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
-      listProjectsMembers.forEach(element => {
-        listProjects.push(element)
+      db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
+        listProjectsMembers.forEach(element => {
+          listProjects.push(element)
+        })
       })
     })
-  })
   promiseList.push(promiseProjectInfo)
 
-  let promiseProjectIssuesCount = db._getCountIssuesProject(projectId).then(count => {
-    projectIssuesSummary[0] = count[0].total
-  })
+  let promiseProjectIssuesCount = db
+    ._getCountIssuesProject(projectId)
+    .then(count => {
+      projectIssuesSummary[0] = count[0].total
+    })
   promiseList.push(promiseProjectIssuesCount)
 
-  let promiseProjectIssuesState = db._getAllProjectIssues(projectId).then(issues => {
-    let asyncForEach = new Promise((resolve, reject) => {
-      issues.forEach((issue, index, array) => {
-        db._getCountTasksStatesFromIssues(issue.id)
-          .then(result => {
-            let status = getIssueState(result[0])
-            ++projectIssuesSummary[status]
+  let promiseProjectIssuesState = db
+    ._getAllProjectIssues(projectId)
+    .then(issues => {
+      promiseList.push(
+        new Promise((resolve, reject) => {
+          issues.forEach((issue, index, array) => {
+            promiseList.push(
+              db._getCountTasksStatesFromIssues(issue.id).then(result => {
+                console.log('asyncForEachProjectIssues')
+                let status = getIssueState(result[0])
+                ++projectIssuesSummary[status]
+                if (index === array.length - 1) resolve()
+              })
+            )
           })
-          .then(() => {
-            if (index === array.length - 1) resolve()
-          })
-      })
+        })
+      )
     })
-  })
   promiseList.push(promiseProjectIssuesState)
 
-  let promiseSprintIssuesCount = db._getCountIssuesLastSprint(projectId).then(count => {
-    sprintIssuesSummary[0] = count[0].total
-  })
-  promiseList.push(promiseSprintIssuesCount);
+  let promiseSprintIssuesCount = db
+    ._getCountIssuesLastSprint(projectId)
+    .then(count => {
+      sprintIssuesSummary[0] = count[0].total
+    })
+  promiseList.push(promiseSprintIssuesCount)
+
+  let promiseSprintIssuesState = db
+    ._getCurrentSprint(projectId)
+    .then(sprintId => {
+      db._getIssuesIdsOfSprint(sprintId[0].id).then(issuesId => {
+        promiseList.push(
+          new Promise((resolve, reject) => {
+            issuesId.forEach((issueId, index, array) => {
+              promiseList.push(
+                db._getCountTasksStatesFromIssues(issueId).then(result => {
+                  console.log('asyncForEachSprint')
+                  let status = getIssueState(result[0])
+                  ++sprintIssuesSummary[status]
+                  if (index === array.length - 1) resolve()
+                })
+              )
+            })
+          })
+        )
+      })
+    })
+  promiseList.push(promiseSprintIssuesState)
 
   Promise.all(promiseList).then(() => {
+    console.log('too late, we render')
     sess.listProjects = listProjects
     res.render(PROJECT_OVERVIEW_VIEW_PATH, {
       session: req.session,
