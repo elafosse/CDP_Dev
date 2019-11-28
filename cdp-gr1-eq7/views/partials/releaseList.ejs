@@ -1,9 +1,7 @@
-<div class="card <% if(release.prerelease) { %> border-secondary<% }
-  else { %> border-success <% } %> mb-3">
-  <h5 class="card-header <% if(release.prerelease) { %> bg-secondary<% }
-    else { %> bg-success <% } %>" role="tab" id="heading<%= release.id%>">
+<div class="card mb-3">
+  <h5 class="card-header " role="tab" id="heading<%= release.id%>">
     <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= release.id%>" aria-expanded="true"
-      aria-controls="collapse<%= release.id%>" class="d-block text-white">
+      aria-controls="collapse<%= release.id%>" class="d-block">
       <i class="fa fa-chevron-down pull-right"></i> <%=release.name %> <span
         class="badge badge-dark"><%=release.tag_name %></span>
     </a>
@@ -56,6 +54,8 @@
             </div>
           </div>
           <br>
+        </li>
+        <li class="list-group-item">
           <form action="/removeRelease" method="post"
             onsubmit="return confirm('Voulez-vous vraiment supprimer cette release ?')">
             <input type="text" name="releaseIdToRemove" class="form-control" id="releaseIdToRemove"

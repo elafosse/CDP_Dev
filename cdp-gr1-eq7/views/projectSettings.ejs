@@ -5,17 +5,17 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script defer src="../backend/newProject.js"></script>
+  <script defer src="../backend/projectSettings.js"></script>
   <meta name="author" content="gr1_eq7" />
-  <title>New project</title>
+  <title><%= project.name + " | settings"%></title>
 </head>
 
 <body>
   <%- include ../views/partials/header.ejs %>
   <div class="row">
     <div class="col-9">
-      <form class="px-4 py-3" action="/createProject" method="post" id="create-project">
-        <div id="createProject" class="card form-group">
+      <form class="px-4 py-3" action="/projectSettings" method="post" id="project-settings">
+        <div id="projectSettings" class="card form-group">
           <h5 class="card-header" id="headingModifyIssue">
             <i class="fa fa-chevron-down pull-right"></i>
             <div class="form-row form-inline">
@@ -41,16 +41,16 @@
 
                 <label class="col-form-label" for="memberUsernameToAdd">Add a member to the project:
                   <input class="form-control" id="usernameMemberToAdd" name="memberUsernameToAdd"></label>
-                <button type="submit" class="btn btn-primary" formaction="/addMember">Add</button>
+                <button type="submit" class="btn btn-primary" formaction="/addMemberSettings">Add</button>
 
                 <ul id="listProjectMembers">List of the members of the project: <%= listMembers.length %>
                   <% listMembers.forEach(member => { %>
                   <li><%= member %>
-                    <form action="/removeMember" method="post" id="remove">
+                    <form action="/removeMemberSettings" method="post" id="remove">
                       <input type="text" name="memberUsernameToRemove" class="form-control" value="<%= member %>"
                         hidden>
                       <button href="" class="btn btn-outline-danger float-right"
-                        formaction="/removeMember">&#x274C;</button>
+                        formaction="/removeMemberSettings">&#x274C;</button>
                     </form>
                   </li>
                   <% }); %>
@@ -58,7 +58,7 @@
               </li>
               <li class="list-group-item">
                 <button type="submit" href="" class="btn btn-outline-success float-right" id="createNewProject"
-                  form="create-project">&#10004;</button>
+                  form="project-settings">&#10004;</button>
               </li>
           </div>
       </form>

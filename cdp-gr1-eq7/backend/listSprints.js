@@ -36,20 +36,6 @@ let currentProject
 let sess
 
 /* FUNCTIONS */
-function getCurrentSprintId(sprints) {
-  return new Promise(function(resolve, reject) {
-    var today = new Date()
-    sprints.forEach(sprint => {
-      let sprintBeginDate = new Date(sprint.date_begin)
-      let sprintEndDate = new Date(sprint.date_end)
-      if (sprintBeginDate <= today && today <= sprintEndDate) {
-        resolve(sprint.id)
-        return
-      }
-    })
-    resolve(-1)
-  })
-}
 
 app.get(LIST_SPRINTS_ROUTE, function(req, res) {
   projectId = req.query.projectId
@@ -59,15 +45,12 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
     currentProject = result
     db._getAllProjectIssues(projectId).then(projectIssues => {
       db._getAllSprintFromProject(projectId).then(sprints => {
-        getCurrentSprintId(sprints).then(currentSprintId => {
-          res.render(LIST_SPRINTS_VIEW_PATH, {
-            session: sess,
-            listSprints: sprints,
-            listProjects: sess.listProjects,
-            project: currentProject,
-            currentSprintId: currentSprintId,
-            projectIssues: projectIssues
-          })
+        res.render(LIST_SPRINTS_VIEW_PATH, {
+          session: sess,
+          listSprints: sprints,
+          listProjects: sess.listProjects,
+          project: currentProject,
+          projectIssues: projectIssues
         })
       })
     })

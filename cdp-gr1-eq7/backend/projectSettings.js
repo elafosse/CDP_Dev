@@ -11,7 +11,7 @@ const db = require('./db_connection')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('../public')) // Mettre l'URL du dossier 'public' par rapport a initApp.js
+app.use(express.static('../public'))
 app.use(
   session({
     secret: 'shhhhhhared-secret',
@@ -23,21 +23,24 @@ app.use(
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
-const NEW_PROJECT_ROUTE = '/newProject'
-const ADD_MEMBER_ROUTE = '/addMember'
-const REMOVE_MEMBER_ROUTE = '/removeMember'
-const CREATE_PROJECT_ROUTE = '/createProject'
+const PROJECT_SETTINGS_ROUTE = '/projectSettings'
+const ADD_MEMBER_ROUTE = '/addMemberSettings'
+const REMOVE_MEMBER_ROUTE = '/removeMemberSettings'
+const UPDATE_PROJECT_ROUTE = '/projectSettings'
 
-const NEW_PROJECT_VIEW_PATH = '../views/newProject'
+const PROJECT_SETTINGS_VIEW_PATH = '../views/projectSettings'
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
 const DEFAULT_GITHUB = ''
 
 /* FUNCTIONS */
 let sess
-
-let listMembers = []
+let project
+let projectId
+let oldMembers = []
+let newMembers = []
 let areAdmins = []
+let creatorUsername = DEFAULT_GITHUB
 let projectName = DEFAULT_GITHUB
 let projectDescription = DEFAULT_GITHUB
 let userGitHub = DEFAULT_GITHUB
@@ -52,22 +55,37 @@ function removeMember(username, listMembers) {
   })
 }
 
-app.get(NEW_PROJECT_ROUTE, function(req, res) {
-  listMembers = []
-  areAdmins = []
-  projectName = DEFAULT_GITHUB
-  projectDescription = DEFAULT_GITHUB
-  userGitHub = DEFAULT_GITHUB
-  repositoryGitHub = DEFAULT_GITHUB
+app.get(PROJECT_SETTINGS_ROUTE, function(req, res) {
+  projectId = req.query.projectId
   sess = req.session
 
-  res.render(NEW_PROJECT_VIEW_PATH, {
-    projectName: projectName,
-    projectDescription: projectDescription,
-    userGitHub: userGitHub,
-    repositoryGitHub: repositoryGitHub,
-    session: sess,
-    listMembers: listMembers
+  oldMembers = []
+  newMembers = []
+  areAdmins = []
+
+  db._getProjectFromProjectId(projectId).then(p => {
+    project = p
+    projectName = project.name
+    projectDescription = project.description
+    userGitHub = project.userGitHub
+    repositoryGitHub = project.repositoryGitHub
+
+    db._getMembersOfProject(projectId).then(members => {
+      oldMembers = members
+      db._deleteMembersFromProject(projectId, oldMembers).then(resul => {
+        creatorUsername = members.pop()
+        newMembers = oldMembers
+        res.render(PROJECT_SETTINGS_VIEW_PATH, {
+          projectName: projectName,
+          projectDescription: projectDescription,
+          userGitHub: userGitHub,
+          repositoryGitHub: repositoryGitHub,
+          project: sess.project,
+          session: sess,
+          listMembers: newMembers
+        })
+      })
+    })
   })
 })
 
@@ -79,14 +97,15 @@ app.post(ADD_MEMBER_ROUTE, function(req, res) {
   const memberUsernameToAdd = req.body.memberUsernameToAdd
   console.log('Added member ' + memberUsernameToAdd)
 
-  listMembers.push(memberUsernameToAdd)
-  res.render(NEW_PROJECT_VIEW_PATH, {
+  newMembers.push(memberUsernameToAdd)
+  res.render(PROJECT_SETTINGS_VIEW_PATH, {
     projectName: projectName,
     projectDescription: projectDescription,
     userGitHub: userGitHub,
     repositoryGitHub: repositoryGitHub,
+    project: sess.project,
     session: sess,
-    listMembers: listMembers
+    listMembers: newMembers
   })
 })
 
@@ -98,44 +117,45 @@ app.post(REMOVE_MEMBER_ROUTE, function(req, res) {
   const memberUsernameToRemove = req.body.memberUsernameToRemove
   console.log('Removed member ' + memberUsernameToRemove)
 
-  removeMember(memberUsernameToRemove, listMembers)
-  res.render(NEW_PROJECT_VIEW_PATH, {
+  removeMember(memberUsernameToRemove, newMembers)
+  res.render(PROJECT_SETTINGS_VIEW_PATH, {
     projectName: projectName,
     projectDescription: projectDescription,
     userGitHub: userGitHub,
     repositoryGitHub: repositoryGitHub,
+    project: sess.project,
     session: sess,
-    listMembers: listMembers
+    listMembers: newMembers
   })
 })
 
-app.post(CREATE_PROJECT_ROUTE, function(req, res) {
+app.post(UPDATE_PROJECT_ROUTE, function(req, res) {
   projectName = req.body.projectName
   projectDescription = req.body.projectDescription
   userGitHub = req.body.userGitHub
   repositoryGitHub = req.body.repositoryGitHub
-  console.log('Project ' + projectName + ' created')
 
-  for (i = 0; i < listMembers.length; i++) {
+  console.log('Project ' + projectName + ' updated')
+
+  for (i = 0; i < newMembers.length; i++) {
     areAdmins.push(0)
   }
 
-  listMembers.push(sess.username)
+  newMembers.push(creatorUsername)
   areAdmins.push(1)
 
-  db._createProject(
+  db._modifyProject(
+    projectId,
     projectName,
     projectDescription,
     userGitHub,
     repositoryGitHub
-  ).then(projectId => {
-    db._inviteMembersToProject(projectId, listMembers, areAdmins).then(
-      db._getProjectFromProjectId(projectId).then(newProject => {
-        sess.project = newProject
-        req.session = sess
+  ).then(p => {
+    db._inviteMembersToProject(projectId, newMembers, areAdmins).then(
+      db._getProjectFromProjectId(projectId).then(updatedProject => {
         res.render(PROJECT_OVERVIEW_VIEW_PATH, {
           session: sess,
-          project: newProject,
+          project: updatedProject,
           projectId: projectId
         })
       })
