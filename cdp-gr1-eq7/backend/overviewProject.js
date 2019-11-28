@@ -52,9 +52,11 @@ let listProjects = []
 let sess
 let projectIssuesSummary = [0, 0, 0, 0, 0]
 
+let promiseList = []
+
 app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   projectId = req.query.projectId
-  db._getProjectFromProjectId(projectId).then(project => {
+  let promise1 = db._getProjectFromProjectId(projectId).then(project => {
     projectId = req.query.projectId
 
     listProjects = []
@@ -66,36 +68,37 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
       listProjectsMembers.forEach(element => {
         listProjects.push(element)
       })
-      db._getCountIssuesProject(projectId).then(count => {
-        projectIssuesSummary[0] = count[0].total
-        db._getAllProjectIssues(projectId).then(issues => {
-          let asyncForEach = new Promise((resolve, reject) => {
-            issues.forEach((issue, index, array) => {
-              db._getCountTasksStatesFromIssues(issue.id)
-                .then(result => {
-                  let status = getIssueState(result[0])
-                  console.log(status)
-                  ++projectIssuesSummary[status]
-                })
-                .then(() => {
-                  if (index === array.length - 1) resolve()
-                })
-            })
-          })
+    })
+  })
+  promiseList.push(promise1)
 
-          asyncForEach.then(() => {
-            console.log(projectIssuesSummary)
-            sess.listProjects = listProjects
-            res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-              session: req.session,
-              project: sess.project,
-              projectId: projectId,
-              listProjects: sess.listProjects,
-              projectIssuesSummary: projectIssuesSummary
+  let promise2 = db._getCountIssuesProject(projectId).then(count => {
+    projectIssuesSummary[0] = count[0].total
+    db._getAllProjectIssues(projectId).then(issues => {
+      let asyncForEach = new Promise((resolve, reject) => {
+        issues.forEach((issue, index, array) => {
+          db._getCountTasksStatesFromIssues(issue.id)
+            .then(result => {
+              let status = getIssueState(result[0])
+              ++projectIssuesSummary[status]
             })
-          })
+            .then(() => {
+              if (index === array.length - 1) resolve()
+            })
         })
       })
+    })
+  })
+  promiseList.push(promise2)
+
+  Promise.all(promiseList).then(() => {
+    sess.listProjects = listProjects
+    res.render(PROJECT_OVERVIEW_VIEW_PATH, {
+      session: req.session,
+      project: sess.project,
+      projectId: projectId,
+      listProjects: sess.listProjects,
+      projectIssuesSummary: projectIssuesSummary
     })
   })
 })
