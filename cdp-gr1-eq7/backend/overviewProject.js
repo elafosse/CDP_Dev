@@ -100,8 +100,8 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
                 console.log('asyncForEachProjectIssues')
                 let status = getIssueState(result[0])
                 ++projectIssuesSummary[status]
-                if (index === array.length - 1) resolve()
               })
+              if (index === array.length - 1) resolve()
           })
         })
       )
@@ -132,8 +132,8 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
                   sprintTasksSummary[1] += result[0].totalDone
                   sprintTasksSummary[2] += result[0].totalDoing
                   sprintTasksSummary[3] += result[0].totalToDo
-                  if (index === array.length - 1) resolve()
                 }))
+                if (index === array.length - 1) resolve()
               })
               )
             })
