@@ -1508,7 +1508,7 @@ function _deleteDoc(release_id) {
 
 function _getCountIssuesProject(projectId) {
   return new Promise(function(resolve, reject) {
-    let sql = "SELECT count(*) FROM issue WHERE issue.project_id ='".concat(
+    let sql = "SELECT count(*) as total FROM issue WHERE issue.project_id ='".concat(
       projectId,
       "';"
     )
@@ -1519,13 +1519,15 @@ function _getCountIssuesProject(projectId) {
   })
 }
 
-function _getCountIssuesProjectByState(projectId, state) {
-  return new Promise(function(resolve, reject) {
-    let sqlToDo = "SELECT count(*) FROM issue, issue_of_task WHERE issue.project_id ='".concat(
+function _getCountIssuesLastSprint(projectId) { 
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT count(*) as total FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
       projectId,
-      "' AND issue.id NOT IN (SELECT issue_of_task.issue_id FROM issue_of_task, task WHERE issue_of_task.task_id = task.id AND task.state = '",
-      state,
-      "')"
+      "' AND issue.id = issue_of_sprint.issue_id AND issue_of_sprint.sprint_id IN (SELECT id FROM sprint WHERE project_id ='",
+        projectId,
+        "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
+          projectId,
+          "'))"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1534,33 +1536,26 @@ function _getCountIssuesProjectByState(projectId, state) {
   })
 }
 
-function _getCountIssuesLastSprint(projectId) {
-  return new Promise(function(resolve, reject) {
-    let sql = "SELECT count(*) FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
-      projectId,
-      "' AND issue.id = issue_of_sprint.issue_id",
-      'AND issue_of_sprint.sprint_id IN',
-      "(SELECT id FROM sprint WHERE project_id ='",
-      projectId,
-      "' AND date_end IN ",
-      "(SELECT max(date_end) FROM sprin WHERE project_id = '",
-      projectId,
-      "'))"
-    )
-    con.query(sql, function(err, result) {
-      if (err) reject(err)
-      resolve(result)
-    })
-  })
-}
-
-function _getCountTaskStateFromIssues(issueId, state) {
-  return new Promise(function(resolve, reject) {
-    let sql = "SELECT count(*) FROM task, issue_of_task  WHERE task.id = issue_of_task.task_id AND task.state ='".concat(
-      state,
-      "' AND issue_of_task.issue_id = '",
+function _getCountTasksStatesFromIssues(issueId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT issue_of_task.issue_id, count(*) AS total, sum(case when state = 'To Do' then 1 else 0 end) AS totalToDo, sum(case when state = 'Doing' then 1 else 0 end) AS totalDoing, sum(case when state = 'Done' then 1 else 0 end) AS totalDone FROM task, issue_of_task WHERE task.id = issue_of_task.task_id AND issue_of_task.issue_id = '".concat(
       issueId,
-      "'"
+      "' GROUP BY issue_of_task.issue_id"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
+function _getCurrentSprint(projectId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
+      projectId,
+      "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
+      projectId,
+      "')"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1633,7 +1628,7 @@ module.exports = {
   _deleteDoc,
   _getDocsFromReleases,
   _getCountIssuesProject,
-  _getCountIssuesProjectByState,
   _getCountIssuesLastSprint,
-  _getCountTaskStateFromIssues
+  _getCountTasksStatesFromIssues,
+  _getCurrentSprint
 }
