@@ -22,12 +22,6 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
 const PROJECT_OVERVIEW_ROUTE = '/overviewProject'
-/*
-const LIST_ISSUES_ROUTE = '/listIssues'
-const LIST_TASKS_ROUTE = '/listTasks'
-const LIST_SPRINTS_ROUTE = '/listSprints'
-const MODIFY_ISSUE_REDIRECT_URL = '/listIssues?projectId='
-*/
 
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
@@ -114,10 +108,6 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
               if (sprintIssuesId.length) {
                 if (sprintIssuesId.includes(issue.id)) {
                   ++sprintIssuesSummary[status]
-                  sprintTasksSummary[0] += result[0].total
-                  sprintTasksSummary[1] += result[0].totalDone
-                  sprintTasksSummary[2] += result[0].totalDoing
-                  sprintTasksSummary[3] += result[0].totalToDo
                 }
               }
             })
@@ -134,6 +124,17 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
       sprintIssuesSummary[0] = count[0].total
     })
   promiseList.push(promiseSprintIssuesCount)
+
+  let promiseTaskStateCount = db._getCurrentSprint(projectId).then(sprintId => {
+    db._getCountTasksStatesFromSprint(sprintId[0].id).then(result => {
+        console.log(result)
+        sprintTasksSummary[0] += result[0].total
+        sprintTasksSummary[1] += result[0].totalDone
+        sprintTasksSummary[2] += result[0].totalDoing
+        sprintTasksSummary[3] += result[0].totalToDo
+    })
+  })
+  promiseList.push(promiseTaskStateCount)
 
   Promise.all(promiseList).then(() => {
     sess.listProjects = listProjects

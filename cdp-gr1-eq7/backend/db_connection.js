@@ -1564,6 +1564,26 @@ function _getCurrentSprint(projectId) {
   })
 }
 
+function _getCountTasksStatesFromSprint(issueId) {
+  return new Promise(function (resolve, reject) {
+    let sql = "SELECT issue_of_sprint.sprint_id, count(DISTINCT task.id) AS total, ".concat(
+    "sum(DISTINCT case when state = 'To Do' then 1 else 0 end) AS totalToDo, ", 
+    "sum(DISTINCT case when state = 'Doing' then 1 else 0 end) AS totalDoing, ",
+    "sum(DISTINCT case when state = 'Done' then 1 else 0 end) AS totalDone ",
+    "FROM task, issue_of_task, issue_of_sprint ", 
+    "WHERE task.id = issue_of_task.task_id ",
+    "AND issue_of_task.issue_id = issue_of_sprint.issue_id ",
+    "AND issue_of_sprint.sprint_id = '",
+    issueId,
+    "' GROUP BY issue_of_sprint.sprint_id"
+    )
+    con.query(sql, function(err, result) {
+      if (err) reject(err)
+      resolve(result)
+    })
+  })
+}
+
 module.exports = {
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
@@ -1630,5 +1650,6 @@ module.exports = {
   _getCountIssuesProject,
   _getCountIssuesLastSprint,
   _getCountTasksStatesFromIssues,
-  _getCurrentSprint
+  _getCurrentSprint,
+  _getCountTasksStatesFromSprint
 }
