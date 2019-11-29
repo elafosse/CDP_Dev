@@ -122,18 +122,28 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
         promiseList.push(
           new Promise((resolve, reject) => {
             issuesId.forEach((issueId, index, array) => {
-                db._getCountTasksStatesFromIssues(issueId).then(result => {
+              promiseList.push(new Promise((resolve, reject) => {
+                console.log('before2')
+                promiseList.push(db._getCountTasksStatesFromIssues(issueId).then(result => {
                   console.log('asyncForEachSprint')
                   let status = getIssueState(result[0])
                   ++sprintIssuesSummary[status]
+                  sprintTasksSummary[0] += result[0].total
+                  sprintTasksSummary[1] += result[0].totalDone
+                  sprintTasksSummary[2] += result[0].totalDoing
+                  sprintTasksSummary[3] += result[0].totalToDo
                   if (index === array.length - 1) resolve()
-                })
+                }))
+              })
+              )
             })
           })
         )
       })
     })
   promiseList.push(promiseSprintIssuesState)
+
+  
 
   Promise.all(promiseList).then(() => {
     console.log('too late, we render')

@@ -1508,7 +1508,7 @@ function _deleteDoc(release_id) {
 
 function _getCountIssuesProject(projectId) {
   return new Promise(function(resolve, reject) {
-    let sql = "SELECT count(*) FROM issue WHERE issue.project_id ='".concat(
+    let sql = "SELECT count(*) as total FROM issue WHERE issue.project_id ='".concat(
       projectId,
       "';"
     )
