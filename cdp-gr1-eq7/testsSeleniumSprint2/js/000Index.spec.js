@@ -15,7 +15,6 @@ describe('000_Index', function() {
   })
   it('000_Index', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 728)
     await driver.close()
   })
 })

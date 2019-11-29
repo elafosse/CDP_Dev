@@ -15,7 +15,6 @@ describe('004_newProjectAndDeleteProject', function() {
   })
   it('004_newProjectAndDeleteProject', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 728)
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")
     await driver.findElement(By.id("password")).sendKeys("test")

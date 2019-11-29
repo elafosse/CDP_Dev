@@ -15,7 +15,6 @@ describe('003_usernameAlreadyUsed', function() {
   })
   it('003_usernameAlreadyUsed', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 728)
     await driver.findElement(By.linkText("Sign Up")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")
     await driver.findElement(By.css(".card-header")).click()
