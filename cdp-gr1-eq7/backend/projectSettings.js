@@ -8,6 +8,7 @@ const ejs = require('ejs')
 let bodyParser = require('body-parser')
 const session = require('express-session')
 const db = require('./db_connection')
+const overviewProject = require('./overviewProject')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -20,6 +21,8 @@ app.use(
   })
 )
 
+app.use(overviewProject.app)
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './..', '/views'))
 
@@ -29,7 +32,8 @@ const REMOVE_MEMBER_ROUTE = '/removeMemberSettings'
 const UPDATE_PROJECT_ROUTE = '/projectSettings'
 
 const PROJECT_SETTINGS_VIEW_PATH = '../views/projectSettings'
-const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
+
+const PROJECT_OVERVIEW_REDIRECT_URL = '/overviewProject?projectId='
 
 const DEFAULT_GITHUB = ''
 
@@ -157,11 +161,7 @@ app.post(UPDATE_PROJECT_ROUTE, function(req, res) {
   ).then(p => {
     db._inviteMembersToProject(projectId, newMembers, areAdmins).then(
       db._getProjectFromProjectId(projectId).then(updatedProject => {
-        res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-          session: sess,
-          project: updatedProject,
-          projectId: projectId
-        })
+        res.redirect(PROJECT_OVERVIEW_REDIRECT_URL + projectId)
       })
     )
   })
