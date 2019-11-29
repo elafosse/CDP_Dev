@@ -126,13 +126,14 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   promiseList.push(promiseSprintIssuesCount)
 
   let promiseTaskStateCount = db._getCurrentSprint(projectId).then(sprintId => {
-    db._getCountTasksStatesFromSprint(sprintId[0].id).then(result => {
-        console.log(result)
+    if (sprintId.length) {
+      db._getCountTasksStatesFromSprint(sprintId[0].id).then(result => {
         sprintTasksSummary[0] += result[0].total
         sprintTasksSummary[1] += result[0].totalDone
         sprintTasksSummary[2] += result[0].totalDoing
         sprintTasksSummary[3] += result[0].totalToDo
-    })
+      })
+    }
   })
   promiseList.push(promiseTaskStateCount)
 
