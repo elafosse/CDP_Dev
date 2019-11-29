@@ -23,21 +23,28 @@
             Modify Sprint
           </h5>
           <div class="card-body">
-            <label class="col-form-label">Sprints:</label><br>
-            <ul id="listSprints" class="list-inline">
-              <% let i = 1 
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <label class="col-form-label"><strong>Sprints:</strong></label><br>
+                <ul id="listSprints" class="list-inline">
+                  <% let i = 1 
               listSprints.forEach(sprint => { %>
-              <li class="list-inline-item">
-                <div class="form-check form-check-inline">
-                  <input type="radio" class="form-check-input" name="<%=sprint.id%>" id="<%=sprint.id%>"
-                    value="<%= sprint.id%>" <%if (sprint.release === releaseId) {%> checked <% } %>>
-                  <label class="form-check-label" for="<%=sprint.id%>">
-                    <%= "Sprint " + i%></label>
-                </div>
+                  <li class="list-inline-item">
+                    <div class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" name="<%=sprint.id%>" id="<%=sprint.id%>"
+                        value="<%= sprint.id%>" <%if (sprint.release === releaseId) {%> checked <% } %>>
+                      <label class="form-check-label" for="<%=sprint.id%>">
+                        <%= "Sprint " + i%></label>
+                    </div>
+                  </li>
+                  <% ++i }); %>
+                </ul>
               </li>
-              <% ++i }); %>
+              <li class="list-group-item">
+                <button type="submit" href="" class="btn btn-outline-success float-right" id="createNewProject"
+                  form="create-project">&#10004;</button>
+              </li>
             </ul>
-            <button type="submit" class="btn btn-primary" formaction="/modifySprintOfRelease">Save</button>
           </div>
         </div>
       </form>

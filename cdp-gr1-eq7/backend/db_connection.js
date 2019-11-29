@@ -119,7 +119,6 @@ function _deleteMembersFromProject(projectId, usernameList) {
     let i
     let sql = ''
     for (i = 0; i < usernameList.length; i++) {
-      // TODO: check if the user is not the admin of the project
       sql = sql.concat(
         'DELETE FROM project_team WHERE project_id = ',
         con.escape(projectId),
@@ -1508,17 +1507,19 @@ function _deleteDoc(release_id) {
 // ================ Overview ================
 
 function _getCountIssuesProject(projectId) {
-  return new Promise(function (resolve, reject) {
-    let sql = "SELECT count(*) as total FROM issue WHERE issue.project_id ='"
-      .concat(projectId, "';")
-    con.query(sql, function (err, result) {
+  return new Promise(function(resolve, reject) {
+    let sql = "SELECT count(*) FROM issue WHERE issue.project_id ='".concat(
+      projectId,
+      "';"
+    )
+    con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve(result)
     })
   })
 }
 
-function _getCountIssuesLastSprint(projectId) {
+function _getCountIssuesLastSprint(projectId) { 
   return new Promise(function (resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
       projectId,

@@ -82,7 +82,7 @@ app.get(MODIFY_TEST_ROUTE, function(req, res) {
         const listIssuesIdsTest = issuesTest
         res.render(MODIFY_TEST_VIEW_PATH, {
           listIssues: listIssues,
-          listIssuesTest: listIssuesIdsTest,
+          listIssuesIdsTest: listIssuesIdsTest,
           project: sess.project,
           session: sess,
           test: test

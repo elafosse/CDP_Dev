@@ -15,6 +15,7 @@ const listTasks = require('./listTasks')
 const listTests = require('./listTests')
 const listSprints = require('./listSprints')
 const listReleases = require('./listReleases')
+const projectSettings = require('./projectSettings')
 const index = require('./index')
 
 /* USE THE REQUIRES */
@@ -34,6 +35,7 @@ app.use(signUp.app)
 /* Projects */
 app.use(listProjects.app)
 app.use(overviewProject.app)
+app.use(projectSettings.app)
 
 /* Issues */
 app.use(listIssues.app)
@@ -44,15 +46,11 @@ app.use(listTasks.app)
 /* Releases */
 app.use(listReleases.app)
 
-/* Documentation */
-
 /* Tests */
 app.use(listTests.app)
 
 /* Sprints */
 app.use(listSprints.app)
-
-/* TESTS ZONE */
 
 const NUM_PORT = 3000
 

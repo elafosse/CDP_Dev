@@ -34,6 +34,8 @@
             </a>
             <% }) %>
           </h5>
+        </li>
+        <li class="list-group-item">
           <form action="/removeTest" method="post"
             onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
             <input type="text" name="testIdToRemove" class="form-control" id="testIdToRemove" value="<%= test.id %>"
@@ -51,7 +53,6 @@
           <% if(test.state !== "todo") { %>
           <a href="/setTestToTodo?&testId=<%= test.id %>" class="btn btn-outline-secondary float-right">To Implement</a>
           <% } %>
-
         </li>
       </ul>
     </div>
