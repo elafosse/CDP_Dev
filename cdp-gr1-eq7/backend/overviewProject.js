@@ -118,28 +118,30 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   let promiseSprintIssuesState = db
     ._getCurrentSprint(projectId)
     .then(sprintId => {
-      db._getIssuesIdsOfSprint(sprintId[0].id).then(issuesId => {
-        promiseList.push(
-          new Promise((resolve, reject) => {
-            issuesId.forEach((issueId, index, array) => {
-              promiseList.push(new Promise((resolve, reject) => {
-                console.log('before2')
-                promiseList.push(db._getCountTasksStatesFromIssues(issueId).then(result => {
-                  console.log('asyncForEachSprint')
-                  let status = getIssueState(result[0])
-                  ++sprintIssuesSummary[status]
-                  sprintTasksSummary[0] += result[0].total
-                  sprintTasksSummary[1] += result[0].totalDone
-                  sprintTasksSummary[2] += result[0].totalDoing
-                  sprintTasksSummary[3] += result[0].totalToDo
-                }))
-                if (index === array.length - 1) resolve()
+      if(sprintId.length){
+        db._getIssuesIdsOfSprint(sprintId[0].id).then(issuesId => {
+          promiseList.push(
+            new Promise((resolve, reject) => {
+              issuesId.forEach((issueId, index, array) => {
+                promiseList.push(new Promise((resolve, reject) => {
+                  console.log('before2')
+                  promiseList.push(db._getCountTasksStatesFromIssues(issueId).then(result => {
+                    console.log('asyncForEachSprint')
+                    let status = getIssueState(result[0])
+                    ++sprintIssuesSummary[status]
+                    sprintTasksSummary[0] += result[0].total
+                    sprintTasksSummary[1] += result[0].totalDone
+                    sprintTasksSummary[2] += result[0].totalDoing
+                    sprintTasksSummary[3] += result[0].totalToDo
+                    if (index === array.length - 1) resolve()
+                  }))
+                })
+                )
               })
-              )
             })
-          })
-        )
-      })
+          )
+        })
+      }
     })
   promiseList.push(promiseSprintIssuesState)
 
