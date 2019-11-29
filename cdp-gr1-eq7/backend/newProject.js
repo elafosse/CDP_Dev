@@ -29,7 +29,8 @@ const REMOVE_MEMBER_ROUTE = '/removeMember'
 const CREATE_PROJECT_ROUTE = '/createProject'
 
 const NEW_PROJECT_VIEW_PATH = '../views/newProject'
-const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
+
+const PROJECT_OVERVIEW_REDIRECT_URL = '/overviewProject?projectId='
 
 const DEFAULT_GITHUB = ''
 
@@ -133,11 +134,7 @@ app.post(CREATE_PROJECT_ROUTE, function(req, res) {
       db._getProjectFromProjectId(projectId).then(newProject => {
         sess.project = newProject
         req.session = sess
-        res.render(PROJECT_OVERVIEW_VIEW_PATH, {
-          session: sess,
-          project: newProject,
-          projectId: projectId
-        })
+        res.redirect(PROJECT_OVERVIEW_REDIRECT_URL + projectId)
       })
     )
   })
