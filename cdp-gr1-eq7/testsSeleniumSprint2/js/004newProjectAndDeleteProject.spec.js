@@ -67,7 +67,7 @@ describe('004_newProjectAndDeleteProject', function() {
     await driver.switchTo().alert().accept()
     await driver.findElement(By.xpath("(//button[@type=\'submit\'])[3]")).click()
     await driver.switchTo().alert().accept()
-    await driver.findElement(By.name("newProjectButton")).click()
+    await driver.findElement(By.linkText("New Project")).click()
     await driver.findElement(By.id("projectName")).click()
     await driver.findElement(By.id("projectName")).sendKeys("Project for tests")
     await driver.findElement(By.id("projectDescription")).click()
