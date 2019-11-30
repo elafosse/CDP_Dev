@@ -28,7 +28,7 @@ describe('001_signUpThenSignInThenSignOut', function() {
     await driver.findElement(By.id("password")).click()
     await driver.findElement(By.id("password")).sendKeys("test")
     await driver.findElement(By.css(".btn-primary")).click()
-    await driver.wait(until.elementLocated(By.linkText("Sign Up")), 30000)
+    await driver.wait(until.elementLocated(By.css(".btn-outline-danger")), 30000)
     await driver.findElement(By.css(".btn-outline-danger")).click()
   })
 })
