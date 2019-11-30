@@ -2,7 +2,7 @@
 const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
-describe('ENDDeleteAllProjects', function() {
+describe('endDeleteAllProjects', function() {
   this.timeout(30000)
   let driver
   let vars
@@ -13,7 +13,7 @@ describe('ENDDeleteAllProjects', function() {
   afterEach(async function() {
     await driver.quit();
   })
-  it('ENDDeleteAllProjects', async function() {
+  it('endDeleteAllProjects', async function() {
     await driver.get("http://localhost:3000/")
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")
@@ -22,7 +22,6 @@ describe('ENDDeleteAllProjects', function() {
     await driver.findElement(By.id("password")).sendKeys("test")
     await driver.findElement(By.css(".btn-primary")).click()
     await driver.findElement(By.css(".btn-danger")).click()
-    assert(await driver.switchTo().alert().getText() == "Voulez-vous vraiment supprimer ce projet ?")
     await driver.switchTo().alert().accept()
     await driver.findElement(By.name("signout")).click()
   })

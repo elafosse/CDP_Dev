@@ -1000,7 +1000,7 @@
       "id": "c531c50e-c215-46b6-810d-116482f73a25",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-danger",
+      "target": "css=li:nth-child(1) > .row form > .btn",
       "targets": [
         ["css=.btn-danger", "css:finder"],
         ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
@@ -3066,7 +3066,7 @@
     }]
   }, {
     "id": "09343ff1-8329-4a62-8810-483e2ba43610",
-    "name": "006_addTaskThenModifyTaskThennDeleteTask",
+    "name": "006_addTaskThenModifyTaskThenDeleteTask",
     "commands": []
   }, {
     "id": "0bcb44d9-93d2-4bf7-adbe-c951de90944e",
@@ -3100,6 +3100,132 @@
     "id": "f9bec1e1-a21f-486e-842d-8d222d30c0a4",
     "name": "014_modifySettingsAsNotAdmin",
     "commands": []
+  }, {
+    "id": "e22ead33-9a32-41e1-91a2-bdae6c4a14f5",
+    "name": "endDeleteAllProjects",
+    "commands": [{
+      "id": "33966d38-1bbd-4b2b-90a8-a78d725d850e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6886bbcc-48f1-4d6e-a45e-37ed2bced4ce",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign In",
+      "targets": [
+        ["linkText=Sign In", "linkText"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign In')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/signIn')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c39cd92e-e02c-4b49-9a46-b7e366e4a998",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Test"
+    }, {
+      "id": "bcb1d4cd-f02a-426d-a93a-ef722d94cdf4",
+      "comment": "",
+      "command": "click",
+      "target": "css=form",
+      "targets": [
+        ["css=form", "css:finder"],
+        ["xpath=//form[@action='/signIn']", "xpath:attributes"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "776d7ac8-35b1-4665-8ee1-6996e187a824",
+      "comment": "",
+      "command": "click",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c996598-e4b4-441d-9901-1e09a916675d",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "test"
+    }, {
+      "id": "8d5c2cb4-e01f-4524-8e00-1e1a583da47c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b0342cf-6bea-420e-97e7-58913aa9c7a0",
+      "comment": "",
+      "command": "chooseOkOnNextConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cf0139cb-f833-46ce-b196-3abf0ed422b1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger",
+      "targets": [
+        ["css=.btn-danger", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//li[2]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "78517ed3-bfee-46a0-94d2-e0b13bf29ee2",
+      "comment": "",
+      "command": "webdriverChooseOkOnVisibleConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6fae23e9-9cbd-408f-bef9-9faed46ba70f",
+      "comment": "",
+      "command": "click",
+      "target": "name=signout",
+      "targets": [
+        ["name=signout", "name"],
+        ["css=.btn-outline-danger", "css:finder"],
+        ["xpath=//button[@name='signout']", "xpath:attributes"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Deconnexion')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "093beecd-6926-49ee-801f-1cc32cb88ddd",
