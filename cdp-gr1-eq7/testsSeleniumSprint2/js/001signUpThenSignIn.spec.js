@@ -15,7 +15,6 @@ describe('001_signUpThenSignInThenSignOut', function() {
   })
   it('001_signUpThenSignInThenSignOut', async function() {
     await driver.get("http://localhost:3000/")
-    await driver.setRect(1251, 728)
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")
     await driver.findElement(By.css(".card-header")).click()
