@@ -11,15 +11,14 @@ describe('002_signInThenSignOut', function() {
     vars = {}
   })
   afterEach(async function() {
-    await driver.quit();
+    await driver.quit()
   })
   it('002_signInThenSignOut', async function() {
-    await driver.get("http://localhost:3000/")
-    await driver.findElement(By.linkText("Sign In")).click()
-    await driver.findElement(By.id("username")).sendKeys("Test")
-    await driver.findElement(By.id("password")).sendKeys("test")
-    await driver.findElement(By.css(".btn-primary")).click()
-    await driver.findElement(By.css(".btn-outline-danger")).click()
-    await driver.close()
+    await driver.get('http://localhost:3000/')
+    await driver.findElement(By.linkText('Sign In')).click()
+    await driver.findElement(By.id('username')).sendKeys('Test')
+    await driver.findElement(By.id('password')).sendKeys('test')
+    await driver.findElement(By.css('.btn-primary')).click()
+    await driver.findElement(By.css('.btn-outline-danger')).click()
   })
 })

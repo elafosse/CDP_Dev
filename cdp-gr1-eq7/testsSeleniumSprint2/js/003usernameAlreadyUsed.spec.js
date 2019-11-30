@@ -11,18 +11,17 @@ describe('003_usernameAlreadyUsed', function() {
     vars = {}
   })
   afterEach(async function() {
-    await driver.quit();
+    await driver.quit()
   })
   it('003_usernameAlreadyUsed', async function() {
-    await driver.get("http://localhost:3000/")
-    await driver.findElement(By.linkText("Sign Up")).click()
-    await driver.findElement(By.id("username")).sendKeys("Test")
-    await driver.findElement(By.css(".card-header")).click()
-    await driver.findElement(By.id("password")).click()
-    await driver.findElement(By.id("password")).sendKeys("test2")
-    await driver.findElement(By.id("confirmedPassword")).click()
-    await driver.findElement(By.id("confirmedPassword")).sendKeys("test2")
-    await driver.findElement(By.css(".btn-primary")).click()
-    await driver.close()
+    await driver.get('http://localhost:3000/')
+    await driver.findElement(By.linkText('Sign Up')).click()
+    await driver.findElement(By.id('username')).sendKeys('Test')
+    await driver.findElement(By.css('.card-header')).click()
+    await driver.findElement(By.id('password')).click()
+    await driver.findElement(By.id('password')).sendKeys('test2')
+    await driver.findElement(By.id('confirmedPassword')).click()
+    await driver.findElement(By.id('confirmedPassword')).sendKeys('test2')
+    await driver.findElement(By.css('.btn-primary')).click()
   })
 })
