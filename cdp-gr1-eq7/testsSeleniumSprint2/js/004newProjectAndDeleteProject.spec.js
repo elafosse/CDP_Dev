@@ -19,7 +19,7 @@ describe('004_newProjectAndDeleteProject', function() {
     await driver.findElement(By.id('username')).sendKeys('Test')
     await driver.findElement(By.id('password')).sendKeys('test')
     await driver.findElement(By.id('password')).sendKeys(Key.ENTER)
-    await driver.findElement(By.linkText('New Project')).click()
+    await driver.findElement(By.id('newProjectButton')).click()
     await driver.findElement(By.id('projectName')).click()
     await driver.findElement(By.id('projectName')).sendKeys('Test1')
     await driver.findElement(By.id('projectDescription')).click()
