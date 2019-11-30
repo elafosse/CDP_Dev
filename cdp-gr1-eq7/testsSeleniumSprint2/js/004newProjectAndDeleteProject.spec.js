@@ -65,6 +65,7 @@ describe('004_newProjectAndDeleteProject', function() {
     await driver.findElement(By.linkText("Manage Projects")).click()
     await driver.findElement(By.css("li:nth-child(2) > .row form > .btn")).click()
     await driver.switchTo().alert().accept()
+    await driver.wait(until.elementIsVisible(await driver.findElement(By.css("li:nth-child(1) > .row form > .btn"))), 30000)
     await driver.findElement(By.css("li:nth-child(1) > .row form > .btn")).click()
     await driver.switchTo().alert().accept()
     await driver.findElement(By.linkText("New Project")).click()
