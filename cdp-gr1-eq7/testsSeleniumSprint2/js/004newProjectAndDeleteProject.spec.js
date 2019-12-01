@@ -68,6 +68,7 @@ describe('004_newProjectAndDeleteProject', function() {
     await driver.wait(until.elementLocated(By.xpath("(//button[@type=\'submit\'])[3]")), 30000)
     await driver.findElement(By.xpath("(//button[@type=\'submit\'])[3]")).click()
     await driver.switchTo().alert().accept()
+    await driver.wait(until.elementLocated(By.linkText("New Project")), 30000)
     await driver.findElement(By.linkText("New Project")).click()
     await driver.findElement(By.id("projectName")).click()
     await driver.findElement(By.id("projectName")).sendKeys("Project for tests")
