@@ -44,10 +44,10 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
   db._getProjectFromProjectId(projectId).then(result => {
     currentProject = result
     db._getAllProjectIssues(result.id).then(issues => {
-      console.log("a")
       issues.forEach(issue => {
         listIssues.push(issue)
       })
+      console.log("a")
       res.render(LIST_ISSUES_VIEW_PATH, {
         session: sess,
         listIssues: listIssues,
