@@ -30,6 +30,7 @@ describe('005_youwork', function() {
     await driver.findElement(By.id("headingAddIssue")).click()
     await driver.findElement(By.id("issueDifficulty")).sendKeys("1")
     await driver.findElement(By.id("issueDifficulty")).click()
+    await driver.wait(until.elementIsVisible(await driver.findElement(By.css(".float-right"))), 30000)
     await driver.findElement(By.css(".float-right")).click()
     await driver.findElement(By.linkText("Sprints")).click()
     await driver.findElement(By.linkText("Add Sprint")).click()
