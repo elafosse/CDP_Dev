@@ -21,6 +21,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.css(".btn-primary")).click()
     await driver.wait(until.elementLocated(By.linkText("Details")), 30000)
     await driver.findElement(By.linkText("Details")).click()
+    await driver.wait(until.elementLocated(By.linkText("Issues")), 30000)
     await driver.findElement(By.linkText("Issues")).click()
     await driver.findElement(By.linkText("Add Issue")).click()
     await driver.findElement(By.id("issueName")).click()
