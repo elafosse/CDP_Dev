@@ -126,6 +126,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.id("issueDescription")).click()
     await driver.findElement(By.id("issueDescription")).sendKeys("As a user I want to add an issue In order to see it in the list of issues")
     await driver.findElement(By.css(".float-right:nth-child(1)")).click()
+    await driver.wait(until.elementLocated(By.css(".badge-warning")), 30000)
     await driver.findElement(By.css(".badge-warning")).click()
     await driver.findElement(By.linkText("✎")).click()
     await driver.findElement(By.id("issueDifficulty")).sendKeys("13")
