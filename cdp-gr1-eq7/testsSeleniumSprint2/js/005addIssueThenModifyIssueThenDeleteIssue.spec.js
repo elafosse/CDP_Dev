@@ -3,7 +3,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
 describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
-  this.timeout(30000)
+  this.timeout(300000)
   let driver
   let vars
   beforeEach(async function() {

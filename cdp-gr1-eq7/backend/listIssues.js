@@ -74,6 +74,8 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
   const issuePriority = req.body.issuePriority
   const issueDifficulty = req.body.issueDifficulty
 
+  console.log("c")
+
   db._addIssueToProject(
     projectId,
     issueName,
@@ -81,7 +83,6 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issuePriority,
     issueDifficulty
   ).then(result => {
-    console.log("c")
     console.log(issueDifficulty)
     res.redirect('back')
   })
