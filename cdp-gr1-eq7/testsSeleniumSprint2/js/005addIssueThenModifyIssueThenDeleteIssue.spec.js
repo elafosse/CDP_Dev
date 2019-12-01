@@ -89,7 +89,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.linkText("Add Issue")).click()
     await driver.findElement(By.id("issueName")).click()
     await driver.findElement(By.id("issueName")).sendKeys("I3")
-    await driver.wait(until.elementIsVisible(await driver.findElement(By.id("issuePriority"))), 30000)
+    await driver.wait(until.elementIsVisible(await driver.findElement(By.id("issuePriority"))), 300000)
     await driver.wait(until.elementLocated(By.id("issuePriority")), 30000)
     await driver.findElement(By.id("issuePriority")).click()
     {
