@@ -45,7 +45,6 @@ function getIssueState(taskStatus) {
 }
 
 let projectId
-let listProjects = []
 let sess
 let projectIssuesSummary = [0, 0, 0, 0, 0]
 let sprintIssuesSummary = [0, 0, 0, 0, 0]
@@ -66,15 +65,9 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
     .then(project => {
       projectId = req.query.projectId
 
-      listProjects = []
       sess = req.session
       sess.project = project
 
-      db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
-        listProjectsMembers.forEach(element => {
-          listProjects.push(element)
-        })
-      })
     })
   promiseList.push(promiseProjectInfo)
 
@@ -138,7 +131,7 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   promiseList.push(promiseTaskStateCount)
 
   Promise.all(promiseList).then(() => {
-    sess.listProjects = listProjects
+    console.log("too late we render")
     res.render(PROJECT_OVERVIEW_VIEW_PATH, {
       session: req.session,
       project: sess.project,
