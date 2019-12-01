@@ -68,6 +68,7 @@ app.post(REMOVE_ISSUE_ROUTE, function(req, res) {
 })
 
 app.post(CREATE_ISSUE_ROUTE, function(req, res) {
+  console.log("b")
   const issueName = req.body.issueName
   const issueDescription = req.body.issueDescription
   const issuePriority = req.body.issuePriority
@@ -80,7 +81,6 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issuePriority,
     issueDifficulty
   ).then(result => {
-    console.log("b")
     console.log(issueDifficulty)
     res.redirect('back')
   })
