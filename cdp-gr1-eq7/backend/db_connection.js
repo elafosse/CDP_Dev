@@ -1553,9 +1553,11 @@ function _getCurrentSprint(projectId) {
   return new Promise(function (resolve, reject) {
     let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
       projectId,
-      "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
+      "' AND id IN (SELECT id FROM sprint WHERE CURDATE() <= date_end AND project_id = '",
       projectId,
-      "')"
+      "') AND id IN (SELECT id FROM sprint WHERE CURDATE() >= date_begin AND project_id = '",
+      projectId,
+      "')"  
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
