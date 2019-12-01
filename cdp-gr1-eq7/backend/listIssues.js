@@ -78,9 +78,11 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issueDescription,
     issuePriority,
     issueDifficulty
-  )
-
-  res.redirect('back')
+  ).then(result => {
+    console.log("2")
+    console.log(issueDifficulty)
+    res.redirect('back')
+  })
 })
 
 module.exports.app = app
