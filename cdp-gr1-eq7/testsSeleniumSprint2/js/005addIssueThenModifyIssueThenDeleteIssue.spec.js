@@ -3,7 +3,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
 describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
-  this.timeout(300000)
+  this.timeout(30000)
   let driver
   let vars
   beforeEach(async function() {
@@ -89,8 +89,8 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.linkText("Add Issue")).click()
     await driver.findElement(By.id("issueName")).click()
     await driver.findElement(By.id("issueName")).sendKeys("I3")
-    await driver.wait(until.elementIsVisible(await driver.findElement(By.id("issuePriority"))), 300000)
-    await driver.findElement(By.id("issuePriority")).click()
+    await driver.wait(until.elementIsVisible(await driver.findElement(By.name("issuePriority"))), 30000)
+    await driver.findElement(By.name("issuePriority")).click()
     {
       const dropdown = await driver.findElement(By.id("issuePriority"))
       await dropdown.findElement(By.xpath("//option[. = 'HIGH']")).click()
