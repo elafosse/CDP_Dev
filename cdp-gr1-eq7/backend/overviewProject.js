@@ -131,7 +131,6 @@ app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   promiseList.push(promiseTaskStateCount)
 
   Promise.all(promiseList).then(() => {
-    console.log("too late we render")
     res.render(PROJECT_OVERVIEW_VIEW_PATH, {
       session: req.session,
       project: sess.project,

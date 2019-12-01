@@ -59,7 +59,6 @@ app.get(LIST_PROJECTS_ROUTE, function(req, res) {
 
   db._getProjectsOfMember(sess.username).then(listProjectsMembers => {
     listProjectsMembers.forEach(element => {
-      console.log(element)
       listProjects.push(element)
     })
 
