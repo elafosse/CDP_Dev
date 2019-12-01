@@ -44,7 +44,7 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
   db._getProjectFromProjectId(projectId).then(result => {
     currentProject = result
     db._getAllProjectIssues(result.id).then(issues => {
-      console.log("1")
+      console.log("a")
       issues.forEach(issue => {
         listIssues.push(issue)
       })
@@ -79,7 +79,7 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issuePriority,
     issueDifficulty
   ).then(result => {
-    console.log("2")
+    console.log("b")
     console.log(issueDifficulty)
     res.redirect('back')
   })
