@@ -81,6 +81,7 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issuePriority,
     issueDifficulty
   ).then(result => {
+    console.log("c")
     console.log(issueDifficulty)
     res.redirect('back')
   })

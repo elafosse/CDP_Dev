@@ -997,6 +997,13 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "a8015520-843f-47c6-9fa6-1371c9cdcaf4",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "xpath=(//button[@type='submit'])[3]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "c531c50e-c215-46b6-810d-116482f73a25",
       "comment": "",
       "command": "click",
@@ -1015,6 +1022,13 @@
       "target": "",
       "targets": [],
       "value": ""
+    }, {
+      "id": "d4f9c5e9-cf22-4311-8f9b-d6b1958d90a6",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=New Project",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "ccca9d45-815f-456d-80c2-e5857487e950",
       "comment": "",
@@ -1275,6 +1289,13 @@
       ],
       "value": ""
     }, {
+      "id": "76897cee-0c44-40ba-9e19-cea256398ff8",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=Details",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "7c42ca43-71a2-451d-8bbb-19e5c7ddf1bf",
       "comment": "",
       "command": "click",
@@ -1288,6 +1309,13 @@
         ["xpath=//a[contains(.,'Details')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "0dca6b87-a8f2-4eb0-969a-8f78bfb14811",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=Issues",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "382ba0d6-d8ac-4164-b968-404e3475564d",
       "comment": "",
@@ -1428,6 +1456,13 @@
         ["xpath=//li/input", "xpath:position"]
       ],
       "value": "As a dev I want to test my project In order to find bugs"
+    }, {
+      "id": "ee39dce7-b6c4-4fc9-b4c5-6be5c3968225",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.float-right",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "b2801dae-a88d-42c3-bb08-6eaa42ec943c",
       "comment": "",
@@ -1576,7 +1611,7 @@
     }, {
       "id": "0eb54ceb-7cf3-4a4d-be1d-fb15dbad0f30",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -1646,7 +1681,7 @@
     }, {
       "id": "b9a354d1-603c-4a19-bdcf-095f1b354c45",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -1716,7 +1751,7 @@
     }, {
       "id": "6b233739-8585-4682-aebc-7054152bcc54",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -1786,16 +1821,9 @@
     }, {
       "id": "e8359572-1ae8-4631-be52-62900d0857be",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
-      "targets": [
-        ["id=issueDifficulty", "id"],
-        ["name=issueDifficulty", "name"],
-        ["css=#issueDifficulty", "css:finder"],
-        ["xpath=//input[@id='issueDifficulty']", "xpath:attributes"],
-        ["xpath=//h5[@id='headingAddIssue']/div/input[2]", "xpath:idRelative"],
-        ["xpath=//input[2]", "xpath:position"]
-      ],
+      "targets": [],
       "value": ""
     }, {
       "id": "8befc72b-25f1-4e11-9b63-47df17c7b595",
@@ -1856,7 +1884,7 @@
     }, {
       "id": "1b3d5fd1-d889-4cd9-8f31-ec7a65b33652",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -1926,7 +1954,7 @@
     }, {
       "id": "71a95e8f-6bb2-476f-bfcd-403e18a13e88",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -1996,7 +2024,7 @@
     }, {
       "id": "896174f6-8917-4123-b1f9-ae132b9271c7",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2064,6 +2092,20 @@
       ],
       "value": "As a dev I want to make a project that works In order to have a good grade"
     }, {
+      "id": "676344c5-0ace-4ab4-b0d9-8befc9e0168e",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.float-right:nth-child(1)",
+      "targets": [],
+      "value": "300000"
+    }, {
+      "id": "328921b1-9b0c-4b04-be4b-2ce096e33bc2",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.float-right:nth-child(1)",
+      "targets": [],
+      "value": "300000"
+    }, {
       "id": "45772d57-b09c-4701-8fea-f797fa5181dd",
       "comment": "",
       "command": "click",
@@ -2076,6 +2118,13 @@
         ["xpath=//button[contains(.,'✔')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "2afb58e3-e6b9-4ecc-91fd-a1306f150698",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=Add Issue",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "2f65543a-820a-441a-ae57-574c0826c41e",
       "comment": "",
@@ -2119,6 +2168,20 @@
         ["xpath=//div/input", "xpath:position"]
       ],
       "value": "I3"
+    }, {
+      "id": "e3db118e-64bb-4e48-a822-0fcd5c01415e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=issuePriority",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "ea43ff7d-86f5-4ca5-8bee-0b6ffbc75380",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "id=issuePriority",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "d6e91ee5-0a0f-4407-b488-f7c6ccda06fc",
       "comment": "",
@@ -2197,16 +2260,9 @@
     }, {
       "id": "70ea3fd9-7401-4309-8d76-384555a532cb",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
-      "targets": [
-        ["id=issueDifficulty", "id"],
-        ["name=issueDifficulty", "name"],
-        ["css=#issueDifficulty", "css:finder"],
-        ["xpath=//input[@id='issueDifficulty']", "xpath:attributes"],
-        ["xpath=//h5[@id='headingAddIssue']/div/input[2]", "xpath:idRelative"],
-        ["xpath=//input[2]", "xpath:position"]
-      ],
+      "targets": [],
       "value": ""
     }, {
       "id": "d3a2ff9a-b87a-4bce-8eb5-a6f3478b9ced",
@@ -2239,7 +2295,7 @@
     }, {
       "id": "44b16157-9301-4e6d-a286-ce9b41fe0e93",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2281,7 +2337,7 @@
     }, {
       "id": "0de1f3b8-bd2d-4df6-b014-c5367de7d497",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2351,7 +2407,7 @@
     }, {
       "id": "0e596469-af6e-40bb-9080-c0ca46b42387",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2421,7 +2477,7 @@
     }, {
       "id": "82eac10a-653c-42b0-9dad-a9fe2a889e19",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2491,7 +2547,7 @@
     }, {
       "id": "58dd02b5-55b3-495d-9a20-ad69933011ad",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2561,7 +2617,7 @@
     }, {
       "id": "b0abd2bd-e1f9-4e2d-9f65-cb25b8ec563a",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -2670,6 +2726,13 @@
       ],
       "value": ""
     }, {
+      "id": "0b1d614d-8ece-43ca-8504-e20acf22636a",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.badge-warning",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "932d02e3-ce16-4a6f-b674-a12bdb650e4f",
       "comment": "",
       "command": "click",
@@ -2753,16 +2816,9 @@
     }, {
       "id": "888d29f7-3abe-421d-bd3f-9531d481568d",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
-      "targets": [
-        ["id=issueDifficulty", "id"],
-        ["name=issueDifficulty", "name"],
-        ["css=#issueDifficulty", "css:finder"],
-        ["xpath=//input[@id='issueDifficulty']", "xpath:attributes"],
-        ["xpath=//h5[@id='headingModifyIssue']/div/input[2]", "xpath:idRelative"],
-        ["xpath=//input[2]", "xpath:position"]
-      ],
+      "targets": [],
       "value": ""
     }, {
       "id": "fcd0ed98-fef7-4dce-9465-624ab8aaa1f2",
@@ -2823,7 +2879,7 @@
     }, {
       "id": "c8101967-b1e2-4dc8-b511-45f5c28cc3e5",
       "comment": "",
-      "command": "doubleClick",
+      "command": "click",
       "target": "id=issueDifficulty",
       "targets": [
         ["id=issueDifficulty", "id"],
@@ -3216,7 +3272,7 @@
       "id": "6fae23e9-9cbd-408f-bef9-9faed46ba70f",
       "comment": "",
       "command": "click",
-      "target": "name=signout",
+      "target": "xpath=//button[@name='signout']",
       "targets": [
         ["name=signout", "name"],
         ["css=.btn-outline-danger", "css:finder"],
