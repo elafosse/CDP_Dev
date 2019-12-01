@@ -1000,7 +1000,7 @@
       "id": "c531c50e-c215-46b6-810d-116482f73a25",
       "comment": "",
       "command": "click",
-      "target": "css=li:nth-child(1) > .row form > .btn",
+      "target": "xpath=(//button[@type='submit'])[3]",
       "targets": [
         ["css=.btn-danger", "css:finder"],
         ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
