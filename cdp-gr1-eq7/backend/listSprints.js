@@ -71,7 +71,9 @@ app.post(ADD_SPRINT_ROUTE, function(req, res) {
   const dateEnd = req.body.date_end
   let issueList = req.body.sprintIssue
 
-  if (!Array.isArray(issueList)) {
+  if (issueList === undefined) {
+    issueList = []
+  } else if (!Array.isArray(issueList)) {
     issueList = [issueList]
   }
 
@@ -120,7 +122,9 @@ app.post(MODIFY_SPRINT_ROUTE, function(req, res) {
   const dateEnd = req.body.date_end
   let issueList = req.body.sprintIssue
 
-  if (!Array.isArray(issueList)) {
+  if (issueList === undefined) {
+    issueList = []
+  } else if (!Array.isArray(issueList)) {
     issueList = [issueList]
   }
 
