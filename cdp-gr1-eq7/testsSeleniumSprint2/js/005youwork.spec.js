@@ -29,7 +29,7 @@ describe('005_youwork', function() {
     await driver.findElement(By.id("sprintObjective")).sendKeys("Test")
     {
       const dropdown = await driver.findElement(By.id("sprintIssue"))
-      await dropdown.findElement(By.xpath("//option[. = 'I1']")).click()
+      await dropdown.findElement(By.xpath("//option[. = 'I2']")).click()
     }
     await driver.findElement(By.id("date_begin")).click()
     await driver.findElement(By.id("date_begin")).sendKeys("2019-12-13")
@@ -41,7 +41,7 @@ describe('005_youwork', function() {
     await driver.findElement(By.id("sprintObjective")).sendKeys("Test 2")
     {
       const dropdown = await driver.findElement(By.id("sprintIssue"))
-      await dropdown.findElement(By.xpath("//option[. = 'I1']")).click()
+      await dropdown.findElement(By.xpath("//option[. = 'I2']")).click()
     }
     await driver.findElement(By.id("date_begin")).click()
     await driver.findElement(By.id("date_begin")).sendKeys("2019-12-26")
