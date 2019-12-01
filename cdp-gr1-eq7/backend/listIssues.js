@@ -41,9 +41,10 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
   listIssues = []
   projectId = req.query.projectId
   sess = req.session
-
+  console.log("1")
   db._getProjectFromProjectId(projectId).then(result => {
     currentProject = result
+    console.log("2")
     db._getAllProjectIssues(result.id).then(issues => {
       issues.forEach(issue => {
         listIssues.push(issue)
