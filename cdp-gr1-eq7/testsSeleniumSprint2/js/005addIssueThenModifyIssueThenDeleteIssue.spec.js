@@ -32,7 +32,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.id("issueDescription")).click()
     await driver.findElement(By.id("issueDescription")).click()
     await driver.findElement(By.id("issueDescription")).sendKeys("As a dev I want to test my project In order to find bugs")
-    await driver.wait(until.elementLocated(By.id("issueDifficulty")), 30000)
+    await driver.wait(until.elementLocated(By.css(".float-right")), 30000)
     await driver.findElement(By.css(".float-right")).click()
     await driver.findElement(By.linkText("Add Issue")).click()
     await driver.findElement(By.id("issueName")).click()
