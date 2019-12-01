@@ -37,6 +37,21 @@ let sess
 
 /* FUNCTIONS */
 
+function getCurrentSprintId(sprints) {
+  return new Promise(function(resolve, reject) {
+    var today = new Date()
+    sprints.forEach(sprint => {
+      let sprintBeginDate = new Date(sprint.date_begin)
+      let sprintEndDate = new Date(sprint.date_end)
+      if (sprintBeginDate <= today && today <= sprintEndDate) {
+        resolve(sprint.id)
+        return
+      }
+    })
+    resolve(-1)
+  })
+}
+
 app.get(LIST_SPRINTS_ROUTE, function(req, res) {
   projectId = req.query.projectId
   sess = req.session
@@ -45,13 +60,13 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
     currentProject = result
     db._getAllProjectIssues(projectId).then(projectIssues => {
       db._getAllSprintFromProject(projectId).then(sprints => {
-        db._getCurrentSprint(projectId).then(currentSprintId => {
+        getCurrentSprintId(sprints).then(currentSprintId => {
           res.render(LIST_SPRINTS_VIEW_PATH, {
             session: sess,
             listSprints: sprints,
             listProjects: sess.listProjects,
             project: currentProject,
-            currentSprintId: currentSprintId[0].id,
+            currentSprintId: currentSprintId,
             projectIssues: projectIssues
           })
         })
@@ -66,7 +81,9 @@ app.post(ADD_SPRINT_ROUTE, function(req, res) {
   const dateEnd = req.body.date_end
   let issueList = req.body.sprintIssue
 
-  if (!Array.isArray(issueList)) {
+  if (issueList === undefined) {
+    issueList = []
+  } else if (!Array.isArray(issueList)) {
     issueList = [issueList]
   }
 
@@ -115,7 +132,9 @@ app.post(MODIFY_SPRINT_ROUTE, function(req, res) {
   const dateEnd = req.body.date_end
   let issueList = req.body.sprintIssue
 
-  if (!Array.isArray(issueList)) {
+  if (issueList === undefined) {
+    issueList = []
+  } else if (!Array.isArray(issueList)) {
     issueList = [issueList]
   }
 
