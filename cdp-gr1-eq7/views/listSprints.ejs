@@ -28,7 +28,7 @@
         <ul class="list-unstyled">
           <li>
             <div class="card">
-              <h5 class="card-header anchor" role="tab" id="heading<%= sprint.id %>">
+              <h5 class="card-header anchor" <% if(sprint.id === currentSprintId) { %>style="background-color:khaki" <% }%> role="tab" id="heading<%= sprint.id %>">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sprint.id %>" aria-expanded="true"
                   aria-controls="collapse<%= sprint.id %>" class="d-block">
                   <i class="fa fa-chevron-down pull-right">Sprint <%= i %></i>

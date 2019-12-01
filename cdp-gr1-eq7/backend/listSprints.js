@@ -45,12 +45,15 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
     currentProject = result
     db._getAllProjectIssues(projectId).then(projectIssues => {
       db._getAllSprintFromProject(projectId).then(sprints => {
-        res.render(LIST_SPRINTS_VIEW_PATH, {
-          session: sess,
-          listSprints: sprints,
-          listProjects: sess.listProjects,
-          project: currentProject,
-          projectIssues: projectIssues
+        db._getCurrentSprint(projectId).then(currentSprintId => {
+          res.render(LIST_SPRINTS_VIEW_PATH, {
+            session: sess,
+            listSprints: sprints,
+            listProjects: sess.listProjects,
+            project: currentProject,
+            currentSprintId: currentSprintId[0].id,
+            projectIssues: projectIssues
+          })
         })
       })
     })
@@ -61,7 +64,11 @@ app.post(ADD_SPRINT_ROUTE, function(req, res) {
   const objective = req.body.sprintObjective
   const dateBegin = req.body.date_begin
   const dateEnd = req.body.date_end
-  const issueList = req.body.sprintIssue
+  let issueList = req.body.sprintIssue
+
+  if (!Array.isArray(issueList)) {
+    issueList = [issueList]
+  }
 
   db._addSprint(projectId, objective, dateBegin, dateEnd, issueList, -1).then(
     value => {
@@ -106,7 +113,11 @@ app.post(MODIFY_SPRINT_ROUTE, function(req, res) {
   const objective = req.body.sprintObjective
   const dateBegin = req.body.date_begin
   const dateEnd = req.body.date_end
-  const issueList = req.body.sprintIssue
+  let issueList = req.body.sprintIssue
+
+  if (!Array.isArray(issueList)) {
+    issueList = [issueList]
+  }
 
   db._updateSprint(sprintId, objective, dateBegin, dateEnd, issueList).then(
     value => {
