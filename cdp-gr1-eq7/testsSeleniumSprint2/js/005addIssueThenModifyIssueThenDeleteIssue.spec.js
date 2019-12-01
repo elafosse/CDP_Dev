@@ -86,6 +86,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.id("issueName")).click()
     await driver.findElement(By.id("issueName")).sendKeys("I3")
     await driver.findElement(By.id("issuePriority")).click()
+    await driver.wait(until.elementIsVisible(await driver.findElement(By.id("issuePriority"))), 30000)
     {
       const dropdown = await driver.findElement(By.id("issuePriority"))
       await dropdown.findElement(By.xpath("//option[. = 'HIGH']")).click()
