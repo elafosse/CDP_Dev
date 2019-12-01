@@ -46,9 +46,7 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
     db._getAllProjectIssues(result.id).then(issues => {
       issues.forEach(issue => {
         listIssues.push(issue)
-        console.log(issue.difficulty)
       })
-      console.log("a")
       res.render(LIST_ISSUES_VIEW_PATH, {
         session: sess,
         listIssues: listIssues,
@@ -68,13 +66,11 @@ app.post(REMOVE_ISSUE_ROUTE, function(req, res) {
 })
 
 app.post(CREATE_ISSUE_ROUTE, function(req, res) {
-  console.log("b")
   const issueName = req.body.issueName
   const issueDescription = req.body.issueDescription
   const issuePriority = req.body.issuePriority
   const issueDifficulty = req.body.issueDifficulty
 
-  console.log("c")
 
   db._addIssueToProject(
     projectId,
@@ -83,7 +79,6 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
     issuePriority,
     issueDifficulty
   ).then(result => {
-    console.log(issueDifficulty)
     res.redirect('back')
   })
 })
