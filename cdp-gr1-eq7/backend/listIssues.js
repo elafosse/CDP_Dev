@@ -46,6 +46,7 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
     db._getAllProjectIssues(result.id).then(issues => {
       issues.forEach(issue => {
         listIssues.push(issue)
+        console.log(issue.difficulty)
       })
       console.log("a")
       res.render(LIST_ISSUES_VIEW_PATH, {
