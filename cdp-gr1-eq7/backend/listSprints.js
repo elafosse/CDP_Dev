@@ -46,12 +46,17 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
     db._getAllProjectIssues(projectId).then(projectIssues => {
       db._getAllSprintFromProject(projectId).then(sprints => {
         db._getCurrentSprint(projectId).then(currentSprintId => {
+          if (currentSprintId[0] === undefined) {
+            currentSprintId = -1
+          } else {
+            currentSprintId = currentSprintId[0].id
+          }
           res.render(LIST_SPRINTS_VIEW_PATH, {
             session: sess,
             listSprints: sprints,
             listProjects: sess.listProjects,
             project: currentProject,
-            currentSprintId: currentSprintId[0].id,
+            currentSprintId: currentSprintId,
             projectIssues: projectIssues
           })
         })
