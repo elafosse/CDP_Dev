@@ -19,6 +19,7 @@ describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
     await driver.findElement(By.id("username")).sendKeys("Test")
     await driver.findElement(By.id("password")).sendKeys("test")
     await driver.findElement(By.css(".btn-primary")).click()
+    await driver.wait(until.elementLocated(By.linkText("Details")), 30000)
     await driver.findElement(By.linkText("Details")).click()
     await driver.findElement(By.linkText("Issues")).click()
     await driver.findElement(By.linkText("Add Issue")).click()
