@@ -27,7 +27,7 @@ describe('005_youwork', function() {
     await driver.findElement(By.linkText("Add Sprint")).click()
     await driver.findElement(By.id("sprintObjective")).click()
     await driver.findElement(By.id("sprintObjective")).sendKeys("Test")
-    await driver.wait(until.elementIsVisible(await driver.findElement(By.xpath("//div[@id=\'collapseAddSprint\']/div/ul/li[2]/select"))), 30000)
+    await driver.wait(until.elementLocated(By.xpath("//div[@id=\'collapseAddSprint\']/div/ul/li[2]/select")), 30000)
     {
       const dropdown = await driver.findElement(By.xpath("//div[@id=\'collapseAddSprint\']/div/ul/li[2]/select"))
       await dropdown.findElement(By.xpath("//option[. = 'I2']")).click()
