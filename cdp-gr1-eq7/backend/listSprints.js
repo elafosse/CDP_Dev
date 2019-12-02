@@ -61,14 +61,36 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
     db._getAllProjectIssues(projectId).then(projectIssues => {
       db._getAllSprintFromProject(projectId).then(sprints => {
         getCurrentSprintId(sprints).then(currentSprintId => {
-          res.render(LIST_SPRINTS_VIEW_PATH, {
-            session: sess,
-            listSprints: sprints,
-            listProjects: sess.listProjects,
-            project: currentProject,
-            currentSprintId: currentSprintId,
-            projectIssues: projectIssues
-          })
+          db._getIssuesIdsOfSprint(currentSprintId).then(
+            currentSprintIssueIds => {
+              db._getTasksOfIssues(currentSprintIssueIds).then(tasks => {
+                let tasksToDo = []
+                let tasksDoing = []
+                let tasksDone = []
+                for (let i = 0; i < tasks.length; i++) {
+                  if (tasks[i].state === 'To Do') {
+                    tasksToDo.push(tasks[i])
+                  } else if (tasks[i].state === 'Doing') {
+                    tasksDoing.push(tasks[i])
+                  } else {
+                    tasksDone.push(tasks[i])
+                  }
+                }
+
+                res.render(LIST_SPRINTS_VIEW_PATH, {
+                  session: sess,
+                  listSprints: sprints,
+                  listProjects: sess.listProjects,
+                  project: currentProject,
+                  currentSprintId: currentSprintId,
+                  projectIssues: projectIssues,
+                  currentSprintTasksToDo: tasksToDo,
+                  currentSprintTasksDoing: tasksDoing,
+                  currentSprintTasksDone: tasksDone
+                })
+              })
+            }
+          )
         })
       })
     })

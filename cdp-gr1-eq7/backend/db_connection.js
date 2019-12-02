@@ -759,6 +759,58 @@ function _getTaskDependencies(taskId) {
   })
 }
 
+function _getTasksIdsOfIssues(issueIdList) {
+  return new Promise(function(resolve, reject) {
+    if (issueIdList.length === 0) {
+      resolve([])
+    }
+    let sqlIn = '('
+    for (let i = 0; i < issueIdList.length; i++) {
+      if (i === issueIdList.length - 1) {
+        sqlIn = sqlIn.concat(con.escape(issueIdList[i]), ')')
+      } else {
+        sqlIn = sqlIn.concat(con.escape(issueIdList[i]), ',')
+      }
+    }
+    const sql = 'SELECT DISTINCT task_id FROM issue_of_task WHERE issue_id IN '.concat(
+      sqlIn
+    )
+
+    con.query(sql, function(err, result) {
+      if (err) {
+        reject(err)
+        return
+      }
+
+      let id_list = []
+      for (let i = 0; i < result.length; i++) {
+        id_list.push(result[i].task_id)
+      }
+      resolve(id_list)
+    })
+  })
+}
+
+function _getTasksOfIssues(issueIdList) {
+  return new Promise(function(resolve, reject) {
+    _getTasksIdsOfIssues(issueIdList).then(
+      id_list => {
+        const promise_list = []
+        for (let i = 0; i < id_list.length; i++) {
+          const promise = _getTaskById(id_list[i])
+          promise_list.push(promise)
+        }
+        Promise.all(promise_list).then(function(task_list) {
+          resolve(task_list)
+        })
+      },
+      raison => {
+        console.log(raison)
+      }
+    )
+  })
+}
+
 function _updateTaskState(taskId, state) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task SET state = '.concat(state, ' WHERE id = ', taskId)
@@ -1653,5 +1705,6 @@ module.exports = {
   _getCountIssuesLastSprint,
   _getCountTasksStatesFromIssues,
   _getCurrentSprint,
-  _getCountTasksStatesFromSprint
+  _getCountTasksStatesFromSprint,
+  _getTasksOfIssues
 }

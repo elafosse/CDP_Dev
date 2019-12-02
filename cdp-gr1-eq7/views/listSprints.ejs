@@ -28,7 +28,8 @@
         <ul class="list-unstyled">
           <li>
             <div class="card">
-              <h5 class="card-header anchor" <% if(sprint.id === currentSprintId) { %>style="background-color:khaki" <% }%> role="tab" id="heading<%= sprint.id %>">
+              <h5 class="card-header anchor" <% if(sprint.id === currentSprintId) { %>style="background-color:khaki"
+                <% }%> role="tab" id="heading<%= sprint.id %>">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sprint.id %>" aria-expanded="true"
                   aria-controls="collapse<%= sprint.id %>" class="d-block">
                   <i class="fa fa-chevron-down pull-right">Sprint <%= i %></i>
@@ -57,9 +58,68 @@
                           <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %>
                         </a>
                       </p>
+                    
 
                       <% }) %>
 
+                      <% if(sprint.id === currentSprintId) { %>
+
+                    <li class="list-group-item">
+                      <strong> Tasks :</strong>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-4">
+                            To Do
+                            <% currentSprintTasksToDo.forEach(task => { %>
+
+                            <div class="card" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= task.name %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><%= task.description %></h6>
+                              </div>
+                            </div>
+                            <% }) %>
+                          </div>
+                          <div class="col-md-4">
+                            Doing
+                            <% currentSprintTasksDoing.forEach(task => { %>
+
+                            <div class="card" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= task.name %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><%= task.description %></h6>
+                              </div>
+                            </div>
+                            <% }) %>
+                          </div>
+                          <div class="col-md-4">
+                            Done
+                            <% currentSprintTasksDone.forEach(task => { %>
+
+                            <div class="card" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= task.name %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><%= task.description %></h6>
+                              </div>
+                            </div>
+                            <% }) %>
+                            <% var percent = 0; var numberOfTasks = currentSprintTasksToDo.length+currentSprintTasksDoing.length+currentSprintTasksDone.length; %>
+                            <% if( numberOfTasks != 0) {    %>
+                            <% percent = currentSprintTasksDone.length / (numberOfTasks)*100 }%>
+                          </div>
+                        </div>
+                      </div>
+                      </br>
+
+                      <div class="progress">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                          role="progressbar" style="width: <%= percent%>%;" aria-valuenow="25" aria-valuemin="0"
+                          aria-valuemax="100"><%= percent%>%</div>
+                      </div>
+                    </li>
+                    <% } %>
+
+                    <li class="list-group-item">
                       <form action="/deleteSprint" method="post"
                         onsubmit="return confirm('Do you really want to remove this sprint ?')">
                         <input type="text" name="sprintId" class="form-control" id="name" value="<%= sprint.id %>"
@@ -70,6 +130,7 @@
                       <a href="/modifySprint?sprintId=<%= sprint.id %>"
                         class="btn btn-outline-warning float-right">&#9998;</a>
                     </li>
+                  </li>
                   </ul>
                 </div>
               </div>
