@@ -599,10 +599,11 @@ function _addTask(
     )
     con.query(sql, function(err, result) {
       if (err) throw err
-      console.log('New task added')
       const taskId = result.insertId
       _setTaskDependencies(taskId, dependencies).then(
-        _setTaskToMembers(taskId, members).then(_setTaskToIssue(taskId, issues))
+        _setTaskToMembers(taskId, members)
+          .then(_setTaskToIssue(taskId, issues))
+          .then(resolve(taskId))
       )
     })
   })
@@ -1240,7 +1241,6 @@ function _updateSprintRelease(sprint_id, release_id) {
       ';\n'
     )
     con.query(sql, function(err, result) {
-      console.log('Sprint release updated')
       if (err) {
         reject(err)
         return
@@ -1308,7 +1308,7 @@ function _getAllSprintIdsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM sprint WHERE project_id = '.concat(
       con.escape(project_id),
-      'ORDER BY date_begin'
+      ' ORDER BY date_begin'
     )
     con.query(sql, function(err, result) {
       if (err) {
@@ -1519,15 +1519,15 @@ function _getCountIssuesProject(projectId) {
   })
 }
 
-function _getCountIssuesLastSprint(projectId) { 
-  return new Promise(function (resolve, reject) {
+function _getCountIssuesLastSprint(projectId) {
+  return new Promise(function(resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
       projectId,
       "' AND issue.id = issue_of_sprint.issue_id AND issue_of_sprint.sprint_id IN (SELECT id FROM sprint WHERE project_id ='",
-        projectId,
-        "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
-          projectId,
-          "'))"
+      projectId,
+      "' AND date_end IN (SELECT max(date_end) FROM sprint WHERE project_id = '",
+      projectId,
+      "'))"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1537,7 +1537,7 @@ function _getCountIssuesLastSprint(projectId) {
 }
 
 function _getCountTasksStatesFromIssues(issueId) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     let sql = "SELECT issue_of_task.issue_id, count(*) AS total, sum(case when state = 'To Do' then 1 else 0 end) AS totalToDo, sum(case when state = 'Doing' then 1 else 0 end) AS totalDoing, sum(case when state = 'Done' then 1 else 0 end) AS totalDone FROM task, issue_of_task WHERE task.id = issue_of_task.task_id AND issue_of_task.issue_id = '".concat(
       issueId,
       "' GROUP BY issue_of_task.issue_id"
@@ -1550,14 +1550,14 @@ function _getCountTasksStatesFromIssues(issueId) {
 }
 
 function _getCurrentSprint(projectId) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
       projectId,
       "' AND id IN (SELECT id FROM sprint WHERE CURDATE() <= date_end AND project_id = '",
       projectId,
       "') AND id IN (SELECT id FROM sprint WHERE CURDATE() >= date_begin AND project_id = '",
       projectId,
-      "')"  
+      "')"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1567,17 +1567,17 @@ function _getCurrentSprint(projectId) {
 }
 
 function _getCountTasksStatesFromSprint(issueId) {
-  return new Promise(function (resolve, reject) {
-    let sql = "SELECT issue_of_sprint.sprint_id, count(DISTINCT task.id) AS total, ".concat(
-    "sum(DISTINCT case when state = 'To Do' then 1 else 0 end) AS totalToDo, ", 
-    "sum(DISTINCT case when state = 'Doing' then 1 else 0 end) AS totalDoing, ",
-    "sum(DISTINCT case when state = 'Done' then 1 else 0 end) AS totalDone ",
-    "FROM task, issue_of_task, issue_of_sprint ", 
-    "WHERE task.id = issue_of_task.task_id ",
-    "AND issue_of_task.issue_id = issue_of_sprint.issue_id ",
-    "AND issue_of_sprint.sprint_id = '",
-    issueId,
-    "' GROUP BY issue_of_sprint.sprint_id"
+  return new Promise(function(resolve, reject) {
+    let sql = 'SELECT issue_of_sprint.sprint_id, count(DISTINCT task.id) AS total, '.concat(
+      "sum(DISTINCT case when state = 'To Do' then 1 else 0 end) AS totalToDo, ",
+      "sum(DISTINCT case when state = 'Doing' then 1 else 0 end) AS totalDoing, ",
+      "sum(DISTINCT case when state = 'Done' then 1 else 0 end) AS totalDone ",
+      'FROM task, issue_of_task, issue_of_sprint ',
+      'WHERE task.id = issue_of_task.task_id ',
+      'AND issue_of_task.issue_id = issue_of_sprint.issue_id ',
+      "AND issue_of_sprint.sprint_id = '",
+      issueId,
+      "' GROUP BY issue_of_sprint.sprint_id"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
