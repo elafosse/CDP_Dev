@@ -15,6 +15,25 @@ class Sprint {
     this.date_end = date_end
     this.listIssues = listIssues
     this.release = release
+    this.taskToDo = []
+    this.taskDoing = []
+    this.taskDone = []
+    this.numberOfTasks = 0
+  }
+
+  addTaskToDo(task) {
+    this.taskToDo.push(task)
+    this.numberOfTasks++
+  }
+
+  addTaskDoing(task) {
+    this.taskDoing.push(task)
+    this.numberOfTasks++
+  }
+
+  addTaskDone(task) {
+    this.taskDone.push(task)
+    this.numberOfTasks++
   }
 }
 

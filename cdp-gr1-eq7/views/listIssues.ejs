@@ -40,7 +40,7 @@
                 </a>
               </h5>
 
-              <div id="collapse<%=issue.id%>" class="collapse" role="tabpanel" aria-labelledby="heading<%=issue.id%>">
+              <div id="collapse<%=issue.id%>" class="collapse <% if(locals.focusOn && focusOn == issue.id) { %> show <% } %>" role="tabpanel" aria-labelledby="heading<%=issue.id%>">
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">

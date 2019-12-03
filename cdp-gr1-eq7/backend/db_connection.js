@@ -1396,7 +1396,6 @@ function _getSprintById(sprint_id) {
             issue_list,
             -1
           )
-          resolve(sprint)
         } else {
           sprint = new Sprint.Sprint(
             result[0].id,
@@ -1407,8 +1406,23 @@ function _getSprintById(sprint_id) {
             issue_list,
             result[0].release_id
           )
-          resolve(sprint)
         }
+        let issueIdList = []
+        issue_list.forEach(issue => {
+          issueIdList.push(issue.id)
+        })
+        _getTasksOfIssues(issueIdList).then(tasks => {
+          tasks.forEach(task => {
+            if (task.state === 'To Do') {
+              sprint.addTaskToDo(task)
+            } else if (task.state === 'Doing') {
+              sprint.addTaskDoing(task)
+            } else {
+              sprint.addTaskDone(task)
+            }
+          })
+          resolve(sprint)
+        })
       })
     })
   })
@@ -1705,6 +1719,5 @@ module.exports = {
   _getCountIssuesLastSprint,
   _getCountTasksStatesFromIssues,
   _getCurrentSprint,
-  _getCountTasksStatesFromSprint,
-  _getTasksOfIssues
+  _getCountTasksStatesFromSprint
 }

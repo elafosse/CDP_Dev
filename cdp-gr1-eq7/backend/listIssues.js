@@ -40,6 +40,7 @@ let sess
 app.get(LIST_ISSUES_ROUTE, function(req, res) {
   listIssues = []
   projectId = req.query.projectId
+  focusOn = req.query.focusOn
   sess = req.session
   db._getProjectFromProjectId(projectId).then(result => {
     currentProject = result
@@ -51,7 +52,8 @@ app.get(LIST_ISSUES_ROUTE, function(req, res) {
         session: sess,
         listIssues: listIssues,
         listProjects: sess.listProjects,
-        project: currentProject
+        project: currentProject,
+        focusOn: focusOn
       })
     })
   })
@@ -70,7 +72,6 @@ app.post(CREATE_ISSUE_ROUTE, function(req, res) {
   const issueDescription = req.body.issueDescription
   const issuePriority = req.body.issuePriority
   const issueDifficulty = req.body.issueDifficulty
-
 
   db._addIssueToProject(
     projectId,
