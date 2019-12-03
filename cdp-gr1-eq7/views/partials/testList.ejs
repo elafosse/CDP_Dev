@@ -37,7 +37,7 @@
         </li>
         <li class="list-group-item">
           <form action="/removeTest" method="post"
-            onsubmit="return confirm('Voulez-vous vraiment supprimer ce test ?')">
+            onsubmit="return confirm('Do you really want to remove this test ?')">
             <input type="text" name="testIdToRemove" class="form-control" id="testIdToRemove" value="<%= test.id %>"
               hidden>
             <button href="" class="btn btn-outline-danger float-right" formaction="/removeTest">&#x274C;</button>

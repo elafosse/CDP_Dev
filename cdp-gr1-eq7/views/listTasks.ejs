@@ -32,21 +32,21 @@
       <hr>
       <div class="col-9">
         <div class="row">
-          <div class="list-group d-inline-flex w-25 m-2" id="tasks_todo">
-            <p>Task To Do</p>
+          <div class="list-group d-inline-flex col-4" id="tasks_todo">
+            <h2>Task To Do</h2>
 
             <% taskToDo.forEach(task => { %> <%- include partials/taskList.ejs
             %> <% }); %>
           </div>
 
-          <div class="list-group d-inline-flex w-25 m-2" id="tasks_doing">
-            <p>Task Doing</p>
+          <div class="list-group d-inline-flex col-4" id="tasks_doing">
+            <h2>Task Doing</h2>
             <% taskDoing.forEach(task => { %> <%- include partials/taskList.ejs
             %> <% }); %>
           </div>
 
-          <div class="list-group d-inline-flex w-25 m-2" id="tasks_done">
-            <p>Task done</p>
+          <div class="list-group d-inline-flex col-4" id="tasks_done">
+            <h2>Task done</h2>
             <% taskDone.forEach(task => { %> <%- include partials/taskList.ejs
             %> <% }); %>
           </div>

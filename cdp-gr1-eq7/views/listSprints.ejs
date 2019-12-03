@@ -52,18 +52,13 @@
 
                       <strong> Issues :</strong>
                       <% sprint.listIssues.forEach(issue => { %>
-
                       <p>
                         <a
                           href="/listIssues?projectId=<%= project.id + "&focusOn=" + issue.id + "#heading" + issue.id%>">
-
                           <span class="badge badge-primary">I<%= issue.id %><br /></span> <%= issue.name %>
                         </a>
                       </p>
-
-
                       <% }) %>
-
                     <li class="list-group-item">
                       <strong> Tasks :</strong>
                       <div class="container">
@@ -71,7 +66,6 @@
                           <div class="col-md-4">
                             To Do
                             <% sprint.taskToDo.forEach(task => { %>
-
                             <div class="card" style="width: 18rem;">
                               <div class="card-body">
                                 <h5 class="card-title"><%= task.name %></h5>
@@ -83,7 +77,6 @@
                           <div class="col-md-4">
                             Doing
                             <% sprint.taskDoing.forEach(task => { %>
-
                             <div class="card" style="width: 18rem;">
                               <div class="card-body">
                                 <h5 class="card-title"><%= task.name %></h5>
@@ -95,7 +88,6 @@
                           <div class="col-md-4">
                             Done
                             <% sprint.taskDone.forEach(task => { %>
-
                             <div class="card" style="width: 18rem;">
                               <div class="card-body">
                                 <h5 class="card-title"><%= task.name %></h5>
@@ -135,78 +127,77 @@
     </div>
   </div>
   </li>
-  <li>
-    </ul>
-    </div>
+  </ul>
+  </div>
 
-    <% i++}) %>
+  <% i++}) %>
 
-    <p>
-      <a class="btn btn-primary" data-toggle="collapse" href="#collapseAddSprint" role="button" aria-expanded="false"
-        aria-controls="collapseAddSprint">
-        Add Sprint
-      </a>
-    </p>
-    <form action="/addSprint" method="post">
-      <div class="collapse" id="collapseAddSprint">
-        <div id="addNewSprint" class="card form-group">
-          <h5 class="card-header" id="headingAddSprint">
-            <i class="fa fa-chevron-down pull-right"></i>
-            <div class="form-row form-inline">
-              <label class="col-form-label" for="sprintName">
-                New Sprint
-              </label>
-            </div>
-          </h5>
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseAddSprint" role="button" aria-expanded="false"
+      aria-controls="collapseAddSprint">
+      Add Sprint
+    </a>
+  </p>
+  <form action="/addSprint" method="post">
+    <div class="collapse" id="collapseAddSprint">
+      <div id="addNewSprint" class="card form-group">
+        <h5 class="card-header" id="headingAddSprint">
+          <i class="fa fa-chevron-down pull-right"></i>
+          <div class="form-row form-inline">
+            <label class="col-form-label" for="sprintName">
+              New Sprint
+            </label>
+          </div>
+        </h5>
 
-          <div id="collapseAddSprint" class="collapse show" role="tabpanel" aria-labelledby="headingAddSprint">
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  <label class="col-form-label" for="sprintObjective"><strong> Sprint Objective : </strong></label>
-                  <textarea class="form-control" id="sprintObjective" type="text" name="sprintObjective"
-                    placeholder="Objective" required></textarea>
-                </li>
+        <div id="collapseAddSprint" class="collapse show" role="tabpanel" aria-labelledby="headingAddSprint">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <label class="col-form-label" for="sprintObjective"><strong> Sprint Objective : </strong></label>
+                <textarea class="form-control" id="sprintObjective" type="text" name="sprintObjective"
+                  placeholder="Objective" required></textarea>
+              </li>
 
-                <li class="list-group-item">
-                  <label class="col-form-label"><strong> Issues to finish : </strong></label>
-                  <br>
-                  <select multiple class="form-control" id="sprintIssue" name="sprintIssue">
-                    <% projectIssues.forEach(issue => { %>
-                    <option value="<%= issue.id %>"><%= issue.name %></option>
-                    <% }) %>
-                  </select>
-                </li>
+              <li class="list-group-item">
+                <label class="col-form-label"><strong> Issues to finish : </strong></label>
+                <br>
+                <select multiple class="form-control" id="sprintIssue" name="sprintIssue">
+                  <% projectIssues.forEach(issue => { %>
+                  <option value="<%= issue.id %>"><%= issue.name %></option>
+                  <% }) %>
+                </select>
+              </li>
 
 
-                <li class="list-group-item">
-                  <div class="form-group row">
-                    <label for="example-date-input" class="col-2 col-form-label">Sprint start on :</label>
-                    <div class="col-4">
-                      <input class="form-control" type="date" id="date_begin" name="date_begin" required>
-                    </div>
-                    <label for="example-date-input" class="col-2 col-form-label">Sprint end on :</label>
-                    <div class="col-4">
-                      <input class="form-control" type="date" id="date_end" name="date_end" required>
-                    </div>
+              <li class="list-group-item">
+                <div class="form-group row">
+                  <label for="example-date-input" class="col-2 col-form-label">Sprint start on :</label>
+                  <div class="col-4">
+                    <input class="form-control" type="date" id="date_begin" name="date_begin" required>
                   </div>
-                </li>
+                  <label for="example-date-input" class="col-2 col-form-label">Sprint end on :</label>
+                  <div class="col-4">
+                    <input class="form-control" type="date" id="date_end" name="date_end" required>
+                  </div>
+                </div>
+              </li>
 
-                <li class="list-group-item">
-                  <button type="submit" href="" class="btn btn-outline-success float-right">
-                    &#10004;
-                  </button>
-                </li>
+              <li class="list-group-item">
+                <button type="submit" href="" class="btn btn-outline-success float-right">
+                  &#10004;
+                </button>
+              </li>
 
-              </ul>
+            </ul>
 
-            </div>
           </div>
         </div>
       </div>
-    </form>
     </div>
-    </div>
+  </form>
+  </div>
+  </div>
 </body>
 
 </html>

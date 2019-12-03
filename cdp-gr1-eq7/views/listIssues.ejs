@@ -40,7 +40,9 @@
                 </a>
               </h5>
 
-              <div id="collapse<%=issue.id%>" class="collapse <% if(locals.focusOn && focusOn == issue.id) { %> show <% } %>" role="tabpanel" aria-labelledby="heading<%=issue.id%>">
+              <div id="collapse<%=issue.id%>"
+                class="collapse <% if(locals.focusOn && focusOn == issue.id) { %> show <% } %>" role="tabpanel"
+                aria-labelledby="heading<%=issue.id%>">
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -49,7 +51,7 @@
                         <%= issue.description %>
                       </p>
                       <form action="/removeIssue?projectId=<% project.id%>" method="post"
-                        onsubmit="return confirm('Voulez-vous vraiment supprimer cette issue ?')">
+                        onsubmit="return confirm('Do you really want to remove this issue ?')">
                         <input type="text" name="issueId" class="form-control" id="name" value="<%= issue.id %>"
                           hidden />
                         <button type="submit" class="btn btn-outline-danger float-right"
