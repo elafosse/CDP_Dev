@@ -78,18 +78,16 @@ app.get(PROJECT_SETTINGS_ROUTE, function(req, res) {
       if (admins.indexOf(sess.username) !== -1) {
         db._getMembersOfProject(projectId).then(members => {
           oldMembers = members
-          db._deleteMembersFromProject(projectId, oldMembers).then(resul => {
-            creatorUsername = members.pop()
-            newMembers = oldMembers
-            res.render(PROJECT_SETTINGS_VIEW_PATH, {
-              projectName: projectName,
-              projectDescription: projectDescription,
-              userGitHub: userGitHub,
-              repositoryGitHub: repositoryGitHub,
-              project: sess.project,
-              session: sess,
-              listMembers: newMembers
-            })
+          creatorUsername = members.pop()
+          newMembers = oldMembers
+          res.render(PROJECT_SETTINGS_VIEW_PATH, {
+            projectName: projectName,
+            projectDescription: projectDescription,
+            userGitHub: userGitHub,
+            repositoryGitHub: repositoryGitHub,
+            project: sess.project,
+            session: sess,
+            listMembers: newMembers
           })
         })
       }
@@ -139,6 +137,8 @@ app.post(REMOVE_MEMBER_ROUTE, function(req, res) {
 
 app.post(UPDATE_PROJECT_ROUTE, function(req, res) {
   projectName = req.body.projectName
+
+  console.log(projectName)
   projectDescription = req.body.projectDescription
   userGitHub = req.body.userGitHub
   repositoryGitHub = req.body.repositoryGitHub
@@ -159,11 +159,16 @@ app.post(UPDATE_PROJECT_ROUTE, function(req, res) {
     userGitHub,
     repositoryGitHub
   ).then(p => {
-    db._inviteMembersToProject(projectId, newMembers, areAdmins).then(
-      db._getProjectFromProjectId(projectId).then(updatedProject => {
-        res.redirect(PROJECT_OVERVIEW_REDIRECT_URL + projectId)
+    db._getMembersOfProject(projectId).then(members => {
+      oldMembers = members
+      db._deleteMembersFromProject(projectId, oldMembers).then(resul => {
+        db._inviteMembersToProject(projectId, newMembers, areAdmins).then(
+          db._getProjectFromProjectId(projectId).then(updatedProject => {
+            res.redirect(PROJECT_OVERVIEW_REDIRECT_URL + projectId)
+          })
+        )
       })
-    )
+    })
   })
 })
 
