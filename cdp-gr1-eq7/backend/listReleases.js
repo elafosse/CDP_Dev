@@ -11,6 +11,7 @@ const GitHub = require('github-api')
 const githublogin = require('./gitHubLogin')
 const modifyDoc = require('./modifyDoc')
 const modifySprintOfRelease = require('./modifySprintOfRelease')
+const Markdown = require('markdown-it')
 
 /* USE THE REQUIRES */
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -49,6 +50,11 @@ let repositoryGitHub
 let sess
 
 /* FUNCTIONS */
+
+function renderDescription(release) {
+  const md = new Markdown()
+  return md.render(release.body)
+}
 
 app.get(LIST_RELEASE_ROUTE, function(req, res) {
   projectId = req.query.projectId
@@ -94,7 +100,8 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
               listReleases: listReleases,
               project: sess.project,
               listSprints: listSprints,
-              listDoc: listDoc
+              listDoc: listDoc,
+              renderDescription: renderDescription
             })
           })
         })
@@ -106,7 +113,8 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
           project: sess.project,
           listProjects: sess.listProjects,
           listSprints: listSprints,
-          listDoc: listDoc
+          listDoc: listDoc,
+          renderDescription: renderDescription
         })
       })
   })

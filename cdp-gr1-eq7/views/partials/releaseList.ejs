@@ -12,7 +12,9 @@
       <ul class="list-group text-black list-group-flush">
         <li class="list-group-item">
           <strong> Description:</strong>
-          <p><%= release.body %></p>
+          <p>
+            <%- renderDescription(release) -%>
+          </p>
         </li>
         <li class="list-group-item"><strong> Sprint:</strong>
           <a href="/modifySprintOfRelease?projectId=<%= project.id %>&releaseId=<%= release.id %>"
