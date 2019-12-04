@@ -23,20 +23,24 @@
         </button>
       </div>
       <div class="modal-body">
-        <p><%= task.description %></p>
-        <p>Estimated time : <%= task.realisation_time %></p>
-        <p>Definition of done : <%= task.dod %></p>
+        <p><strong>Description : </strong><%= task.description %></p>
+        <hr>
+        <p><strong>Estimated time : </strong><%= task.realisation_time %> days</p>
+        <hr>
+        <p><strong>Definition of done : </strong> <%= task.dod %></p>
+        <hr>
         <% 
         let year = task.start_date.getFullYear()
         let month = task.start_date.getMonth()
         let day = task.start_date.getDate()
         %>
-        <p>Start date : <%= day %>/<%=month%>/<%=year%></p>
-        <p>Assigned members :
+        <p><strong> Start date : </strong> <%= day %>/<%=month%>/<%=year%></p>
+        <hr>
+        <p><strong> Assigned members : </strong>
           <% if(task.members){
           switch (task.members.length) {
             case 0:
-              %>Aucun<%
+              %>None<%
               break;
             case 1:
               %><%=task.members[0]%><%
@@ -52,11 +56,11 @@
           }
         }%>
         </p>
-        <p>Related issues :
+        <p><strong>Related issues : </strong>
           <% if(task.issues){
           switch (task.issues.length) {
             case 0:
-              %>Aucune<%
+              %>None<%
               break;
             case 1:
               %>I<%=task.issues[0].id%> - <%=task.issues[0].name%><%
@@ -72,22 +76,17 @@
           }
         }%>
         </p>
-        <p>Required tasks :
+        <p><strong>Required tasks : </strong>
           <% if(task.dependancies){
           switch (task.dependancies.length) {
             case 0:
-              %>Aucune<%
-              break;
-            case 1:
-              %><%=task.dependancies[0]%><%
-            default:
-              if(task.dependancies.length > 1){%>
-          <ul><%
-                for(i = 0; i < task.dependancies.length; i++) {
+              %>None<%
+            default:%>
+          <ul>
+               <% for(i = 0; i < task.dependancies.length; i++) {
                   %><li><%=task.dependancies[i].taskId%> - <%=task.dependancies[i].name%></li><%
                   }
                 %></ul><%
-                }
               break;
           }
         }%>
