@@ -1246,6 +1246,16 @@ function _getChecklistItemById(itemId) {
 
 // ================ Tests ================
 
+/**
+ * Returns a promise that add a test in the database
+ * @param {*} projectId The id of the project related to the test
+ * @param {*} name The name of the test
+ * @param {*} description The description of the test
+ * @param {*} expected_result The expected result of the test
+ * @param {*} last_version_validated The last version the test passed
+ * @param {*} state The current state of the test
+ * @returns new Promise, which returns the id of the newly added test
+ */
 function _addTest(
   projectId,
   name,
@@ -1282,6 +1292,11 @@ function _addTest(
   })
 }
 
+/**
+ * Returns a promise that get from the database the informations regarding a test
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a Test obejct
+ */
 function _getTestById(test_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesOfTest(test_id).then(
@@ -1309,6 +1324,12 @@ function _getTestById(test_id) {
   })
 }
 
+/**
+ * Returns a promise that links a test to a list of issues in the database
+ * @param {*} test_id The id of the test
+ * @param {*} issueId_list The list of issue ids
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setIssuesToTest(test_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -1332,6 +1353,11 @@ function _setIssuesToTest(test_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of issues linked to a test in the database
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a list of issue ids
+ */
 function _getIssuesIdsOfTest(test_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_test WHERE test_id = '.concat(
@@ -1348,6 +1374,11 @@ function _getIssuesIdsOfTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database all the informations related to the issues linked to a specific test
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getIssuesOfTest(test_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfTest(test_id).then(
@@ -1368,6 +1399,11 @@ function _getIssuesOfTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise that delete a test from the database
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a string 'Test removed' if it succeeds
+ */
 function _deleteTest(test_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM test WHERE id = '.concat(con.escape(test_id))
@@ -1378,6 +1414,16 @@ function _deleteTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise which modify the informations related to a specific test in the database
+ * @param {*} testId The id of the test
+ * @param {*} name The new name of the test
+ * @param {*} description The new description of the test
+ * @param {*} expected_result The new expected result of the test
+ * @param {*} last_version_validated The new last version this test was validated
+ * @param {*} state The new state of the test
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyTest(
   testId,
   name,
@@ -1417,6 +1463,11 @@ function _modifyTest(
   })
 }
 
+/**
+ * Returns a promise that gets every test id related to a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns the list of test ids
+ */
 function _getAllTestsIdsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM test WHERE project_id = '.concat(
@@ -1433,6 +1484,11 @@ function _getAllTestsIdsFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get all informations related to the tests of a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Test objects
+ */
 function _getAllTestsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllTestsIdsFromProject(project_id).then(
@@ -1453,6 +1509,12 @@ function _getAllTestsFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that update the state of a test in the database
+ * @param {*} testId The id of the test
+ * @param {*} state The new state of the test
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateTestState(testId, state) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE test SET state = '.concat(
