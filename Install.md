@@ -1,4 +1,4 @@
-*(dernière modification : 3/12/2019)*
+*(dernière modification : 4/12/2019)*
 
 Installation
 ============
@@ -9,13 +9,15 @@ Pre-requis
 * NodeJS v10
 * NPM v6
 
-L'application peut fonctionner avec d'autres versions mais nous ne fournissons aucune garantie à ce propos.
+Ceux-ci ne sont pas necessaire si vous décidez de passer par Docker pour l'installation.
 
 Installation
 ------------
 
-Notre dockerfile ne fonctionnant pas pour le moment, la procedure pour installer l'application est :
-* `git clone`
+Pour Docker :
+
+Pour l'installation, en utilisant la dernière release :
+
 * Dans CDP_dev : `npm install`
 
 Si l'installation s'est bien déroulée, vous pourrez démarrer l'application à l'aide de `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`. Le message `App listening on port # !` apparaitra alors sur le terminal.
@@ -23,7 +25,9 @@ Si l'installation s'est bien déroulée, vous pourrez démarrer l'application à
 Lancement de l'application
 --------------------------
 
-Pour executer l'application, il suffit de lancer la commande `node` sur le fichier `initApp.js`
+Sous Docker, l'application est lancée automatiquement avec le container.
+
+Autrement, pour executer l'application , il suffit de lancer la commande `node` sur le fichier `initApp.js`
 
 `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`
 
