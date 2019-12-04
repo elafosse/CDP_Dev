@@ -1724,7 +1724,13 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
  */
 function _deleteSprint(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM sprint WHERE id = '.concat(con.escape(id))
+    const sql = "DELETE FROM issue_of_sprint WHERE sprint_id='".concat(
+      sprintId,
+      "';",
+      "DELETE FROM sprint WHERE id ='",
+      sprintId,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
