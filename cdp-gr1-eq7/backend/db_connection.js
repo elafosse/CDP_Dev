@@ -1548,6 +1548,16 @@ _getAllSprintFromProject(3).then(
 
 */
 
+/**
+ * Returns a promise that add a sprint into the database
+ * @param {*} project_id The id of the project related to the sprint
+ * @param {*} objective The objective of the sprint
+ * @param {*} date_begin The date the sprint begins
+ * @param {*} date_end The date the sprint ends
+ * @param {*} issue_list The list of issues of the sprint
+ * @param {*} release_id The id of the release of the sprint
+ * @returns new Promise, which returns the id of the newly added sprint
+ */
 function _addSprint(
   project_id,
   objective,
@@ -1581,6 +1591,15 @@ function _addSprint(
   })
 }
 
+/**
+ * Returns a promise that update a sprint informations in the database
+ * @param {*} sprint_id The id of the sprint
+ * @param {*} objective The new objective of the sprint
+ * @param {*} date_begin The new date the sprint will begin
+ * @param {*} date_end The new date the sprint will end
+ * @param {*} issue_list The new list of issue linked
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE sprint SET'.concat(
@@ -1608,6 +1627,12 @@ function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
   })
 }
 
+/**
+ * Returns a promise that update the release of a sprint in the database
+ * @param {*} sprint_id The id of the sprint
+ * @param {*} release_id The id of the release
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateSprintRelease(sprint_id, release_id) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE sprint SET'.concat(
@@ -1627,6 +1652,12 @@ function _updateSprintRelease(sprint_id, release_id) {
   })
 }
 
+/**
+ * Returns a promise that actualise a list of issues to a sprint in the database (DELETE existing ones then INSERT current ones) 
+ * @param {*} sprint_id The id of a sprint
+ * @param {*} issueId_list The list of issue ids
+ * @returns new Promise, which returns a string 'Issues linked to sprint' if it succeeds
+ */
 function _setIssuesToSprint(sprint_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -1651,6 +1682,11 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that delete a sprint from the database
+ * @param {*} id The id of the sprint
+ * @returns new Promise, which returns 'Project Deleted' if it succeeds
+ */
 function _deleteSprint(id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM sprint WHERE id = '.concat(con.escape(id))
@@ -1661,6 +1697,11 @@ function _deleteSprint(id) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations regarding the sprints of a specific project in the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Sprint objects
+ */
 function _getAllSprintFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllSprintIdsOfProject(project_id).then(
@@ -1681,6 +1722,11 @@ function _getAllSprintFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get every sprint if related to a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of sprint ids
+ */
 function _getAllSprintIdsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM sprint WHERE project_id = '.concat(
@@ -1701,6 +1747,11 @@ function _getAllSprintIdsOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get all the information of a specific sprint from the database
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns the id of a sprint
+ */
 function _getSprintById(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM sprint WHERE id = '.concat(con.escape(sprint_id))
@@ -1753,6 +1804,11 @@ function _getSprintById(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database every ids related to the issues of a specific sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of issue ids
+ */
 function _getIssuesIdsOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_sprint WHERE sprint_id = '.concat(
@@ -1769,6 +1825,11 @@ function _getIssuesIdsOfSprint(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database every informations related to the issues of a specific sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getIssuesOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfSprint(sprint_id).then(
@@ -1789,6 +1850,11 @@ function _getIssuesOfSprint(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database the release id of a sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of release ids
+ */
 function _getReleaseIdOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT release_id FROM issue_of_sprint WHERE sprint_id = '.concat(
