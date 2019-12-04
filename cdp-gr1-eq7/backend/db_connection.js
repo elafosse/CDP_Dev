@@ -1990,6 +1990,11 @@ function _deleteDoc(release_id) {
 
 // ================ Overview ================
 
+/**
+ * Returns a promise that gets from the database the amount of tasks related to every issue
+ * @param {*} projectId The id of a project
+ * @returns new Project, which returns the result of the query 
+ */
 function _getCountIssuesProject(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue WHERE issue.project_id ='".concat(
@@ -2003,6 +2008,11 @@ function _getCountIssuesProject(projectId) {
   })
 }
 
+/**
+ * Returns a promise that gets from the database the amount of issues related to the last sprint
+ * @param {*} projectId The id of the project
+ * @returns new Promise, which return the result of the query 
+ */
 function _getCountIssuesLastSprint(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
@@ -2020,6 +2030,11 @@ function _getCountIssuesLastSprint(projectId) {
   })
 }
 
+/**
+ * Return a promise that get from the database the amount of task of an issue by each state
+ * @param {*} issueId The id of the issue
+ * @returns new Promise, which returns the result of the query (issueId, total, totalToDo, totalDoing, totalDone) 
+ */
 function _getCountTasksStatesFromIssues(issueId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT issue_of_task.issue_id, count(*) AS total, sum(case when state = 'To Do' then 1 else 0 end) AS totalToDo, sum(case when state = 'Doing' then 1 else 0 end) AS totalDoing, sum(case when state = 'Done' then 1 else 0 end) AS totalDone FROM task, issue_of_task WHERE task.id = issue_of_task.task_id AND issue_of_task.issue_id = '".concat(
@@ -2033,6 +2048,11 @@ function _getCountTasksStatesFromIssues(issueId) {
   })
 }
 
+/**
+ * Returns a promise which returns the id of the current sprint of a project
+ * @param {*} projectId The id of a project
+ * @returns new Promise, which returns the result of the query
+ */
 function _getCurrentSprint(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
@@ -2050,7 +2070,12 @@ function _getCurrentSprint(projectId) {
   })
 }
 
-function _getCountTasksStatesFromSprint(issueId) {
+/**
+ * Returns a promise that get from the database the amount of tasks in an sprint and the amount of task in each state for a sprint  
+ * @param {*} sprintId The id of the sprint
+ * @returns new Promise, which returns the result of the query (sprintId, total, totalToDo, totalDoing, totalDone) 
+ */
+function _getCountTasksStatesFromSprint(sprintId) {
   return new Promise(function(resolve, reject) {
     let sql = 'SELECT issue_of_sprint.sprint_id, count(DISTINCT task.id) AS total, '.concat(
       "sum(DISTINCT case when state = 'To Do' then 1 else 0 end) AS totalToDo, ",
@@ -2060,7 +2085,7 @@ function _getCountTasksStatesFromSprint(issueId) {
       'WHERE task.id = issue_of_task.task_id ',
       'AND issue_of_task.issue_id = issue_of_sprint.issue_id ',
       "AND issue_of_sprint.sprint_id = '",
-      issueId,
+      sprintId,
       "' GROUP BY issue_of_sprint.sprint_id"
     )
     con.query(sql, function(err, result) {
