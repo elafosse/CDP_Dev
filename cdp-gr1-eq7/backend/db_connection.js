@@ -11,10 +11,11 @@ const Doc = require('./classes/Doc')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
 var con = mysql.createConnection({
-  host: 'www.remotemysql.com',
-  user: 'wjJ627V9qY',
-  database: 'wjJ627V9qY',
-  password: 'qpxKOx6Pe8',
+  host: 'mysql',
+  port: '3306',
+  user: 'root',
+  database: 'scrumhelper',
+  password: 'rootpassword',
   multipleStatements: true
 })
 

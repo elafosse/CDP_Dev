@@ -3,7 +3,23 @@
 Installation
 ============
 
-Pre-requis
+Installation
+------------
+
+Installation via docker :
+
+* `docker-compose build`
+
+Installation sans docker (necessite des pré-requis) :
+
+* Récupérer la (dernière) release
+* Dans CDP_dev : `npm install`
+
+Si l'installation s'est bien déroulée, vous pourrez démarrer l'application à l'aide de `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`. 
+
+Le message `App listening on port # !` apparaissant sur le terminal confirmera que l'application est bien lancée.
+
+Pre-requis (pour l'installation sans docker)
 ----------
 
 * NodeJS v10
@@ -11,19 +27,14 @@ Pre-requis
 
 L'application peut fonctionner avec d'autres versions mais nous ne fournissons aucune garantie à ce propos.
 
-Installation
-------------
-
-Notre dockerfile ne fonctionnant pas pour le moment, la procedure pour installer l'application est :
-* `git clone`
-* Dans CDP_dev : `npm install`
-
-Si l'installation s'est bien déroulée, vous pourrez démarrer l'application à l'aide de `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`. Le message `App listening on port # !` apparaitra alors sur le terminal.
-
 Lancement de l'application
 --------------------------
 
-Pour executer l'application, il suffit de lancer la commande `node` sur le fichier `initApp.js`
+Lancer l'application avec Docker :
+
+* `docker-compose up`
+
+Pour executer l'application sans Docker, il suffit de lancer la commande `node` sur le fichier `initApp.js`
 
 `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`
 
@@ -35,6 +46,7 @@ Pour modifier le port sur lequel s'execute l'application il suffit, dans le fich
 
 **Modification de la base de donnée :**
 La connexion à la base de donnée est configuée au début du fichier `cdp-gr1-eq7/backend/db_connection.js` dans la variable `con`. Les informations modifiables sont les suivantes :
+
 * host : Adresse de la base de donnée
 * port : Numéro du port utilisé pour acceder à la base de donnée
 * database : Nom de la base de donnée à utiliser
