@@ -4,7 +4,7 @@
   "description": "",
   "main": "initApp.js",
   "scripts": {
-    "test": "mocha cdp-gr1-eq7/tests/unitTests"
+    "test": "mocha cdp-gr1-eq7/tests/unitTests --exit"
   },
   "author": "",
   "license": "ISC",
