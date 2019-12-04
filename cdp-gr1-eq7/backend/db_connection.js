@@ -1130,6 +1130,13 @@ function _getIssuesOfTask(task_id) {
 
 // ================ Checklist ================
 
+/**
+ * Returns a promise that add in the database a checklist for a task.
+ * @param {*} taskId The id of the task
+ * @param {*} description The description of the checklist
+ * @param {*} isDone The state of the checklist
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskChecklist(taskId, description, isDone) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO task_checklist (task_id, description, is_done) VALUES ('.concat(
@@ -1145,11 +1152,17 @@ function _setTaskChecklist(taskId, description, isDone) {
         reject(err)
         return
       }
-      resolve('Task assigned to members')
+      resolve('Chechlist assigned to the task')
     })
   })
 }
 
+/**
+ * Returns a promise that modify the description of a checklist in the database
+ * @param {*} checklistId The id of the checklist
+ * @param {*} description The new description of the checklist
+ * @returns new Promise, which returns 'Chechlist modified' if it succeeds
+ */
 function _modifyTaskDescription(checklistId, description) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task_checklist SET '.concat(
@@ -1163,11 +1176,17 @@ function _modifyTaskDescription(checklistId, description) {
         reject(err)
         return
       }
-      resolve('Task modified')
+      resolve('Checklist modified')
     })
   })
 }
 
+/**
+ * Returns a promise which modify the state of a checklist in the database
+ * @param {*} checklistId The id of the checklist
+ * @param {*} isDone The new state of the checklist
+ * @returns new Promise, which returns the number of affected entries
+ */
 function _modifyTaskState(checklistId, isDone) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task_checklist SET '.concat(
@@ -1183,6 +1202,11 @@ function _modifyTaskState(checklistId, isDone) {
   })
 }
 
+/**
+ * Returns a promise that get the checklists of a task in the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the checklists ids and descriptions
+ */
 function _getTaskChecklist(task_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task_checklist WHERE task_id = '.concat(
@@ -1199,6 +1223,11 @@ function _getTaskChecklist(task_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database an item of a checklist
+ * @param {*} itemId The id of the item
+ * @returns new Promise, which returns the informations of the intems (ids, descriptions, state)
+ */
 function _getChecklistItemById(itemId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task_checklist WHERE id = '.concat(
