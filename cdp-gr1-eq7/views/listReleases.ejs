@@ -50,6 +50,7 @@
           <a class="btn btn-primary" href="/gitHubLogin?projectId=<%= project.id %>">SignIn in GitHub</a>
         </div>
 
+        <% if (isAdmin) { %>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
           <p>
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseSetGitHub" role="button"
@@ -86,6 +87,7 @@
             </div>
           </form>
         </div>
+        <% } %>
       </div>
     </div>
   </div>

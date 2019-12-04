@@ -45,6 +45,7 @@ let listSprints = []
 
 let projectId
 let project
+let isAdmin = Boolean(false)
 let userGitHub
 let repositoryGitHub
 let sess
@@ -63,6 +64,7 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
   listReleases = []
   listDoc = []
   listSprints = []
+  isAdmin = Boolean(false)
 
   userGitHub = ''
   repositoryGitHub = ''
@@ -90,18 +92,23 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
       .listReleases(null)
       .then(list => {
         listReleases = list.data
-
-        db._getAllSprintFromProject(projectId).then(sprints => {
-          listSprints = sprints
-          db._getDocsFromReleases(listReleases).then(result => {
-            listDoc = result
-            res.render(LIST_RELEASE_VIEW_PATH, {
-              session: sess,
-              listReleases: listReleases,
-              project: sess.project,
-              listSprints: listSprints,
-              listDoc: listDoc,
-              renderDescription: renderDescription
+        db._getAdminsOfProject(projectId).then(admins => {
+          if (admins.indexOf(sess.username) !== -1) {
+            isAdmin = Boolean(true)
+          }
+          db._getAllSprintFromProject(projectId).then(sprints => {
+            listSprints = sprints
+            db._getDocsFromReleases(listReleases).then(result => {
+              listDoc = result
+              res.render(LIST_RELEASE_VIEW_PATH, {
+                session: sess,
+                listReleases: listReleases,
+                project: sess.project,
+                listSprints: listSprints,
+                listDoc: listDoc,
+                renderDescription: renderDescription,
+                isAdmin: isAdmin
+              })
             })
           })
         })
@@ -114,7 +121,8 @@ app.get(LIST_RELEASE_ROUTE, function(req, res) {
           listProjects: sess.listProjects,
           listSprints: listSprints,
           listDoc: listDoc,
-          renderDescription: renderDescription
+          renderDescription: renderDescription,
+          isAdmin: isAdmin
         })
       })
   })
