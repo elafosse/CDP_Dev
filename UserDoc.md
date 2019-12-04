@@ -27,7 +27,7 @@ Pour créer un compte :
 
 1. Rendez vous sur l'accueil en cliquant sur **ScrumHelper** en haut à gauche
 2. Cliquez sur **Sign Up** en haut à droite de la page
-3. Entrez un nom d'utilisateur <p style="color:red">\*</p>
+3. Entrez un nom d'utilisateur <span style="color:red">\*</span>
 4. Entrez un mot de passe <span style="color:red">\*</span>
 5. Confirmez le mot de passe <span style="color:red">\*</span>
 6. Cliquez sur le bouton **Sign Up** en bas de la page
