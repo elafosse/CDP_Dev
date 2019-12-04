@@ -98,11 +98,49 @@ function _modifyProject(
  */
 function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM project WHERE id = '.concat(con.escape(id))
-    con.query(sql, function(err, result) {
+    let promiseList = []
+    let sql = "DELETE FROM project_team WHERE project_id='".concat(
+      id,
+      "'; "
+    )
+    promiseList.push(_getAllProjectIssues(id).then(issuesId => {
+      if(issuesId){
+        for(let i = 0; i < issuesId.length; i++){
+          promiseList.push(_deleteIssue(issuesId[i].id))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllTasksIdsByProject(id).then(tasksId => {
+      if(tasksId){
+        for(let i = 0; i < tasksId.length; i++){
+          promiseList.push(_deleteTask(tasksId[i]))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllSprintIdsOfProject(id).then(sprintsId => {
+      if(sprintsId)
+      {for(let i = 0; i < sprintsId.length; i++){
+        promiseList.push(_deleteSprint(sprintsId[i]))
+      }}
+    })
+    )
+
+    promiseList.push(_getAllTestsIdsFromProject(id).then(testsId => {
+      if(testsId){for(let i = 0; i < testsId.length; i++){
+        promiseList.push(_deleteTest(testsId[i]))
+      }}
+    })
+    )
+    sql.concat("DELETE FROM project WHERE id = '",id),"';"
+    Promise.all(promiseList).then(con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
     })
+    )
   })
 }
 
@@ -1445,9 +1483,10 @@ function _deleteTest(test_id) {
   return new Promise(function(resolve, reject) {
     const sql = "DELETE FROM issue_of_test WHERE test_id ='".concat(
       test_id,
-      "';",
+      "'; ",
       "DELETE FROM test WHERE id ='",
-      test_id
+      test_id,
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1732,10 +1771,10 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
 function _deleteSprint(id) {
   return new Promise(function(resolve, reject) {
     const sql = "DELETE FROM issue_of_sprint WHERE sprint_id='".concat(
-      sprintId,
+      id,
       "';",
       "DELETE FROM sprint WHERE id ='",
-      sprintId,
+      id,
       "';"
     )
     con.query(sql, function(err, result) {
