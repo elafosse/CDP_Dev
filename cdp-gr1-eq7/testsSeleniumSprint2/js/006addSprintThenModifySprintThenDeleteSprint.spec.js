@@ -30,7 +30,6 @@ describe('006_addSprintThenModifySprintThenDeleteSprint', function() {
     await driver.findElement(By.css("option:nth-child(1)")).click()
     await driver.findElement(By.id("issueDifficulty")).sendKeys("1")
     await driver.findElement(By.id("issueDifficulty")).click()
-    await driver.wait(until.elementIsVisible(await driver.findElement(By.css(".float-right"))), 30000)
     await driver.findElement(By.css(".float-right")).click()
     await driver.findElement(By.linkText("Add Issue")).click()
     await driver.findElement(By.id("issueName")).click()

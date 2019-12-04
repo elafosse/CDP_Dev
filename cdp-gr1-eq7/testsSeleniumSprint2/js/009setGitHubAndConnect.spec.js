@@ -2,7 +2,7 @@
 const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
-describe('endDeleteAllProjects', function() {
+describe('009_setGitHubAndConnect', function() {
   this.timeout(30000)
   let driver
   let vars
@@ -13,23 +13,24 @@ describe('endDeleteAllProjects', function() {
   afterEach(async function() {
     await driver.quit();
   })
-  it('endDeleteAllProjects', async function() {
+  it('009_setGitHubAndConnect', async function() {
     await driver.get("http://localhost:3000/")
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")
-    await driver.findElement(By.css("form")).click()
+    await driver.findElement(By.css(".form-group:nth-child(2)")).click()
     await driver.findElement(By.id("password")).click()
     await driver.findElement(By.id("password")).sendKeys("test")
     await driver.findElement(By.css(".btn-primary")).click()
     await driver.findElement(By.linkText("Details")).click()
-    await driver.findElement(By.css(".nav-link:nth-child(2) > .pl-3")).click()
-    await driver.findElement(By.css(".mb-1")).click()
-    await driver.findElement(By.css(".btn-secondary:nth-child(2)")).click()
-    await driver.switchTo().alert().accept()
-    await driver.findElement(By.linkText("Manage Projects")).click()
-    await driver.findElement(By.css(".btn-danger")).click()
-    await driver.switchTo().alert().accept()
-    await driver.findElement(By.linkText("Manage Projects")).click()
+    await driver.findElement(By.css(".nav-link:nth-child(4) > .pl-3")).click()
+    await driver.findElement(By.linkText("Set GitHub")).click()
+    await driver.findElement(By.id("userGitHub")).click()
+    await driver.findElement(By.id("userGitHub")).click()
+    await driver.findElement(By.id("userGitHub")).sendKeys("elafosse")
+    await driver.findElement(By.id("repositoryGitHub")).click()
+    await driver.findElement(By.id("repositoryGitHub")).sendKeys("CDP_Tests")
+    await driver.findElement(By.css(".float-right")).click()
+    await driver.findElement(By.css(".btn-outline-success")).click()
     await driver.findElement(By.name("signout")).click()
   })
 })

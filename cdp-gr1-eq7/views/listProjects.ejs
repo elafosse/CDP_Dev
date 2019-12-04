@@ -54,9 +54,9 @@
                     <li class="list-inline-item">
                       <% if (session.username == project.admin) { %>
                       <form action="/removeProject" method="post"
-                        onsubmit="return confirm('Do you really want to remove this project ?')">
-                        <input type="text" name="projectId" class="form-control" id="name" value="<%= project.id %>"
-                          hidden>
+                        onsubmit="return confirm('Do you really want to remove this project ?')" id="rmProject">
+                        <input type="text" name="projectId" class="form-control" id="projectId"
+                          value="<%= project.id %>" hidden>
                         <button type="submit" class="btn btn-danger" formaction="/removeProject">Delete</button>
                       </form>
                       <% } %>

@@ -40,7 +40,7 @@ let sess
 app.get(LIST_ISSUES_ROUTE, function(req, res) {
   listIssues = []
   projectId = req.query.projectId
-  focusOn = req.query.focusOn
+  const focusOn = req.query.focusOn
   sess = req.session
   db._getProjectFromProjectId(projectId).then(result => {
     currentProject = result

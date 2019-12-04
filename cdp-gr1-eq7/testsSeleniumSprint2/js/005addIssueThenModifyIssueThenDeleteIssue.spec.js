@@ -2,7 +2,7 @@
 const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
-describe('005_AddIssueThenModifyIssueThenDeleteIssue', function() {
+describe('005_addIssueThenModifyIssueThenDeleteIssue', function() {
   this.timeout(30000)
   let driver
   let vars
@@ -13,7 +13,7 @@ describe('005_AddIssueThenModifyIssueThenDeleteIssue', function() {
   afterEach(async function() {
     await driver.quit();
   })
-  it('005_AddIssueThenModifyIssueThenDeleteIssue', async function() {
+  it('005_addIssueThenModifyIssueThenDeleteIssue', async function() {
     await driver.get("http://localhost:3000/")
     await driver.findElement(By.linkText("Sign In")).click()
     await driver.findElement(By.id("username")).sendKeys("Test")

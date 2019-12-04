@@ -10,6 +10,14 @@ const Sprint = require('./classes/Sprint')
 const Doc = require('./classes/Doc')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
+/*var con = mysql.createConnection({
+  host: 'www.remotemysql.com',
+  user: 'wjJ627V9qY',
+  database: 'wjJ627V9qY',
+  password: 'qpxKOx6Pe8',
+  multipleStatements: true
+})*/
+
 var con = mysql.createConnection({
   host: 'mysql',
   port: '3306',
@@ -22,7 +30,14 @@ var con = mysql.createConnection({
 // TODO : checker les paramètres vides
 
 // ================ Projects ================
-
+/**
+ * Returns a promise that insert a new Project in the database.
+ * @param {*} name The project's name
+ * @param {*} description The project's description
+ * @param {*} userGitHub The user's github username 
+ * @param {*} repositoryGitHub The project's github repository link
+ * @returns new Promise, which returns the new project Id in the database
+ */
 function _createProject(name, description, userGitHub, repositoryGitHub) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO project (name, description, userGitHub, repositoryGitHub) VALUES ('.concat(
@@ -45,6 +60,15 @@ function _createProject(name, description, userGitHub, repositoryGitHub) {
   })
 }
 
+/**
+ * Returns a promise that modify in the database based on the ID
+ * @param {*} projectId The project's id in the database
+ * @param {*} name The new project's name
+ * @param {*} description The new projet's description
+ * @param {*} userGitHub The new user's github username
+ * @param {*} repositoryGitHub The new github repository's link
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyProject(
   projectId,
   name,
@@ -76,16 +100,67 @@ function _modifyProject(
   })
 }
 
+/**
+ * Returns a promise that delete a project from the database based on the ID
+ * @param {*} id The projet's Id to delete
+ * @returns new Promise, which returns the string 'Project Deleted' if it succeed
+ */
 function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM project WHERE id = '.concat(con.escape(id))
-    con.query(sql, function(err, result) {
+    let promiseList = []
+    let sql = "DELETE FROM project_team WHERE project_id='".concat(
+      id,
+      "'; "
+    )
+    promiseList.push(_getAllProjectIssues(id).then(issuesId => {
+      if(issuesId){
+        for(let i = 0; i < issuesId.length; i++){
+          promiseList.push(_deleteIssue(issuesId[i].id))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllTasksIdsByProject(id).then(tasksId => {
+      if(tasksId){
+        for(let i = 0; i < tasksId.length; i++){
+          promiseList.push(_deleteTask(tasksId[i]))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllSprintIdsOfProject(id).then(sprintsId => {
+      if(sprintsId)
+      {for(let i = 0; i < sprintsId.length; i++){
+        promiseList.push(_deleteSprint(sprintsId[i]))
+      }}
+    })
+    )
+
+    promiseList.push(_getAllTestsIdsFromProject(id).then(testsId => {
+      if(testsId){for(let i = 0; i < testsId.length; i++){
+        promiseList.push(_deleteTest(testsId[i]))
+      }}
+    })
+    )
+    sql.concat("DELETE FROM project WHERE id = '",id),"';"
+    Promise.all(promiseList).then(con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
     })
+    )
   })
 }
 
+/**
+ * Returns a promise that add in the database the list of members of a project and whether they are and admin of it or not.
+ * Returns an error if usernameList and areAdminsList have different size.
+ * @param {*} projectId The project's id of the project to add members
+ * @param {*} usernameList The list of members to add to the project
+ * @param {*} areAdminsList The areAdminsList[i] define if usernameList[i] is an admin
+ * @returns new Promise, which returns the string 'Members added' if it succeeds
+ */
 function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
   return new Promise(function(resolve, reject) {
     if (usernameList.length !== areAdminsList.length) {
@@ -115,6 +190,12 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
   })
 }
 
+/**
+ * Returns a promise that delete a list of members from a project in the database
+ * @param {*} projectId The projet's id which has members to remove
+ * @param {*} usernameList The list of users to remove from the project
+ * @returns new Promise, which returns the string 'Members deleted' if it succeeds
+ */
 function _deleteMembersFromProject(projectId, usernameList) {
   return new Promise(function(resolve, reject) {
     let i
@@ -135,6 +216,11 @@ function _deleteMembersFromProject(projectId, usernameList) {
   })
 }
 
+/**
+ * Returns a promise that select the members of a project from the database
+ * @param {*} project_id The id of the project we want the members
+ * @returns new Promise, which returns the list of Id (only) of the members
+ */
 function _getMembersOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM project_team WHERE project_id = '.concat(
@@ -151,6 +237,11 @@ function _getMembersOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that select the members of a project that are admins from the database
+ * @param {*} project_id The id of the project we want the admins
+ * @returns new Promise, which returns the list of Id (only) of the admins
+ */
 function _getAdminsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM project_team WHERE project_id = '.concat(
@@ -171,6 +262,13 @@ function _getAdminsOfProject(project_id) {
 // ================ Members ================
 // https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
 
+/**
+ * Returns a promise which insert a new app user in the database. 
+ * This method encrypt the passwords using bcrypt before sending them
+ * @param {*} username The username of the new app user
+ * @param {*} password The password of the new app user
+ * @returns new Promise, which returns the id of the new user
+ */
 function _storeMember(username, password) {
   return new Promise(function(resolve, reject) {
     bcrypt.hash(password, 10, function(err, hashedPassword) {
@@ -192,6 +290,11 @@ function _storeMember(username, password) {
   })
 }
 
+/**
+ * Returns a promise which get the id of the project which the user is part of
+ * @param {*} username The username of the user you want the projects
+ * @returns new Promise, which returns the list of projects ids
+ */
 function _getProjectsIdsOfMember(username) {
   return new Promise(function(resolve, reject) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
@@ -209,6 +312,13 @@ function _getProjectsIdsOfMember(username) {
   })
 }
 
+/**
+ * Returns a new promise which returns all the informations of a project from the database
+ * Members of the project are obtained through the _getMembersOfProject method
+ * Admins of the project are obtains through the _getAdminsOfProject method
+ * @param {*} project_id The id of the project we get the infos from.
+ * @returns new Promise, which returns a new Project containing all the infos of a project
+ */
 function _getProjectFromProjectId(project_id) {
   return new Promise(function(resolve, reject) {
     _getMembersOfProject(project_id).then(
@@ -252,6 +362,11 @@ function _getProjectFromProjectId(project_id) {
   })
 }
 
+/**
+ * Returns a promise which gets all the projects of a member from the database
+ * @param {*} username The username of the member for whom we get the projects
+ * @returns new Promise, which returns a list of Projects objects
+ */
 function _getProjectsOfMember(username) {
   return new Promise(function(resolve, reject) {
     _getProjectsIdsOfMember(username).then(
@@ -272,6 +387,11 @@ function _getProjectsOfMember(username) {
   })
 }
 
+/**
+ * Returns a promise which select the ids of the tasks assingned to a member from the database
+ * @param {*} username The username of the member for whom the tasks of
+ * @returns new Promise, which returns a list of task ids
+ */
 function _getTaskIdsAssignedToMember(username) {
   return new Promise(function(resolve, reject) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
@@ -292,6 +412,12 @@ function _getTaskIdsAssignedToMember(username) {
   })
 }
 
+/**
+ * Returns a promise which check if the credentials entered exist in the database
+ * @param {*} username The login username
+ * @param {*} password The login password
+ * @returns new Promise, which return true if the username and password are valid. False otherwise 
+ */
 function _areUsernameAndPasswordCorrect(username, password) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM member WHERE username = '.concat(
@@ -319,6 +445,11 @@ function _areUsernameAndPasswordCorrect(username, password) {
   })
 }
 
+/**
+ * Returns a promise which checks if a username already exists in the database
+ * @param {*} username The username to check
+ * @returns new Promise, which returns true if the username already exists, false otherwise.
+ */
 function _doesUsernameExists(username) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM member WHERE username = '.concat(
@@ -335,10 +466,22 @@ function _doesUsernameExists(username) {
   })
 }
 
+/**
+ * Returns a promise, which delete a member from the database
+ * @param {*} username The username of the members
+ * @returns new Promise, which return a string 'Member deleted' if it succeeds.
+ */
 function _deleteMember(username) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM member WHERE username = '.concat(
-      con.escape(username)
+    const sql = "DELETE FROM assigned_task WHERE username ='".concat(
+      username,
+      "'; ",
+      "DELETE FROM project_team WHERE username ='",
+      username,
+      "'; ",
+      "DELETE FROM member WHERE username ='",
+      username,
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -349,6 +492,15 @@ function _deleteMember(username) {
 
 // ================ Issues ================
 
+/**
+ * Returns a promise that adds an issue in the database
+ * @param {*} projectId The id of the project related to the issue
+ * @param {*} name The name of the issue
+ * @param {*} description The description of the issue
+ * @param {*} priority The priority of the issue
+ * @param {*} difficulty The difficulty of the issue
+ * @returns new Promise, which returns the Id of the newly added issue
+ */
 function _addIssueToProject(
   projectId,
   name,
@@ -379,6 +531,15 @@ function _addIssueToProject(
   })
 }
 
+/**
+ * Returns a promise that modify an issue in the database
+ * @param {*} issueId The id of the issue to modify
+ * @param {*} name The new name of the issue
+ * @param {*} description The new description of the issue
+ * @param {*} priority The new priority of the issue
+ * @param {*} difficulty The new difficulty of the issue
+ * @returns new Promise, which returns the number of modified issue
+ */
 function _modifyIssue(issueId, name, description, priority, difficulty) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE issue SET'.concat(
@@ -404,6 +565,11 @@ function _modifyIssue(issueId, name, description, priority, difficulty) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations of all the issues of a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getAllProjectIssues(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM issue WHERE project_id = '.concat(
@@ -429,9 +595,29 @@ function _getAllProjectIssues(project_id) {
   })
 }
 
+/**
+ * Returns a promise that deletes an issue and it's dependancies from the database
+ * @param {*} issueId The id of the issue to delete
+ * @returns new Promise, which returns a string 'Issue removed' if it succeeds
+ */
 function _deleteIssue(issueId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM issue WHERE id = '.concat(con.escape(issueId))
+    let sql = "DELETE FROM issue_state WHERE issue_sprint_id IN (SELECT id FROM issue_of_sprint WHERE issue_id ='".concat(
+      issueId,
+      "'); ",
+      "DELETE FROM issue_of_task WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue_of_test WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue_of_sprint WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue WHERE id = '",
+      issueId,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
@@ -439,6 +625,11 @@ function _deleteIssue(issueId) {
   })
 }
 
+/**
+ * Returns a promise which returns all the informations of an issue from the database
+ * @param {*} issueId The Id of the issue
+ * @returns new Promise, which returns an Issue object
+ */
 function _getIssueById(issueId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM issue WHERE id = '.concat(con.escape(issueId))
@@ -459,6 +650,11 @@ function _getIssueById(issueId) {
 
 // ================ Tasks ================
 
+/**
+ * Returns a promise which gets all the task ids of a project from the database
+ * @param {*} project_id The project id
+ * @returns new Promise, which returns a list of the tasks ids
+ */
 function _getAllTasksIdsByProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM task WHERE project_id = '.concat(
@@ -475,6 +671,12 @@ function _getAllTasksIdsByProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise which gets all the task ids of a project which are in a specific state from the database
+ * @param {*} project_id The project id
+ * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @returns new Promise, which returns a list of the tasks ids
+ */
 function _getAllTasksIdsByProjectAndState(project_id, state) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM task WHERE project_id = '.concat(
@@ -493,6 +695,11 @@ function _getAllTasksIdsByProjectAndState(project_id, state) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations of a task from the database
+ * @param {*} task_id The Id the task
+ * @returns new Promise, which returns a Task object
+ */
 function _getTaskById(task_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesOfTask(task_id).then(
@@ -529,6 +736,11 @@ function _getTaskById(task_id) {
   })
 }
 
+/**
+ * Returns a promise that get all the informations regardings the tasks of a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getAllTasksOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllTasksIdsByProject(project_id).then(
@@ -549,6 +761,12 @@ function _getAllTasksOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that returns all informations of the tasks of a project that are in a specific state from the database
+ * @param {*} project_id The id of the project
+ * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getAllTasksOfProjectByState(project_id, state) {
   return new Promise(function(resolve, reject) {
     _getAllTasksIdsByProjectAndState(project_id, state).then(
@@ -569,6 +787,20 @@ function _getAllTasksOfProjectByState(project_id, state) {
   })
 }
 
+/**
+ * Returns a promise that adds a task in the database
+ * @param {*} projectId The id of the project
+ * @param {*} name The name of the task
+ * @param {*} description The description of the task
+ * @param {*} state The state of the task
+ * @param {*} date_beginning The date the task has begun
+ * @param {*} realisation_time How long the task is supposed to take
+ * @param {*} DoD The definition of done of the task
+ * @param {*} dependencies Tasks that must be completed before this one
+ * @param {*} members The list of members assigned to the task
+ * @param {*} issues The list of issues related to this task
+ * @returns new Promise, which returns the id of the new task
+ */
 function _addTask(
   projectId,
   name,
@@ -610,6 +842,17 @@ function _addTask(
   })
 }
 
+/**
+ * Returns a promise that modify a task in the database 
+ * @param {*} taskId The id of the task to modify
+ * @param {*} name The name of the task
+ * @param {*} description The description of the task
+ * @param {*} state The state of the task
+ * @param {*} date_beginning The date the task has begun
+ * @param {*} realisation_time How long the task is supposed to take
+ * @param {*} DoD The definition of done of the task
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyTask(
   taskId,
   name,
@@ -649,6 +892,12 @@ function _modifyTask(
   })
 }
 
+/**
+ * Returns a promise which acutalize the dependencies of a task in the database (DELETE existing ones then INSERT current ones)
+ * @param {*} taskId The id of the task
+ * @param {*} dependsOnTasksIdList The list of task id that this task depends on
+ * @returns new Promise, which returns 'New dependencies added' if it succeeds
+ */
 function _setTaskDependencies(taskId, dependsOnTasksIdList) {
   return new Promise(function(resolve, reject) {
     var sql = 'DELETE FROM task_dependencies WHERE task_id = '.concat(
@@ -675,6 +924,12 @@ function _setTaskDependencies(taskId, dependsOnTasksIdList) {
   })
 }
 
+/**
+ * Returns a promise which actualize the list of members assigned to a task in the database (DELETE existing ones then INSERT current ones)
+ * @param {*} taskId The id of the task
+ * @param {*} usernameList The list of members id assigned to the task
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskToMembers(taskId, usernameList) {
   // TODO : check if username exists
   return new Promise(function(resolve, reject) {
@@ -713,6 +968,11 @@ function _setTaskToMembers(taskId, usernameList) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of members assigned to a task from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns the list of members id
+ */
 function _getMembersAssignedToTask(taskId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM assigned_task WHERE task_id = '.concat(
@@ -729,6 +989,11 @@ function _getMembersAssignedToTask(taskId) {
   })
 }
 
+/**
+ * Returns a promise that gets the task dependencies from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getTaskDependencies(taskId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task WHERE id IN (SELECT depend_on_task_id FROM task_dependencies WHERE task_id ='.concat(
@@ -760,6 +1025,11 @@ function _getTaskDependencies(taskId) {
   })
 }
 
+/**
+ * Returns a promise that get from the database a list of tasks id related to selected issues. 
+ * @param {*} issueIdList The list of issues id
+ * @returns new Promise, which returns a list of task ids
+ */
 function _getTasksIdsOfIssues(issueIdList) {
   return new Promise(function(resolve, reject) {
     if (issueIdList.length === 0) {
@@ -792,6 +1062,11 @@ function _getTasksIdsOfIssues(issueIdList) {
   })
 }
 
+/**
+ * Returns a promise that get from the database all the informations abou the tasks related to a list of issues
+ * @param {*} issueIdList The id list of issues
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getTasksOfIssues(issueIdList) {
   return new Promise(function(resolve, reject) {
     _getTasksIdsOfIssues(issueIdList).then(
@@ -812,6 +1087,12 @@ function _getTasksOfIssues(issueIdList) {
   })
 }
 
+/**
+ * Returns a promise that update the state of a task in the database
+ * @param {*} taskId The id of the task
+ * @param {*} state The new state of the task
+ * @returns new Promise, which returns the amount of affected rows
+ */
 function _updateTaskState(taskId, state) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task SET state = '.concat(state, ' WHERE id = ', taskId)
@@ -822,9 +1103,29 @@ function _updateTaskState(taskId, state) {
   })
 }
 
+/**
+ * Returns a promise that delete a task from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns a string 'Issue removed' if it succeeds
+ */
 function _deleteTask(taskId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM task WHERE id = '.concat(con.escape(taskId))
+    let sql = "DELETE FROM task_dependencies WHERE task_id ='".concat(
+      taskId,
+      "'; ",
+      "DELETE FROM issue_of_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task_checklist WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM assigned_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task WHERE id = '",
+      taskId,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
@@ -832,6 +1133,12 @@ function _deleteTask(taskId) {
   })
 }
 
+/**
+ * Returns a promise that set in the database a task to a list of issues
+ * @param {*} task_id The id of the task
+ * @param {*} issueId_list The list of ids of issues
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskToIssue(task_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -859,6 +1166,11 @@ function _setTaskToIssue(task_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of issues linked to a specific task from the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the list of ids of the issues
+ */
 function _getIssuesIdsOfTask(task_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_task WHERE task_id = '.concat(
@@ -875,6 +1187,11 @@ function _getIssuesIdsOfTask(task_id) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations related to the issues linked to a task from the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the liste of Issues objects
+ */
 function _getIssuesOfTask(task_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfTask(task_id).then(
@@ -897,6 +1214,13 @@ function _getIssuesOfTask(task_id) {
 
 // ================ Checklist ================
 
+/**
+ * Returns a promise that add in the database a checklist for a task.
+ * @param {*} taskId The id of the task
+ * @param {*} description The description of the checklist
+ * @param {*} isDone The state of the checklist
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskChecklist(taskId, description, isDone) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO task_checklist (task_id, description, is_done) VALUES ('.concat(
@@ -912,11 +1236,17 @@ function _setTaskChecklist(taskId, description, isDone) {
         reject(err)
         return
       }
-      resolve('Task assigned to members')
+      resolve('Chechlist assigned to the task')
     })
   })
 }
 
+/**
+ * Returns a promise that modify the description of a checklist in the database
+ * @param {*} checklistId The id of the checklist
+ * @param {*} description The new description of the checklist
+ * @returns new Promise, which returns 'Chechlist modified' if it succeeds
+ */
 function _modifyTaskDescription(checklistId, description) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task_checklist SET '.concat(
@@ -930,11 +1260,17 @@ function _modifyTaskDescription(checklistId, description) {
         reject(err)
         return
       }
-      resolve('Task modified')
+      resolve('Checklist modified')
     })
   })
 }
 
+/**
+ * Returns a promise which modify the state of a checklist in the database
+ * @param {*} checklistId The id of the checklist
+ * @param {*} isDone The new state of the checklist
+ * @returns new Promise, which returns the number of affected entries
+ */
 function _modifyTaskState(checklistId, isDone) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task_checklist SET '.concat(
@@ -950,6 +1286,11 @@ function _modifyTaskState(checklistId, isDone) {
   })
 }
 
+/**
+ * Returns a promise that get the checklists of a task in the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the checklists ids and descriptions
+ */
 function _getTaskChecklist(task_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task_checklist WHERE task_id = '.concat(
@@ -966,6 +1307,11 @@ function _getTaskChecklist(task_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database an item of a checklist
+ * @param {*} itemId The id of the item
+ * @returns new Promise, which returns the informations of the intems (ids, descriptions, state)
+ */
 function _getChecklistItemById(itemId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task_checklist WHERE id = '.concat(
@@ -984,6 +1330,16 @@ function _getChecklistItemById(itemId) {
 
 // ================ Tests ================
 
+/**
+ * Returns a promise that add a test in the database
+ * @param {*} projectId The id of the project related to the test
+ * @param {*} name The name of the test
+ * @param {*} description The description of the test
+ * @param {*} expected_result The expected result of the test
+ * @param {*} last_version_validated The last version the test passed
+ * @param {*} state The current state of the test
+ * @returns new Promise, which returns the id of the newly added test
+ */
 function _addTest(
   projectId,
   name,
@@ -1020,6 +1376,11 @@ function _addTest(
   })
 }
 
+/**
+ * Returns a promise that get from the database the informations regarding a test
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a Test obejct
+ */
 function _getTestById(test_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesOfTest(test_id).then(
@@ -1047,6 +1408,12 @@ function _getTestById(test_id) {
   })
 }
 
+/**
+ * Returns a promise that links a test to a list of issues in the database
+ * @param {*} test_id The id of the test
+ * @param {*} issueId_list The list of issue ids
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setIssuesToTest(test_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -1070,6 +1437,11 @@ function _setIssuesToTest(test_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of issues linked to a test in the database
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a list of issue ids
+ */
 function _getIssuesIdsOfTest(test_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_test WHERE test_id = '.concat(
@@ -1086,6 +1458,11 @@ function _getIssuesIdsOfTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database all the informations related to the issues linked to a specific test
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getIssuesOfTest(test_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfTest(test_id).then(
@@ -1106,9 +1483,20 @@ function _getIssuesOfTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise that delete a test from the database
+ * @param {*} test_id The id of the test
+ * @returns new Promise, which returns a string 'Test removed' if it succeeds
+ */
 function _deleteTest(test_id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM test WHERE id = '.concat(con.escape(test_id))
+    const sql = "DELETE FROM issue_of_test WHERE test_id ='".concat(
+      test_id,
+      "'; ",
+      "DELETE FROM test WHERE id ='",
+      test_id,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Test removed')
@@ -1116,6 +1504,16 @@ function _deleteTest(test_id) {
   })
 }
 
+/**
+ * Returns a promise which modify the informations related to a specific test in the database
+ * @param {*} testId The id of the test
+ * @param {*} name The new name of the test
+ * @param {*} description The new description of the test
+ * @param {*} expected_result The new expected result of the test
+ * @param {*} last_version_validated The new last version this test was validated
+ * @param {*} state The new state of the test
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyTest(
   testId,
   name,
@@ -1155,6 +1553,11 @@ function _modifyTest(
   })
 }
 
+/**
+ * Returns a promise that gets every test id related to a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns the list of test ids
+ */
 function _getAllTestsIdsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM test WHERE project_id = '.concat(
@@ -1171,6 +1574,11 @@ function _getAllTestsIdsFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get all informations related to the tests of a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Test objects
+ */
 function _getAllTestsFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllTestsIdsFromProject(project_id).then(
@@ -1191,6 +1599,12 @@ function _getAllTestsFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that update the state of a test in the database
+ * @param {*} testId The id of the test
+ * @param {*} state The new state of the test
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateTestState(testId, state) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE test SET state = '.concat(
@@ -1224,6 +1638,16 @@ _getAllSprintFromProject(3).then(
 
 */
 
+/**
+ * Returns a promise that add a sprint into the database
+ * @param {*} project_id The id of the project related to the sprint
+ * @param {*} objective The objective of the sprint
+ * @param {*} date_begin The date the sprint begins
+ * @param {*} date_end The date the sprint ends
+ * @param {*} issue_list The list of issues of the sprint
+ * @param {*} release_id The id of the release of the sprint
+ * @returns new Promise, which returns the id of the newly added sprint
+ */
 function _addSprint(
   project_id,
   objective,
@@ -1257,6 +1681,15 @@ function _addSprint(
   })
 }
 
+/**
+ * Returns a promise that update a sprint informations in the database
+ * @param {*} sprint_id The id of the sprint
+ * @param {*} objective The new objective of the sprint
+ * @param {*} date_begin The new date the sprint will begin
+ * @param {*} date_end The new date the sprint will end
+ * @param {*} issue_list The new list of issue linked
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE sprint SET'.concat(
@@ -1284,6 +1717,12 @@ function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
   })
 }
 
+/**
+ * Returns a promise that update the release of a sprint in the database
+ * @param {*} sprint_id The id of the sprint
+ * @param {*} release_id The id of the release
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _updateSprintRelease(sprint_id, release_id) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE sprint SET'.concat(
@@ -1303,6 +1742,12 @@ function _updateSprintRelease(sprint_id, release_id) {
   })
 }
 
+/**
+ * Returns a promise that actualise a list of issues to a sprint in the database (DELETE existing ones then INSERT current ones) 
+ * @param {*} sprint_id The id of a sprint
+ * @param {*} issueId_list The list of issue ids
+ * @returns new Promise, which returns a string 'Issues linked to sprint' if it succeeds
+ */
 function _setIssuesToSprint(sprint_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -1327,9 +1772,20 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that delete a sprint from the database
+ * @param {*} id The id of the sprint
+ * @returns new Promise, which returns 'Project Deleted' if it succeeds
+ */
 function _deleteSprint(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM sprint WHERE id = '.concat(con.escape(id))
+    const sql = "DELETE FROM issue_of_sprint WHERE sprint_id='".concat(
+      id,
+      "';",
+      "DELETE FROM sprint WHERE id ='",
+      id,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
@@ -1337,6 +1793,11 @@ function _deleteSprint(id) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations regarding the sprints of a specific project in the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Sprint objects
+ */
 function _getAllSprintFromProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllSprintIdsOfProject(project_id).then(
@@ -1357,6 +1818,11 @@ function _getAllSprintFromProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get every sprint if related to a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of sprint ids
+ */
 function _getAllSprintIdsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM sprint WHERE project_id = '.concat(
@@ -1377,6 +1843,11 @@ function _getAllSprintIdsOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that get all the information of a specific sprint from the database
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns the id of a sprint
+ */
 function _getSprintById(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM sprint WHERE id = '.concat(con.escape(sprint_id))
@@ -1429,6 +1900,11 @@ function _getSprintById(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database every ids related to the issues of a specific sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of issue ids
+ */
 function _getIssuesIdsOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_sprint WHERE sprint_id = '.concat(
@@ -1445,6 +1921,11 @@ function _getIssuesIdsOfSprint(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database every informations related to the issues of a specific sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getIssuesOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfSprint(sprint_id).then(
@@ -1465,6 +1946,11 @@ function _getIssuesOfSprint(sprint_id) {
   })
 }
 
+/**
+ * Returns a promise that get from the database the release id of a sprint
+ * @param {*} sprint_id The id of the sprint
+ * @returns new Promise, which returns a list of release ids
+ */
 function _getReleaseIdOfSprint(sprint_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT release_id FROM issue_of_sprint WHERE sprint_id = '.concat(
@@ -1483,6 +1969,12 @@ function _getReleaseIdOfSprint(sprint_id) {
 
 // ================ Documentation ================
 
+/**
+ * Returns a promise that insert a new documentation to a release in the database
+ * @param {*} release_id The id of the release
+ * @param {*} url The link to the documentation
+ * @returns new Promise, which returns the id of the newly added documentation
+ */
 function _addDocToRelease(release_id, url) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO documentation_of_release (url, release_id) VALUES ('.concat(
@@ -1501,6 +1993,12 @@ function _addDocToRelease(release_id, url) {
   })
 }
 
+/**
+ * Returns a promise that update the documentation to a release in the database
+ * @param {*} release_id The id of the release
+ * @param {*} url The new link to the documentation
+ * @returns new Promise, which return the number of affected rows
+ */
 function _updateDoc(release_id, url) {
   return new Promise(function(resolve, reject) {
     let sql = 'UPDATE documentation_of_release SET'.concat(
@@ -1521,6 +2019,11 @@ function _updateDoc(release_id, url) {
   })
 }
 
+/**
+ * Returns a promise that get the documentation informations of a release in the database
+ * @param {*} release_id The id of a release
+ * @result new Promise, which returns a new Doc object
+ */
 function _getDocFromReleaseId(release_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM documentation_of_release WHERE release_id = '.concat(
@@ -1543,6 +2046,11 @@ function _getDocFromReleaseId(release_id) {
   })
 }
 
+/**
+ * Returns a promise that get the documentation for a list of release from the database
+ * @param {*} list_releases The list of releases ids
+ * @returns new Promise, which return a list of Doc objects
+ */
 function _getDocsFromReleases(list_releases) {
   return new Promise(function(resolve, reject) {
     const promise_list = []
@@ -1559,6 +2067,11 @@ function _getDocsFromReleases(list_releases) {
   })
 }
 
+/**
+ * Returns a promise that remove a documentation related to a release from the database 
+ * @param {*} release_id The id of the release
+ * @returns new Promise, which returns a string 'Doc Deleted' if it succeeds 
+ */
 function _deleteDoc(release_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM documentation_of_release WHERE release_id = '.concat(
@@ -1573,6 +2086,11 @@ function _deleteDoc(release_id) {
 
 // ================ Overview ================
 
+/**
+ * Returns a promise that gets from the database the amount of tasks related to every issue
+ * @param {*} projectId The id of a project
+ * @returns new Project, which returns the result of the query 
+ */
 function _getCountIssuesProject(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue WHERE issue.project_id ='".concat(
@@ -1586,6 +2104,11 @@ function _getCountIssuesProject(projectId) {
   })
 }
 
+/**
+ * Returns a promise that gets from the database the amount of issues related to the last sprint
+ * @param {*} projectId The id of the project
+ * @returns new Promise, which return the result of the query 
+ */
 function _getCountIssuesLastSprint(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT count(*) as total FROM issue, issue_of_sprint  WHERE issue.project_id ='".concat(
@@ -1603,6 +2126,11 @@ function _getCountIssuesLastSprint(projectId) {
   })
 }
 
+/**
+ * Return a promise that get from the database the amount of task of an issue by each state
+ * @param {*} issueId The id of the issue
+ * @returns new Promise, which returns the result of the query (issueId, total, totalToDo, totalDoing, totalDone) 
+ */
 function _getCountTasksStatesFromIssues(issueId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT issue_of_task.issue_id, count(*) AS total, sum(case when state = 'To Do' then 1 else 0 end) AS totalToDo, sum(case when state = 'Doing' then 1 else 0 end) AS totalDoing, sum(case when state = 'Done' then 1 else 0 end) AS totalDone FROM task, issue_of_task WHERE task.id = issue_of_task.task_id AND issue_of_task.issue_id = '".concat(
@@ -1616,6 +2144,11 @@ function _getCountTasksStatesFromIssues(issueId) {
   })
 }
 
+/**
+ * Returns a promise which returns the id of the current sprint of a project
+ * @param {*} projectId The id of a project
+ * @returns new Promise, which returns the result of the query
+ */
 function _getCurrentSprint(projectId) {
   return new Promise(function(resolve, reject) {
     let sql = "SELECT id FROM sprint WHERE project_id = '".concat(
@@ -1633,7 +2166,12 @@ function _getCurrentSprint(projectId) {
   })
 }
 
-function _getCountTasksStatesFromSprint(issueId) {
+/**
+ * Returns a promise that get from the database the amount of tasks in an sprint and the amount of task in each state for a sprint  
+ * @param {*} sprintId The id of the sprint
+ * @returns new Promise, which returns the result of the query (sprintId, total, totalToDo, totalDoing, totalDone) 
+ */
+function _getCountTasksStatesFromSprint(sprintId) {
   return new Promise(function(resolve, reject) {
     let sql = 'SELECT issue_of_sprint.sprint_id, count(DISTINCT task.id) AS total, '.concat(
       "sum(DISTINCT case when state = 'To Do' then 1 else 0 end) AS totalToDo, ",
@@ -1643,7 +2181,7 @@ function _getCountTasksStatesFromSprint(issueId) {
       'WHERE task.id = issue_of_task.task_id ',
       'AND issue_of_task.issue_id = issue_of_sprint.issue_id ',
       "AND issue_of_sprint.sprint_id = '",
-      issueId,
+      sprintId,
       "' GROUP BY issue_of_sprint.sprint_id"
     )
     con.query(sql, function(err, result) {
