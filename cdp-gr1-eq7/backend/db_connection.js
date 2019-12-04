@@ -21,7 +21,14 @@ var con = mysql.createConnection({
 // TODO : checker les paramètres vides
 
 // ================ Projects ================
-
+/**
+ * Returns a promise that insert a new Project in the database.
+ * @param {*} name The project's name
+ * @param {*} description The project's description
+ * @param {*} userGitHub The user's github username 
+ * @param {*} repositoryGitHub The project's github repository link
+ * @returns new Promise, which returns the new project Id in the database
+ */
 function _createProject(name, description, userGitHub, repositoryGitHub) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO project (name, description, userGitHub, repositoryGitHub) VALUES ('.concat(
@@ -44,6 +51,15 @@ function _createProject(name, description, userGitHub, repositoryGitHub) {
   })
 }
 
+/**
+ * Returns a promise that modify in the database based on the ID
+ * @param {*} projectId The project's id in the database
+ * @param {*} name The new project's name
+ * @param {*} description The new projet's description
+ * @param {*} userGitHub The new user's github username
+ * @param {*} repositoryGitHub The new github repository's link
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyProject(
   projectId,
   name,
@@ -75,6 +91,11 @@ function _modifyProject(
   })
 }
 
+/**
+ * Returns a promise that delete a project from the database based on the ID
+ * @param {*} id The projet's Id to delete
+ * @returns new Promise, which returns the string 'Project Deleted' if it succeed
+ */
 function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM project WHERE id = '.concat(con.escape(id))
@@ -85,6 +106,14 @@ function _deleteProject(id) {
   })
 }
 
+/**
+ * Returns a promise that add in the database the list of members of a project and whether they are and admin of it or not.
+ * Returns an error if usernameList and areAdminsList have different size.
+ * @param {*} projectId The project's id of the project to add members
+ * @param {*} usernameList The list of members to add to the project
+ * @param {*} areAdminsList The areAdminsList[i] define if usernameList[i] is an admin
+ * @returns new Promise, which returns the string 'Members added' if it succeeds
+ */
 function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
   return new Promise(function(resolve, reject) {
     if (usernameList.length !== areAdminsList.length) {
@@ -114,6 +143,12 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
   })
 }
 
+/**
+ * Returns a promise that delete a list of members from a project in the database
+ * @param {*} projectId The projet's id which has members to remove
+ * @param {*} usernameList The list of users to remove from the project
+ * @returns new Promise, which returns the string 'Members deleted' if it succeeds
+ */
 function _deleteMembersFromProject(projectId, usernameList) {
   return new Promise(function(resolve, reject) {
     let i
@@ -134,6 +169,11 @@ function _deleteMembersFromProject(projectId, usernameList) {
   })
 }
 
+/**
+ * Returns a promise that select the members of a project from the database
+ * @param {*} project_id The id of the project we want the members
+ * @returns new Promise, which returns the list of Id (only) of the members
+ */
 function _getMembersOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM project_team WHERE project_id = '.concat(
@@ -150,6 +190,11 @@ function _getMembersOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that select the members of a project that are admins from the database
+ * @param {*} project_id The id of the project we want the admins
+ * @returns new Promise, which returns the list of Id (only) of the admins
+ */
 function _getAdminsOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM project_team WHERE project_id = '.concat(
@@ -170,6 +215,13 @@ function _getAdminsOfProject(project_id) {
 // ================ Members ================
 // https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
 
+/**
+ * Returns a promise which insert a new app user in the database. 
+ * This method encrypt the passwords using bcrypt before sending them
+ * @param {*} username The username of the new app user
+ * @param {*} password The password of the new app user
+ * @returns new Promise, which returns the id of the new user
+ */
 function _storeMember(username, password) {
   return new Promise(function(resolve, reject) {
     bcrypt.hash(password, 10, function(err, hashedPassword) {
@@ -191,6 +243,11 @@ function _storeMember(username, password) {
   })
 }
 
+/**
+ * Returns a promise which get the id of the project which the user is part of
+ * @param {*} username The username of the user you want the projects
+ * @returns new Promise, which returns the list of projects ids
+ */
 function _getProjectsIdsOfMember(username) {
   return new Promise(function(resolve, reject) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
@@ -208,6 +265,13 @@ function _getProjectsIdsOfMember(username) {
   })
 }
 
+/**
+ * Returns a new promise which returns all the informations of a project from the database
+ * Members of the project are obtained through the _getMembersOfProject method
+ * Admins of the project are obtains through the _getAdminsOfProject method
+ * @param {*} project_id The id of the project we get the infos from.
+ * @returns new Promise, which returns a new Project containing all the infos of a project
+ */
 function _getProjectFromProjectId(project_id) {
   return new Promise(function(resolve, reject) {
     _getMembersOfProject(project_id).then(
@@ -251,6 +315,11 @@ function _getProjectFromProjectId(project_id) {
   })
 }
 
+/**
+ * Returns a promise which gets all the projects of a member from the database
+ * @param {*} username The username of the member for whom we get the projects
+ * @returns new Promise, which returns a list of Projects objects
+ */
 function _getProjectsOfMember(username) {
   return new Promise(function(resolve, reject) {
     _getProjectsIdsOfMember(username).then(
@@ -271,6 +340,11 @@ function _getProjectsOfMember(username) {
   })
 }
 
+/**
+ * Returns a promise which select the ids of the tasks assingned to a member from the database
+ * @param {*} username The username of the member for whom the tasks of
+ * @returns new Promise, which returns a list of task ids
+ */
 function _getTaskIdsAssignedToMember(username) {
   return new Promise(function(resolve, reject) {
     // TODO: Vérifier si le couple user/project_id n'existe pas déjà
@@ -291,6 +365,12 @@ function _getTaskIdsAssignedToMember(username) {
   })
 }
 
+/**
+ * Returns a promise which check if the credentials entered exist in the database
+ * @param {*} username The login username
+ * @param {*} password The login password
+ * @returns new Promise, which return true if the username and password are valid. False otherwise 
+ */
 function _areUsernameAndPasswordCorrect(username, password) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM member WHERE username = '.concat(
@@ -318,6 +398,11 @@ function _areUsernameAndPasswordCorrect(username, password) {
   })
 }
 
+/**
+ * Returns a promise which checks if a username already exists in the database
+ * @param {*} username The username to check
+ * @returns new Promise, which returns true if the username already exists, false otherwise.
+ */
 function _doesUsernameExists(username) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM member WHERE username = '.concat(
@@ -334,6 +419,11 @@ function _doesUsernameExists(username) {
   })
 }
 
+/**
+ * Returns a promise, which delete a member from the database
+ * @param {*} username The username of the members
+ * @returns new Promise, which return a string 'Member deleted' if it succeeds.
+ */
 function _deleteMember(username) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM member WHERE username = '.concat(
