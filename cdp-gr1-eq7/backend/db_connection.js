@@ -553,13 +553,13 @@ function _deleteIssue(issueId) {
       "'); ",
       "DELETE FROM issue_of_task WHERE issue_id = '",
       issueId,
-      "';",
+      "'; ",
       "DELETE FROM issue_of_test WHERE issue_id = '",
       issueId,
-      "';",
+      "'; ",
       "DELETE FROM issue_of_sprint WHERE issue_id = '",
       issueId,
-      "';",
+      "'; ",
       "DELETE FROM issue WHERE id = '",
       issueId,
       "';",
@@ -1056,7 +1056,22 @@ function _updateTaskState(taskId, state) {
  */
 function _deleteTask(taskId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM task WHERE id = '.concat(con.escape(taskId))
+    let sql = "DELETE FROM task_dependencies WHERE task_id ='".concat(
+      taskId,
+      "'; ",
+      "DELETE FROM issue_of_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task_checklist WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM assigned_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task WHERE id = '",
+      taskId,
+      "';",
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
