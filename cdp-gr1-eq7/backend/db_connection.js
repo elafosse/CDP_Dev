@@ -426,8 +426,15 @@ function _doesUsernameExists(username) {
  */
 function _deleteMember(username) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM member WHERE username = '.concat(
-      con.escape(username)
+    const sql = "DELETE FROM assigned_task WHERE username ='".concat(
+      username,
+      "'; ",
+      "DELETE FROM project_team WHERE username ='",
+      username,
+      "'; ",
+      "DELETE FROM member WHERE username ='",
+      username,
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
