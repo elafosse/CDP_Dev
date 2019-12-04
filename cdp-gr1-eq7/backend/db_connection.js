@@ -1873,6 +1873,12 @@ function _getReleaseIdOfSprint(sprint_id) {
 
 // ================ Documentation ================
 
+/**
+ * Returns a promise that insert a new documentation to a release in the database
+ * @param {*} release_id The id of the release
+ * @param {*} url The link to the documentation
+ * @returns new Promise, which returns the id of the newly added documentation
+ */
 function _addDocToRelease(release_id, url) {
   return new Promise(function(resolve, reject) {
     const sql = 'INSERT INTO documentation_of_release (url, release_id) VALUES ('.concat(
@@ -1891,6 +1897,12 @@ function _addDocToRelease(release_id, url) {
   })
 }
 
+/**
+ * Returns a promise that update the documentation to a release in the database
+ * @param {*} release_id The id of the release
+ * @param {*} url The new link to the documentation
+ * @returns new Promise, which return the number of affected rows
+ */
 function _updateDoc(release_id, url) {
   return new Promise(function(resolve, reject) {
     let sql = 'UPDATE documentation_of_release SET'.concat(
@@ -1911,6 +1923,11 @@ function _updateDoc(release_id, url) {
   })
 }
 
+/**
+ * Returns a promise that get the documentation informations of a release in the database
+ * @param {*} release_id The id of a release
+ * @result new Promise, which returns a new Doc object
+ */
 function _getDocFromReleaseId(release_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM documentation_of_release WHERE release_id = '.concat(
@@ -1933,6 +1950,11 @@ function _getDocFromReleaseId(release_id) {
   })
 }
 
+/**
+ * Returns a promise that get the documentation for a list of release from the database
+ * @param {*} list_releases The list of releases ids
+ * @returns new Promise, which return a list of Doc objects
+ */
 function _getDocsFromReleases(list_releases) {
   return new Promise(function(resolve, reject) {
     const promise_list = []
@@ -1949,6 +1971,11 @@ function _getDocsFromReleases(list_releases) {
   })
 }
 
+/**
+ * Returns a promise that remove a documentation related to a release from the database 
+ * @param {*} release_id The id of the release
+ * @returns new Promise, which returns a string 'Doc Deleted' if it succeeds 
+ */
 function _deleteDoc(release_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM documentation_of_release WHERE release_id = '.concat(
