@@ -512,7 +512,7 @@ function _modifyIssue(issueId, name, description, priority, difficulty) {
 }
 
 /**
- * Returns a promise that gets all the informations of all the issues of a project
+ * Returns a promise that gets all the informations of all the issues of a project from the database
  * @param {*} project_id The id of the project
  * @returns new Promise, which returns a list of Issue objects
  */
@@ -557,7 +557,7 @@ function _deleteIssue(issueId) {
 }
 
 /**
- * Returns a promise which returns all the informations of an issue
+ * Returns a promise which returns all the informations of an issue from the database
  * @param {*} issueId The Id of the issue
  * @returns new Promise, which returns an Issue object
  */
@@ -581,6 +581,11 @@ function _getIssueById(issueId) {
 
 // ================ Tasks ================
 
+/**
+ * Returns a promise which gets all the task ids of a project from the database
+ * @param {*} project_id The project id
+ * @returns new Promise, which returns a list of the tasks ids
+ */
 function _getAllTasksIdsByProject(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM task WHERE project_id = '.concat(
@@ -597,6 +602,12 @@ function _getAllTasksIdsByProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise which gets all the task ids of a project which are in a specific state from the database
+ * @param {*} project_id The project id
+ * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @returns new Promise, which returns a list of the tasks ids
+ */
 function _getAllTasksIdsByProjectAndState(project_id, state) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT id FROM task WHERE project_id = '.concat(
@@ -615,6 +626,11 @@ function _getAllTasksIdsByProjectAndState(project_id, state) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations of a task from the database
+ * @param {*} task_id The Id the task
+ * @returns new Promise, which returns a Task object
+ */
 function _getTaskById(task_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesOfTask(task_id).then(
@@ -651,6 +667,11 @@ function _getTaskById(task_id) {
   })
 }
 
+/**
+ * Returns a promise that get all the informations regardings the tasks of a project from the database
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getAllTasksOfProject(project_id) {
   return new Promise(function(resolve, reject) {
     _getAllTasksIdsByProject(project_id).then(
@@ -671,6 +692,12 @@ function _getAllTasksOfProject(project_id) {
   })
 }
 
+/**
+ * Returns a promise that returns all informations of the tasks of a project that are in a specific state from the database
+ * @param {*} project_id The id of the project
+ * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getAllTasksOfProjectByState(project_id, state) {
   return new Promise(function(resolve, reject) {
     _getAllTasksIdsByProjectAndState(project_id, state).then(
@@ -691,6 +718,20 @@ function _getAllTasksOfProjectByState(project_id, state) {
   })
 }
 
+/**
+ * Returns a promise that adds a task in the database
+ * @param {*} projectId The id of the project
+ * @param {*} name The name of the task
+ * @param {*} description The description of the task
+ * @param {*} state The state of the task
+ * @param {*} date_beginning The date the task has begun
+ * @param {*} realisation_time How long the task is supposed to take
+ * @param {*} DoD The definition of done of the task
+ * @param {*} dependencies Tasks that must be completed before this one
+ * @param {*} members The list of members assigned to the task
+ * @param {*} issues The list of issues related to this task
+ * @returns new Promise, which returns the id of the new task
+ */
 function _addTask(
   projectId,
   name,
@@ -732,6 +773,17 @@ function _addTask(
   })
 }
 
+/**
+ * Returns a promise that modify a task in the database 
+ * @param {*} taskId The id of the task to modify
+ * @param {*} name The name of the task
+ * @param {*} description The description of the task
+ * @param {*} state The state of the task
+ * @param {*} date_beginning The date the task has begun
+ * @param {*} realisation_time How long the task is supposed to take
+ * @param {*} DoD The definition of done of the task
+ * @returns new Promise, which returns the number of affected rows
+ */
 function _modifyTask(
   taskId,
   name,
@@ -771,6 +823,12 @@ function _modifyTask(
   })
 }
 
+/**
+ * Returns a promise which acutalize the dependencies of a task in the database (DELETE existing ones then INSERT current ones)
+ * @param {*} taskId The id of the task
+ * @param {*} dependsOnTasksIdList The list of task id that this task depends on
+ * @returns new Promise, which returns 'New dependencies added' if it succeeds
+ */
 function _setTaskDependencies(taskId, dependsOnTasksIdList) {
   return new Promise(function(resolve, reject) {
     var sql = 'DELETE FROM task_dependencies WHERE task_id = '.concat(
@@ -797,6 +855,12 @@ function _setTaskDependencies(taskId, dependsOnTasksIdList) {
   })
 }
 
+/**
+ * Returns a promise which actualize the list of members assigned to a task in the database (DELETE existing ones then INSERT current ones)
+ * @param {*} taskId The id of the task
+ * @param {*} usernameList The list of members id assigned to the task
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskToMembers(taskId, usernameList) {
   // TODO : check if username exists
   return new Promise(function(resolve, reject) {
@@ -835,6 +899,11 @@ function _setTaskToMembers(taskId, usernameList) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of members assigned to a task from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns the list of members id
+ */
 function _getMembersAssignedToTask(taskId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT username FROM assigned_task WHERE task_id = '.concat(
@@ -851,6 +920,11 @@ function _getMembersAssignedToTask(taskId) {
   })
 }
 
+/**
+ * Returns a promise that gets the task dependencies from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getTaskDependencies(taskId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM task WHERE id IN (SELECT depend_on_task_id FROM task_dependencies WHERE task_id ='.concat(
@@ -882,6 +956,11 @@ function _getTaskDependencies(taskId) {
   })
 }
 
+/**
+ * Returns a promise that get from the database a list of tasks id related to selected issues. 
+ * @param {*} issueIdList The list of issues id
+ * @returns new Promise, which returns a list of task ids
+ */
 function _getTasksIdsOfIssues(issueIdList) {
   return new Promise(function(resolve, reject) {
     if (issueIdList.length === 0) {
@@ -914,6 +993,11 @@ function _getTasksIdsOfIssues(issueIdList) {
   })
 }
 
+/**
+ * Returns a promise that get from the database all the informations abou the tasks related to a list of issues
+ * @param {*} issueIdList The id list of issues
+ * @returns new Promise, which returns a list of Task objects
+ */
 function _getTasksOfIssues(issueIdList) {
   return new Promise(function(resolve, reject) {
     _getTasksIdsOfIssues(issueIdList).then(
@@ -934,6 +1018,12 @@ function _getTasksOfIssues(issueIdList) {
   })
 }
 
+/**
+ * Returns a promise that update the state of a task in the database
+ * @param {*} taskId The id of the task
+ * @param {*} state The new state of the task
+ * @returns new Promise, which returns the amount of affected rows
+ */
 function _updateTaskState(taskId, state) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE task SET state = '.concat(state, ' WHERE id = ', taskId)
@@ -944,6 +1034,11 @@ function _updateTaskState(taskId, state) {
   })
 }
 
+/**
+ * Returns a promise that delete a task from the database
+ * @param {*} taskId The id of the task
+ * @returns new Promise, which returns a string 'Issue removed' if it succeeds
+ */
 function _deleteTask(taskId) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM task WHERE id = '.concat(con.escape(taskId))
@@ -954,6 +1049,12 @@ function _deleteTask(taskId) {
   })
 }
 
+/**
+ * Returns a promise that set in the database a task to a list of issues
+ * @param {*} task_id The id of the task
+ * @param {*} issueId_list The list of ids of issues
+ * @returns new Promise, which returns a string describing the result
+ */
 function _setTaskToIssue(task_id, issueId_list) {
   return new Promise(function(resolve, reject) {
     let i = 0
@@ -981,6 +1082,11 @@ function _setTaskToIssue(task_id, issueId_list) {
   })
 }
 
+/**
+ * Returns a promise that gets the list of issues linked to a specific task from the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the list of ids of the issues
+ */
 function _getIssuesIdsOfTask(task_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT issue_id FROM issue_of_task WHERE task_id = '.concat(
@@ -997,6 +1103,11 @@ function _getIssuesIdsOfTask(task_id) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations related to the issues linked to a task from the database
+ * @param {*} task_id The id of the task
+ * @returns new Promise, which returns the liste of Issues objects
+ */
 function _getIssuesOfTask(task_id) {
   return new Promise(function(resolve, reject) {
     _getIssuesIdsOfTask(task_id).then(
