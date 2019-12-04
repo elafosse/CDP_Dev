@@ -1436,7 +1436,12 @@ function _getIssuesOfTest(test_id) {
  */
 function _deleteTest(test_id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM test WHERE id = '.concat(con.escape(test_id))
+    const sql = "DELETE FROM issue_of_test WHERE test_id ='".concat(
+      test_id,
+      "';",
+      "DELETE FROM test WHERE id ='",
+      test_id
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Test removed')
