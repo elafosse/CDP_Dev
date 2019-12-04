@@ -24,6 +24,15 @@ let listProjectTasks
 
 let action
 
+function turnToArray(data) {
+  if (data === undefined) {
+    data = []
+  } else if (!Array.isArray(data)) {
+    data = [data]
+  }
+  return data
+}
+
 app.get('/newTask', function(req, res) {
   action = 'create'
   listIssues = []
@@ -53,6 +62,9 @@ app.get('/newTask', function(req, res) {
 })
 
 app.post('/newTask', function(req, res) {
+  let issues = turnToArray(req.body.taskIssue)
+  let taskRequired = turnToArray(req.body.taskRequired)
+  let taskMember = turnToArray(req.body.taskMember)
   db._addTask(
     req.query.projectId,
     req.body.taskName,
@@ -61,9 +73,9 @@ app.post('/newTask', function(req, res) {
     req.body.startDate,
     req.body.taskDuration,
     req.body.taskDoD,
-    req.body.taskRequired,
-    req.body.taskMember,
-    req.body.taskIssue
+    taskRequired,
+    taskMember,
+    issues
   ).then(res.redirect('/listTasks?projectId='.concat(req.query.projectId)))
 })
 
@@ -102,6 +114,10 @@ app.get('/modifyTask', function(req, res) {
 })
 
 app.post('/modifyTask', function(req, res) {
+  let issues = turnToArray(req.body.taskIssue)
+  let taskRequired = turnToArray(req.body.taskRequired)
+  let taskMember = turnToArray(req.body.taskMember)
+
   db._modifyTask(
     req.query.taskId,
     req.body.taskName,
@@ -111,16 +127,12 @@ app.post('/modifyTask', function(req, res) {
     req.body.taskDuration,
     req.body.taskDoD
   ).then(() => {
-    db._setTaskToIssue(req.query.taskId, req.body.taskIssue).then(() => {
-      db._setTaskDependencies(req.query.taskId, req.body.taskRequired).then(
-        () => {
-          db._setTaskToMembers(req.query.taskId, req.body.taskMember).then(
-            () => {
-              res.redirect('/listTasks?projectId='.concat(req.query.projectId))
-            }
-          )
-        }
-      )
+    db._setTaskToIssue(req.query.taskId, issues).then(() => {
+      db._setTaskDependencies(req.query.taskId, taskRequired).then(() => {
+        db._setTaskToMembers(req.query.taskId, taskMember).then(() => {
+          res.redirect('/listTasks?projectId='.concat(req.query.projectId))
+        })
+      })
     })
   })
 })

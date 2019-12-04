@@ -98,11 +98,49 @@ function _modifyProject(
  */
 function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM project WHERE id = '.concat(con.escape(id))
-    con.query(sql, function(err, result) {
+    let promiseList = []
+    let sql = "DELETE FROM project_team WHERE project_id='".concat(
+      id,
+      "'; "
+    )
+    promiseList.push(_getAllProjectIssues(id).then(issuesId => {
+      if(issuesId){
+        for(let i = 0; i < issuesId.length; i++){
+          promiseList.push(_deleteIssue(issuesId[i].id))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllTasksIdsByProject(id).then(tasksId => {
+      if(tasksId){
+        for(let i = 0; i < tasksId.length; i++){
+          promiseList.push(_deleteTask(tasksId[i]))
+        }
+      }
+    })
+    )
+
+    promiseList.push(_getAllSprintIdsOfProject(id).then(sprintsId => {
+      if(sprintsId)
+      {for(let i = 0; i < sprintsId.length; i++){
+        promiseList.push(_deleteSprint(sprintsId[i]))
+      }}
+    })
+    )
+
+    promiseList.push(_getAllTestsIdsFromProject(id).then(testsId => {
+      if(testsId){for(let i = 0; i < testsId.length; i++){
+        promiseList.push(_deleteTest(testsId[i]))
+      }}
+    })
+    )
+    sql.concat("DELETE FROM project WHERE id = '",id),"';"
+    Promise.all(promiseList).then(con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
     })
+    )
   })
 }
 
@@ -426,8 +464,15 @@ function _doesUsernameExists(username) {
  */
 function _deleteMember(username) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM member WHERE username = '.concat(
-      con.escape(username)
+    const sql = "DELETE FROM assigned_task WHERE username ='".concat(
+      username,
+      "'; ",
+      "DELETE FROM project_team WHERE username ='",
+      username,
+      "'; ",
+      "DELETE FROM member WHERE username ='",
+      username,
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -542,13 +587,28 @@ function _getAllProjectIssues(project_id) {
 }
 
 /**
- * Returns a promise that deletes an issue from the database
+ * Returns a promise that deletes an issue and it's dependancies from the database
  * @param {*} issueId The id of the issue to delete
  * @returns new Promise, which returns a string 'Issue removed' if it succeeds
  */
 function _deleteIssue(issueId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM issue WHERE id = '.concat(con.escape(issueId))
+    let sql = "DELETE FROM issue_state WHERE issue_sprint_id IN (SELECT id FROM issue_of_sprint WHERE issue_id ='".concat(
+      issueId,
+      "'); ",
+      "DELETE FROM issue_of_task WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue_of_test WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue_of_sprint WHERE issue_id = '",
+      issueId,
+      "'; ",
+      "DELETE FROM issue WHERE id = '",
+      issueId,
+      "';",
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
@@ -1041,7 +1101,22 @@ function _updateTaskState(taskId, state) {
  */
 function _deleteTask(taskId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM task WHERE id = '.concat(con.escape(taskId))
+    let sql = "DELETE FROM task_dependencies WHERE task_id ='".concat(
+      taskId,
+      "'; ",
+      "DELETE FROM issue_of_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task_checklist WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM assigned_task WHERE task_id = '",
+      taskId,
+      "'; ",
+      "DELETE FROM task WHERE id = '",
+      taskId,
+      "';",
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
@@ -1406,7 +1481,13 @@ function _getIssuesOfTest(test_id) {
  */
 function _deleteTest(test_id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM test WHERE id = '.concat(con.escape(test_id))
+    const sql = "DELETE FROM issue_of_test WHERE test_id ='".concat(
+      test_id,
+      "'; ",
+      "DELETE FROM test WHERE id ='",
+      test_id,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Test removed')
@@ -1689,7 +1770,13 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
  */
 function _deleteSprint(id) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM sprint WHERE id = '.concat(con.escape(id))
+    const sql = "DELETE FROM issue_of_sprint WHERE sprint_id='".concat(
+      id,
+      "';",
+      "DELETE FROM sprint WHERE id ='",
+      id,
+      "';"
+    )
     con.query(sql, function(err, result) {
       if (err) resolve(err)
       resolve('Project Deleted')
