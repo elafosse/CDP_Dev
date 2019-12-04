@@ -607,7 +607,7 @@ function _deleteIssue(issueId) {
       "'; ",
       "DELETE FROM issue WHERE id = '",
       issueId,
-      "';",
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
@@ -1115,7 +1115,7 @@ function _deleteTask(taskId) {
       "'; ",
       "DELETE FROM task WHERE id = '",
       taskId,
-      "';",
+      "';"
     )
     con.query(sql, function(err, result) {
       if (err) reject(err)
