@@ -438,6 +438,15 @@ function _deleteMember(username) {
 
 // ================ Issues ================
 
+/**
+ * Returns a promise that adds an issue in the database
+ * @param {*} projectId The id of the project related to the issue
+ * @param {*} name The name of the issue
+ * @param {*} description The description of the issue
+ * @param {*} priority The priority of the issue
+ * @param {*} difficulty The difficulty of the issue
+ * @returns new Promise, which returns the Id of the newly added issue
+ */
 function _addIssueToProject(
   projectId,
   name,
@@ -468,6 +477,15 @@ function _addIssueToProject(
   })
 }
 
+/**
+ * Returns a promise that modify an issue in the database
+ * @param {*} issueId The id of the issue to modify
+ * @param {*} name The new name of the issue
+ * @param {*} description The new description of the issue
+ * @param {*} priority The new priority of the issue
+ * @param {*} difficulty The new difficulty of the issue
+ * @returns new Promise, which returns the number of modified issue
+ */
 function _modifyIssue(issueId, name, description, priority, difficulty) {
   return new Promise(function(resolve, reject) {
     var sql = 'UPDATE issue SET'.concat(
@@ -493,6 +511,11 @@ function _modifyIssue(issueId, name, description, priority, difficulty) {
   })
 }
 
+/**
+ * Returns a promise that gets all the informations of all the issues of a project
+ * @param {*} project_id The id of the project
+ * @returns new Promise, which returns a list of Issue objects
+ */
 function _getAllProjectIssues(project_id) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM issue WHERE project_id = '.concat(
@@ -518,6 +541,11 @@ function _getAllProjectIssues(project_id) {
   })
 }
 
+/**
+ * Returns a promise that deletes an issue from the database
+ * @param {*} issueId The id of the issue to delete
+ * @returns new Promise, which returns a string 'Issue removed' if it succeeds
+ */
 function _deleteIssue(issueId) {
   return new Promise(function(resolve, reject) {
     const sql = 'DELETE FROM issue WHERE id = '.concat(con.escape(issueId))
@@ -528,6 +556,11 @@ function _deleteIssue(issueId) {
   })
 }
 
+/**
+ * Returns a promise which returns all the informations of an issue
+ * @param {*} issueId The Id of the issue
+ * @returns new Promise, which returns an Issue object
+ */
 function _getIssueById(issueId) {
   return new Promise(function(resolve, reject) {
     const sql = 'SELECT * FROM issue WHERE id = '.concat(con.escape(issueId))
