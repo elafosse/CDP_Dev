@@ -542,13 +542,28 @@ function _getAllProjectIssues(project_id) {
 }
 
 /**
- * Returns a promise that deletes an issue from the database
+ * Returns a promise that deletes an issue and it's dependancies from the database
  * @param {*} issueId The id of the issue to delete
  * @returns new Promise, which returns a string 'Issue removed' if it succeeds
  */
 function _deleteIssue(issueId) {
   return new Promise(function(resolve, reject) {
-    const sql = 'DELETE FROM issue WHERE id = '.concat(con.escape(issueId))
+    let sql = "DELETE FROM issue_state WHERE issue_sprint_id IN (SELECT id FROM issue_of_sprint WHERE issue_id ='".concat(
+      issueId,
+      "'); ",
+      "DELETE FROM issue_of_task WHERE issue_id = '",
+      issueId,
+      "';",
+      "DELETE FROM issue_of_test WHERE issue_id = '",
+      issueId,
+      "';",
+      "DELETE FROM issue_of_sprint WHERE issue_id = '",
+      issueId,
+      "';",
+      "DELETE FROM issue WHERE id = '",
+      issueId,
+      "';",
+    )
     con.query(sql, function(err, result) {
       if (err) reject(err)
       resolve('Issue removed')
