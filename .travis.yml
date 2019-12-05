@@ -11,9 +11,8 @@ addons:
   firefox: "70.0.0"
 
 before_script:
-  - docker-compose up -d --build
-  - chmod 777 wait-for-it.sh
-  - ./wait-for-it.sh 127.0.0.1:3307 -t 300
+  - docker-compose build
+  - travis_wait 2 docker-compose up
 
 script:
 - "npm test"
