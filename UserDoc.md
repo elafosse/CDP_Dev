@@ -300,14 +300,40 @@ Pour supprimer une tâche :
 3. Cliquer sur le bouton **Remove** pour supprimer la tâche
 
 ## Sprint
+Il est possible de créer et d'accèder à la liste des sprints d'un projet
 
 ### Liste des sprints
 
+Pour accéder à la liste des sprints d'un projet :
+
+1. Cliquez sur le projet dont vous voulez voir les sprints
+2. Dans le menu latéral d'un projet, cliquez sur **Sprints**
+
+Une liste des sprints apparaîtra alors sur la page. La date de début et de fin d'un sprint sont affichés à droite du numéro du sprint. Pour accéder aux détails d'un sprint, cliquez sur celui-ci. Il sera alors possible de voir :
+- L'objectif du sprint
+- Les issues comptant être réalisées pendant le sprint
+- Les tâches liées aux issues du sprint
+- Une barre de progression calculant le nombre de tâches réalisées sur le nombre total de tâches. 
+
+Le sprint en cours est présenté en jaune. 
+
 ### Ajouter un sprint
+
+Pour ajouter un sprint, cliquez sur le bouton "Add Sprint" sur la page de la liste des sprints. Une boite de dialogue s'ouvrira, et vous devrez remplir les informations suivantes :
+- L'objectif du sprint
+- Les issues à réaliser pour ce sprint (Ctrl + clic pour en selectionner plusieurs)
+- La date de départ
+- La date de fin
+
+Une fois les informations remplies, cliquer sur le bouton <span style="color:green">&#10004;</span> pour sauvegarder le nouveau sprint.
 
 ### Modifier un sprint
 
-### Supprimer un sprint
+Une fois dans les détails d'un sprint, cliquer sur <span style="color:orange">&#9998;</span> vous permettra d'accéder à la page de modification d'un sprint. Remplisez les nouvelles informations et cliquez sur <span style="color:green">&#10004;</span> pour sauvegarder vos modifications.
+
+### Supprimer un sprint 
+
+Une fois dans les détails d'un sprint, cliquez sur &#x274C; vous permettra de supprimer un sprint. Une alerte apparaîtra, vous permettant ainsi de confirmer votre choix, ou bien de l'annuler.
 
 ## Test
 

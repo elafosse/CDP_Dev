@@ -36,7 +36,12 @@ let currentProject
 let sess
 
 /* FUNCTIONS */
-
+/**
+ * Returns the id of the current sprint, with a given sprint list.
+ * This function compares the current day to the start and end dates of a sprint
+ * @param  {int} sprints
+ * @returns new Promise, which returns the current sprint id.
+ */
 function getCurrentSprintId(sprints) {
   return new Promise(function(resolve, reject) {
     var today = new Date()
@@ -52,6 +57,9 @@ function getCurrentSprintId(sprints) {
   })
 }
 
+/**
+ * Render the listSprint page. The list of the sprints of the project are given to the page.
+ */
 app.get(LIST_SPRINTS_ROUTE, function(req, res) {
   projectId = req.query.projectId
   sess = req.session
@@ -75,6 +83,9 @@ app.get(LIST_SPRINTS_ROUTE, function(req, res) {
   })
 })
 
+/**
+ * Called when the user adds a new sprint. The data is retreived, and saved into the database.
+ */
 app.post(ADD_SPRINT_ROUTE, function(req, res) {
   const objective = req.body.sprintObjective
   const dateBegin = req.body.date_begin
@@ -94,6 +105,9 @@ app.post(ADD_SPRINT_ROUTE, function(req, res) {
   )
 })
 
+/**
+ * Called when the user deletes a sprint. The sprint id is retreived, and all its data are erased from the database
+ */
 app.post(DELETE_SPRINT_ROUTE, function(req, res) {
   const sprintId = req.body.sprintId
   db._deleteSprint(sprintId).then(value => {
@@ -103,6 +117,9 @@ app.post(DELETE_SPRINT_ROUTE, function(req, res) {
 
 let sprintIdToModify = -1
 
+/**
+ * Render the modifySprint page. All sprint data of the sprint are available to the user, to make the modification easier.
+ */
 app.get(MODIFY_SPRINT_ROUTE, function(req, res) {
   const sprintId = req.query.sprintId
   db._getProjectFromProjectId(projectId).then(result => {
@@ -125,6 +142,9 @@ app.get(MODIFY_SPRINT_ROUTE, function(req, res) {
   })
 })
 
+/**
+ * Called when the user confirms the modification of a sprint. The sprint is modified accordignly to what's retreived from the page.
+ */
 app.post(MODIFY_SPRINT_ROUTE, function(req, res) {
   const sprintId = sprintIdToModify
   const objective = req.body.sprintObjective
