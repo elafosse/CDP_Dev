@@ -17,7 +17,7 @@ services:
   scrumhelper:
     build: ./cdp-gr1-eq7
     ports:
-     - "3524:3000"
+     - "3000:3000"
     depends_on:
      - mysql
     environment:
