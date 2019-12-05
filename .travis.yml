@@ -12,7 +12,7 @@ addons:
 
 before_script:
   - docker-compose build
-  - travis_wait 2 docker-compose up
+  - travis_wait 2 docker-compose up -d
 
 script:
 - "npm test"
