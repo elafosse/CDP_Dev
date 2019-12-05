@@ -14,8 +14,8 @@ before_install:
   - docker-compose build
   - docker-compose up -d
 
-install:
-  - npm install
+before_script:
+  - travis_wait 1 sleep 60
 
 script:
 - "npm test"
