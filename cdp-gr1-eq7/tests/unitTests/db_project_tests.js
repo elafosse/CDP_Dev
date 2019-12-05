@@ -73,7 +73,7 @@ describe('Database Project Tests', function() {
       assert.equal(result.id, newProjectId)
       assert.equal(result.userGitHub, 'gitHubLogin')
       assert.equal(result.repositoryGitHub, 'gitHubRepo')
-      assert.equal(result.admin[0], username1)
+      assert.equal(result.listAdmins[0], username1)
     })
   })
 
