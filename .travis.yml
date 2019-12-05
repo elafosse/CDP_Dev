@@ -10,11 +10,8 @@ services:
 addons:
   firefox: "70.0.0"
 
-install:
-  - docker-compose build
-
 before_script:
-  - docker-compose up
+  - docker-compose up -d --build
 
 script:
 - "npm test"
