@@ -11,12 +11,10 @@ addons:
   firefox: "70.0.0"
 
 install:
-  - npm install selenium-webdriver@^3.4.0
-  - npm install geckodriver
-  - npm install
+  - docker-compose build
 
 before_script:
-  - node cdp-gr1-eq7/backend/initApp.js &
+  - docker-compose up &
 
 script:
 - "npm test"
