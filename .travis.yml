@@ -13,7 +13,7 @@ addons:
 before_script:
   - docker-compose up -d --build
   - chmod 777 wait-for-it.sh
-  - ./wait-for-it.sh mysql:3307 -t 60
+  - ./wait-for-it.sh mysql:3307 -t 300
 
 script:
 - "npm test"
