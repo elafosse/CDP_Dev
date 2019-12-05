@@ -10,9 +10,9 @@ services:
 addons:
   firefox: "70.0.0"
 
-install:
+before_install:
   - docker-compose build
-  - travis_wait 1 docker-compose up -d
+  - docker-compose up -d
 
 script:
 - "npm test"
