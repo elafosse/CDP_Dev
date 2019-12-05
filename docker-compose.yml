@@ -2,7 +2,7 @@ version: '3'
 services:
   mysql:
     build:
-      context: .
+      context: ./cdp-gr1-eq7/database
     environment:
       MYSQL_HOST: localhost
       MYSQL_DATABASE: scrumhelper
