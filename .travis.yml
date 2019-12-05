@@ -12,6 +12,7 @@ addons:
 
 before_script:
   - docker-compose up -d --build
+  - chmod 777 wait-for-it.sh
   - ./wait-for-it.sh mysql:3306 -t 60
 
 script:
