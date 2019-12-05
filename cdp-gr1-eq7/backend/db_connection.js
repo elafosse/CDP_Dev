@@ -27,6 +27,17 @@ var con = mysql.createConnection({
   multipleStatements: true
 })
 
+function _changeDatabaseRouteForTests(){
+  con = mysql.createConnection({
+    host: '0.0.0.0',
+    port: '3307',
+    user: 'root',
+    database: 'scrumhelper',
+    password: 'rootpassword',
+    multipleStatements: true
+  })
+}
+
 // TODO : checker les paramètres vides
 
 // ================ Projects ================
@@ -2192,6 +2203,7 @@ function _getCountTasksStatesFromSprint(sprintId) {
 }
 
 module.exports = {
+  _changeDatabaseRouteForTests,
   _getProjectsIdsOfMember,
   _getProjectFromProjectId,
   _getProjectsOfMember,

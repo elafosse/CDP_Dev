@@ -9,6 +9,7 @@ let issue1 = -1
 let issue2 = -1
 
 describe('Database Issues Tests', function() {
+  db._changeDatabaseRouteForTests();
   before(function() {
     return db
       ._createProject('Name', 'Description', 'gitHubLogin', 'gitHubRepo')
