@@ -10,24 +10,24 @@ const Sprint = require('./classes/Sprint')
 const Doc = require('./classes/Doc')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
-/*var con = mysql.createConnection({
+var con = mysql.createConnection({
   host: 'www.remotemysql.com',
   user: 'wjJ627V9qY',
   database: 'wjJ627V9qY',
   password: 'qpxKOx6Pe8',
   multipleStatements: true
-})*/
+})
 
-var con = mysql.createConnection({
+/*var con = mysql.createConnection({
   host: 'mysql',
   port: '3306',
   user: 'root',
   database: 'scrumhelper',
   password: 'rootpassword',
   multipleStatements: true
-})
+})*/
 
-function _changeDatabaseRouteForTests(){
+function _changeDatabaseRouteForTests() {
   con = mysql.createConnection({
     host: '0.0.0.0',
     port: '3307',
@@ -43,10 +43,10 @@ function _changeDatabaseRouteForTests(){
 // ================ Projects ================
 /**
  * Returns a promise that insert a new Project in the database.
- * @param {*} name The project's name
- * @param {*} description The project's description
- * @param {*} userGitHub The user's github username 
- * @param {*} repositoryGitHub The project's github repository link
+ * @param {string} name The project's name
+ * @param {string} description The project's description
+ * @param {string} userGitHub The user's github username
+ * @param {string} repositoryGitHub The project's github repository link
  * @returns new Promise, which returns the new project Id in the database
  */
 function _createProject(name, description, userGitHub, repositoryGitHub) {
@@ -73,11 +73,11 @@ function _createProject(name, description, userGitHub, repositoryGitHub) {
 
 /**
  * Returns a promise that modify in the database based on the ID
- * @param {*} projectId The project's id in the database
- * @param {*} name The new project's name
- * @param {*} description The new projet's description
- * @param {*} userGitHub The new user's github username
- * @param {*} repositoryGitHub The new github repository's link
+ * @param {int} projectId The project's id in the database
+ * @param {string} name The new project's name
+ * @param {string} description The new projet's description
+ * @param {string} userGitHub The new user's github username
+ * @param {string} repositoryGitHub The new github repository's link
  * @returns new Promise, which returns the number of affected rows
  */
 function _modifyProject(
@@ -113,53 +113,58 @@ function _modifyProject(
 
 /**
  * Returns a promise that delete a project from the database based on the ID
- * @param {*} id The projet's Id to delete
+ * @param {int} id The projet's Id to delete
  * @returns new Promise, which returns the string 'Project Deleted' if it succeed
  */
 function _deleteProject(id) {
   return new Promise(function(resolve, reject) {
     let promiseList = []
-    let sql = "DELETE FROM project_team WHERE project_id='".concat(
-      id,
-      "'; "
-    )
-    promiseList.push(_getAllProjectIssues(id).then(issuesId => {
-      if(issuesId){
-        for(let i = 0; i < issuesId.length; i++){
-          promiseList.push(_deleteIssue(issuesId[i].id))
+    let sql = "DELETE FROM project_team WHERE project_id='".concat(id, "'; ")
+    promiseList.push(
+      _getAllProjectIssues(id).then(issuesId => {
+        if (issuesId) {
+          for (let i = 0; i < issuesId.length; i++) {
+            promiseList.push(_deleteIssue(issuesId[i].id))
+          }
         }
-      }
-    })
+      })
     )
 
-    promiseList.push(_getAllTasksIdsByProject(id).then(tasksId => {
-      if(tasksId){
-        for(let i = 0; i < tasksId.length; i++){
-          promiseList.push(_deleteTask(tasksId[i]))
+    promiseList.push(
+      _getAllTasksIdsByProject(id).then(tasksId => {
+        if (tasksId) {
+          for (let i = 0; i < tasksId.length; i++) {
+            promiseList.push(_deleteTask(tasksId[i]))
+          }
         }
-      }
-    })
+      })
     )
 
-    promiseList.push(_getAllSprintIdsOfProject(id).then(sprintsId => {
-      if(sprintsId)
-      {for(let i = 0; i < sprintsId.length; i++){
-        promiseList.push(_deleteSprint(sprintsId[i]))
-      }}
-    })
+    promiseList.push(
+      _getAllSprintIdsOfProject(id).then(sprintsId => {
+        if (sprintsId) {
+          for (let i = 0; i < sprintsId.length; i++) {
+            promiseList.push(_deleteSprint(sprintsId[i]))
+          }
+        }
+      })
     )
 
-    promiseList.push(_getAllTestsIdsFromProject(id).then(testsId => {
-      if(testsId){for(let i = 0; i < testsId.length; i++){
-        promiseList.push(_deleteTest(testsId[i]))
-      }}
-    })
+    promiseList.push(
+      _getAllTestsIdsFromProject(id).then(testsId => {
+        if (testsId) {
+          for (let i = 0; i < testsId.length; i++) {
+            promiseList.push(_deleteTest(testsId[i]))
+          }
+        }
+      })
     )
-    sql.concat("DELETE FROM project WHERE id = '",id),"';"
-    Promise.all(promiseList).then(con.query(sql, function(err, result) {
-      if (err) resolve(err)
-      resolve('Project Deleted')
-    })
+    sql.concat("DELETE FROM project WHERE id = '", id), "';"
+    Promise.all(promiseList).then(
+      con.query(sql, function(err, result) {
+        if (err) resolve(err)
+        resolve('Project Deleted')
+      })
     )
   })
 }
@@ -167,9 +172,9 @@ function _deleteProject(id) {
 /**
  * Returns a promise that add in the database the list of members of a project and whether they are and admin of it or not.
  * Returns an error if usernameList and areAdminsList have different size.
- * @param {*} projectId The project's id of the project to add members
- * @param {*} usernameList The list of members to add to the project
- * @param {*} areAdminsList The areAdminsList[i] define if usernameList[i] is an admin
+ * @param {int} projectId The project's id of the project to add members
+ * @param {string[]} usernameList The list of members to add to the project
+ * @param {bool[]} areAdminsList The areAdminsList[i] define if usernameList[i] is an admin
  * @returns new Promise, which returns the string 'Members added' if it succeeds
  */
 function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
@@ -203,8 +208,8 @@ function _inviteMembersToProject(projectId, usernameList, areAdminsList) {
 
 /**
  * Returns a promise that delete a list of members from a project in the database
- * @param {*} projectId The projet's id which has members to remove
- * @param {*} usernameList The list of users to remove from the project
+ * @param {int} projectId The projet's id which has members to remove
+ * @param {string[]} usernameList The list of users to remove from the project
  * @returns new Promise, which returns the string 'Members deleted' if it succeeds
  */
 function _deleteMembersFromProject(projectId, usernameList) {
@@ -229,7 +234,7 @@ function _deleteMembersFromProject(projectId, usernameList) {
 
 /**
  * Returns a promise that select the members of a project from the database
- * @param {*} project_id The id of the project we want the members
+ * @param {int} project_id The id of the project we want the members
  * @returns new Promise, which returns the list of Id (only) of the members
  */
 function _getMembersOfProject(project_id) {
@@ -250,7 +255,7 @@ function _getMembersOfProject(project_id) {
 
 /**
  * Returns a promise that select the members of a project that are admins from the database
- * @param {*} project_id The id of the project we want the admins
+ * @param {int} project_id The id of the project we want the admins
  * @returns new Promise, which returns the list of Id (only) of the admins
  */
 function _getAdminsOfProject(project_id) {
@@ -274,10 +279,10 @@ function _getAdminsOfProject(project_id) {
 // https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
 
 /**
- * Returns a promise which insert a new app user in the database. 
+ * Returns a promise which insert a new app user in the database.
  * This method encrypt the passwords using bcrypt before sending them
- * @param {*} username The username of the new app user
- * @param {*} password The password of the new app user
+ * @param {string} username The username of the new app user
+ * @param {string} password The password of the new app user
  * @returns new Promise, which returns the id of the new user
  */
 function _storeMember(username, password) {
@@ -303,7 +308,7 @@ function _storeMember(username, password) {
 
 /**
  * Returns a promise which get the id of the project which the user is part of
- * @param {*} username The username of the user you want the projects
+ * @param {string} username The username of the user you want the projects
  * @returns new Promise, which returns the list of projects ids
  */
 function _getProjectsIdsOfMember(username) {
@@ -327,7 +332,7 @@ function _getProjectsIdsOfMember(username) {
  * Returns a new promise which returns all the informations of a project from the database
  * Members of the project are obtained through the _getMembersOfProject method
  * Admins of the project are obtains through the _getAdminsOfProject method
- * @param {*} project_id The id of the project we get the infos from.
+ * @param {int} project_id The id of the project we get the infos from.
  * @returns new Promise, which returns a new Project containing all the infos of a project
  */
 function _getProjectFromProjectId(project_id) {
@@ -375,7 +380,7 @@ function _getProjectFromProjectId(project_id) {
 
 /**
  * Returns a promise which gets all the projects of a member from the database
- * @param {*} username The username of the member for whom we get the projects
+ * @param {string} username The username of the member for whom we get the projects
  * @returns new Promise, which returns a list of Projects objects
  */
 function _getProjectsOfMember(username) {
@@ -400,7 +405,7 @@ function _getProjectsOfMember(username) {
 
 /**
  * Returns a promise which select the ids of the tasks assingned to a member from the database
- * @param {*} username The username of the member for whom the tasks of
+ * @param {string} username The username of the member for whom the tasks of
  * @returns new Promise, which returns a list of task ids
  */
 function _getTaskIdsAssignedToMember(username) {
@@ -425,9 +430,9 @@ function _getTaskIdsAssignedToMember(username) {
 
 /**
  * Returns a promise which check if the credentials entered exist in the database
- * @param {*} username The login username
- * @param {*} password The login password
- * @returns new Promise, which return true if the username and password are valid. False otherwise 
+ * @param {string} username The login username
+ * @param {string} password The login password
+ * @returns new Promise, which return true if the username and password are valid. False otherwise
  */
 function _areUsernameAndPasswordCorrect(username, password) {
   return new Promise(function(resolve, reject) {
@@ -458,7 +463,7 @@ function _areUsernameAndPasswordCorrect(username, password) {
 
 /**
  * Returns a promise which checks if a username already exists in the database
- * @param {*} username The username to check
+ * @param {string} username The username to check
  * @returns new Promise, which returns true if the username already exists, false otherwise.
  */
 function _doesUsernameExists(username) {
@@ -479,7 +484,7 @@ function _doesUsernameExists(username) {
 
 /**
  * Returns a promise, which delete a member from the database
- * @param {*} username The username of the members
+ * @param {string} username The username of the members
  * @returns new Promise, which return a string 'Member deleted' if it succeeds.
  */
 function _deleteMember(username) {
@@ -505,11 +510,11 @@ function _deleteMember(username) {
 
 /**
  * Returns a promise that adds an issue in the database
- * @param {*} projectId The id of the project related to the issue
- * @param {*} name The name of the issue
- * @param {*} description The description of the issue
- * @param {*} priority The priority of the issue
- * @param {*} difficulty The difficulty of the issue
+ * @param {int} projectId The id of the project related to the issue
+ * @param {string} name The name of the issue
+ * @param {string} description The description of the issue
+ * @param {string} priority The priority of the issue
+ * @param {int} difficulty The difficulty of the issue
  * @returns new Promise, which returns the Id of the newly added issue
  */
 function _addIssueToProject(
@@ -544,11 +549,11 @@ function _addIssueToProject(
 
 /**
  * Returns a promise that modify an issue in the database
- * @param {*} issueId The id of the issue to modify
- * @param {*} name The new name of the issue
- * @param {*} description The new description of the issue
- * @param {*} priority The new priority of the issue
- * @param {*} difficulty The new difficulty of the issue
+ * @param {int} issueId The id of the issue to modify
+ * @param {string} name The new name of the issue
+ * @param {string} description The new description of the issue
+ * @param {string} priority The new priority of the issue
+ * @param {int} difficulty The new difficulty of the issue
  * @returns new Promise, which returns the number of modified issue
  */
 function _modifyIssue(issueId, name, description, priority, difficulty) {
@@ -578,7 +583,7 @@ function _modifyIssue(issueId, name, description, priority, difficulty) {
 
 /**
  * Returns a promise that gets all the informations of all the issues of a project from the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns a list of Issue objects
  */
 function _getAllProjectIssues(project_id) {
@@ -608,7 +613,7 @@ function _getAllProjectIssues(project_id) {
 
 /**
  * Returns a promise that deletes an issue and it's dependancies from the database
- * @param {*} issueId The id of the issue to delete
+ * @param {int} issueId The id of the issue to delete
  * @returns new Promise, which returns a string 'Issue removed' if it succeeds
  */
 function _deleteIssue(issueId) {
@@ -638,7 +643,7 @@ function _deleteIssue(issueId) {
 
 /**
  * Returns a promise which returns all the informations of an issue from the database
- * @param {*} issueId The Id of the issue
+ * @param {int} issueId The Id of the issue
  * @returns new Promise, which returns an Issue object
  */
 function _getIssueById(issueId) {
@@ -663,7 +668,7 @@ function _getIssueById(issueId) {
 
 /**
  * Returns a promise which gets all the task ids of a project from the database
- * @param {*} project_id The project id
+ * @param {int} project_id The project id
  * @returns new Promise, which returns a list of the tasks ids
  */
 function _getAllTasksIdsByProject(project_id) {
@@ -684,8 +689,8 @@ function _getAllTasksIdsByProject(project_id) {
 
 /**
  * Returns a promise which gets all the task ids of a project which are in a specific state from the database
- * @param {*} project_id The project id
- * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @param {int} project_id The project id
+ * @param {string} state The state of the tasks (To Do/Doing/Done)
  * @returns new Promise, which returns a list of the tasks ids
  */
 function _getAllTasksIdsByProjectAndState(project_id, state) {
@@ -708,7 +713,7 @@ function _getAllTasksIdsByProjectAndState(project_id, state) {
 
 /**
  * Returns a promise that gets all the informations of a task from the database
- * @param {*} task_id The Id the task
+ * @param {int} task_id The Id the task
  * @returns new Promise, which returns a Task object
  */
 function _getTaskById(task_id) {
@@ -749,7 +754,7 @@ function _getTaskById(task_id) {
 
 /**
  * Returns a promise that get all the informations regardings the tasks of a project from the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns a list of Task objects
  */
 function _getAllTasksOfProject(project_id) {
@@ -774,8 +779,8 @@ function _getAllTasksOfProject(project_id) {
 
 /**
  * Returns a promise that returns all informations of the tasks of a project that are in a specific state from the database
- * @param {*} project_id The id of the project
- * @param {*} state The state of the tasks (To Do/Doing/Done)
+ * @param {int} project_id The id of the project
+ * @param {string} state The state of the tasks (To Do/Doing/Done)
  * @returns new Promise, which returns a list of Task objects
  */
 function _getAllTasksOfProjectByState(project_id, state) {
@@ -800,16 +805,16 @@ function _getAllTasksOfProjectByState(project_id, state) {
 
 /**
  * Returns a promise that adds a task in the database
- * @param {*} projectId The id of the project
- * @param {*} name The name of the task
- * @param {*} description The description of the task
- * @param {*} state The state of the task
- * @param {*} date_beginning The date the task has begun
- * @param {*} realisation_time How long the task is supposed to take
- * @param {*} DoD The definition of done of the task
- * @param {*} dependencies Tasks that must be completed before this one
- * @param {*} members The list of members assigned to the task
- * @param {*} issues The list of issues related to this task
+ * @param {int} projectId The id of the project
+ * @param {string} name The name of the task
+ * @param {string} description The description of the task
+ * @param {string} state The state of the task
+ * @param {string} date_beginning The date the task has begun
+ * @param {int} realisation_time How long the task is supposed to take
+ * @param {string} DoD The definition of done of the task
+ * @param {int[]} dependencies Tasks that must be completed before this one
+ * @param {string[]} members The list of members assigned to the task
+ * @param {int[]} issues The list of issues related to this task
  * @returns new Promise, which returns the id of the new task
  */
 function _addTask(
@@ -854,14 +859,14 @@ function _addTask(
 }
 
 /**
- * Returns a promise that modify a task in the database 
- * @param {*} taskId The id of the task to modify
- * @param {*} name The name of the task
- * @param {*} description The description of the task
- * @param {*} state The state of the task
- * @param {*} date_beginning The date the task has begun
- * @param {*} realisation_time How long the task is supposed to take
- * @param {*} DoD The definition of done of the task
+ * Returns a promise that modify a task in the database
+ * @param {int} taskId The id of the task to modify
+ * @param {string} name The name of the task
+ * @param {string} description The description of the task
+ * @param {string} state The state of the task
+ * @param {string} date_beginning The date the task has begun
+ * @param {int} realisation_time How long the task is supposed to take
+ * @param {string} DoD The definition of done of the task
  * @returns new Promise, which returns the number of affected rows
  */
 function _modifyTask(
@@ -905,8 +910,8 @@ function _modifyTask(
 
 /**
  * Returns a promise which acutalize the dependencies of a task in the database (DELETE existing ones then INSERT current ones)
- * @param {*} taskId The id of the task
- * @param {*} dependsOnTasksIdList The list of task id that this task depends on
+ * @param {int} taskId The id of the task
+ * @param {int[]} dependsOnTasksIdList The list of task id that this task depends on
  * @returns new Promise, which returns 'New dependencies added' if it succeeds
  */
 function _setTaskDependencies(taskId, dependsOnTasksIdList) {
@@ -937,8 +942,8 @@ function _setTaskDependencies(taskId, dependsOnTasksIdList) {
 
 /**
  * Returns a promise which actualize the list of members assigned to a task in the database (DELETE existing ones then INSERT current ones)
- * @param {*} taskId The id of the task
- * @param {*} usernameList The list of members id assigned to the task
+ * @param {int} taskId The id of the task
+ * @param {string} usernameList The list of members id assigned to the task
  * @returns new Promise, which returns a string describing the result
  */
 function _setTaskToMembers(taskId, usernameList) {
@@ -981,7 +986,7 @@ function _setTaskToMembers(taskId, usernameList) {
 
 /**
  * Returns a promise that gets the list of members assigned to a task from the database
- * @param {*} taskId The id of the task
+ * @param {int} taskId The id of the task
  * @returns new Promise, which returns the list of members id
  */
 function _getMembersAssignedToTask(taskId) {
@@ -1002,7 +1007,7 @@ function _getMembersAssignedToTask(taskId) {
 
 /**
  * Returns a promise that gets the task dependencies from the database
- * @param {*} taskId The id of the task
+ * @param {int} taskId The id of the task
  * @returns new Promise, which returns a list of Task objects
  */
 function _getTaskDependencies(taskId) {
@@ -1037,8 +1042,8 @@ function _getTaskDependencies(taskId) {
 }
 
 /**
- * Returns a promise that get from the database a list of tasks id related to selected issues. 
- * @param {*} issueIdList The list of issues id
+ * Returns a promise that get from the database a list of tasks id related to selected issues.
+ * @param {int} issueIdList The list of issues id
  * @returns new Promise, which returns a list of task ids
  */
 function _getTasksIdsOfIssues(issueIdList) {
@@ -1075,7 +1080,7 @@ function _getTasksIdsOfIssues(issueIdList) {
 
 /**
  * Returns a promise that get from the database all the informations abou the tasks related to a list of issues
- * @param {*} issueIdList The id list of issues
+ * @param {int} issueIdList The id list of issues
  * @returns new Promise, which returns a list of Task objects
  */
 function _getTasksOfIssues(issueIdList) {
@@ -1100,8 +1105,8 @@ function _getTasksOfIssues(issueIdList) {
 
 /**
  * Returns a promise that update the state of a task in the database
- * @param {*} taskId The id of the task
- * @param {*} state The new state of the task
+ * @param {int} taskId The id of the task
+ * @param {string} state The new state of the task
  * @returns new Promise, which returns the amount of affected rows
  */
 function _updateTaskState(taskId, state) {
@@ -1116,7 +1121,7 @@ function _updateTaskState(taskId, state) {
 
 /**
  * Returns a promise that delete a task from the database
- * @param {*} taskId The id of the task
+ * @param {int} taskId The id of the task
  * @returns new Promise, which returns a string 'Issue removed' if it succeeds
  */
 function _deleteTask(taskId) {
@@ -1146,8 +1151,8 @@ function _deleteTask(taskId) {
 
 /**
  * Returns a promise that set in the database a task to a list of issues
- * @param {*} task_id The id of the task
- * @param {*} issueId_list The list of ids of issues
+ * @param {int} task_id The id of the task
+ * @param {int} issueId_list The list of ids of issues
  * @returns new Promise, which returns a string describing the result
  */
 function _setTaskToIssue(task_id, issueId_list) {
@@ -1179,7 +1184,7 @@ function _setTaskToIssue(task_id, issueId_list) {
 
 /**
  * Returns a promise that gets the list of issues linked to a specific task from the database
- * @param {*} task_id The id of the task
+ * @param {int} task_id The id of the task
  * @returns new Promise, which returns the list of ids of the issues
  */
 function _getIssuesIdsOfTask(task_id) {
@@ -1200,7 +1205,7 @@ function _getIssuesIdsOfTask(task_id) {
 
 /**
  * Returns a promise that gets all the informations related to the issues linked to a task from the database
- * @param {*} task_id The id of the task
+ * @param {int} task_id The id of the task
  * @returns new Promise, which returns the liste of Issues objects
  */
 function _getIssuesOfTask(task_id) {
@@ -1227,9 +1232,9 @@ function _getIssuesOfTask(task_id) {
 
 /**
  * Returns a promise that add in the database a checklist for a task.
- * @param {*} taskId The id of the task
- * @param {*} description The description of the checklist
- * @param {*} isDone The state of the checklist
+ * @param {int} taskId The id of the task
+ * @param {string} description The description of the checklist
+ * @param {bool} isDone The state of the checklist
  * @returns new Promise, which returns a string describing the result
  */
 function _setTaskChecklist(taskId, description, isDone) {
@@ -1254,8 +1259,8 @@ function _setTaskChecklist(taskId, description, isDone) {
 
 /**
  * Returns a promise that modify the description of a checklist in the database
- * @param {*} checklistId The id of the checklist
- * @param {*} description The new description of the checklist
+ * @param {int} checklistId The id of the checklist
+ * @param {string} description The new description of the checklist
  * @returns new Promise, which returns 'Chechlist modified' if it succeeds
  */
 function _modifyTaskDescription(checklistId, description) {
@@ -1278,8 +1283,8 @@ function _modifyTaskDescription(checklistId, description) {
 
 /**
  * Returns a promise which modify the state of a checklist in the database
- * @param {*} checklistId The id of the checklist
- * @param {*} isDone The new state of the checklist
+ * @param {int} checklistId The id of the checklist
+ * @param {bool} isDone The new state of the checklist
  * @returns new Promise, which returns the number of affected entries
  */
 function _modifyTaskState(checklistId, isDone) {
@@ -1299,7 +1304,7 @@ function _modifyTaskState(checklistId, isDone) {
 
 /**
  * Returns a promise that get the checklists of a task in the database
- * @param {*} task_id The id of the task
+ * @param {int} task_id The id of the task
  * @returns new Promise, which returns the checklists ids and descriptions
  */
 function _getTaskChecklist(task_id) {
@@ -1320,7 +1325,7 @@ function _getTaskChecklist(task_id) {
 
 /**
  * Returns a promise that get from the database an item of a checklist
- * @param {*} itemId The id of the item
+ * @param {int} itemId The id of the item
  * @returns new Promise, which returns the informations of the intems (ids, descriptions, state)
  */
 function _getChecklistItemById(itemId) {
@@ -1343,12 +1348,12 @@ function _getChecklistItemById(itemId) {
 
 /**
  * Returns a promise that add a test in the database
- * @param {*} projectId The id of the project related to the test
- * @param {*} name The name of the test
- * @param {*} description The description of the test
- * @param {*} expected_result The expected result of the test
- * @param {*} last_version_validated The last version the test passed
- * @param {*} state The current state of the test
+ * @param {int} projectId The id of the project related to the test
+ * @param {string} name The name of the test
+ * @param {string} description The description of the test
+ * @param {string} expected_result The expected result of the test
+ * @param {string} last_version_validated The last version the test passed
+ * @param {string} state The current state of the test
  * @returns new Promise, which returns the id of the newly added test
  */
 function _addTest(
@@ -1389,7 +1394,7 @@ function _addTest(
 
 /**
  * Returns a promise that get from the database the informations regarding a test
- * @param {*} test_id The id of the test
+ * @param {int} test_id The id of the test
  * @returns new Promise, which returns a Test obejct
  */
 function _getTestById(test_id) {
@@ -1421,8 +1426,8 @@ function _getTestById(test_id) {
 
 /**
  * Returns a promise that links a test to a list of issues in the database
- * @param {*} test_id The id of the test
- * @param {*} issueId_list The list of issue ids
+ * @param {int} test_id The id of the test
+ * @param {int} issueId_list The list of issue ids
  * @returns new Promise, which returns a string describing the result
  */
 function _setIssuesToTest(test_id, issueId_list) {
@@ -1450,7 +1455,7 @@ function _setIssuesToTest(test_id, issueId_list) {
 
 /**
  * Returns a promise that gets the list of issues linked to a test in the database
- * @param {*} test_id The id of the test
+ * @param {int} test_id The id of the test
  * @returns new Promise, which returns a list of issue ids
  */
 function _getIssuesIdsOfTest(test_id) {
@@ -1471,7 +1476,7 @@ function _getIssuesIdsOfTest(test_id) {
 
 /**
  * Returns a promise that get from the database all the informations related to the issues linked to a specific test
- * @param {*} test_id The id of the test
+ * @param {int} test_id The id of the test
  * @returns new Promise, which returns a list of Issue objects
  */
 function _getIssuesOfTest(test_id) {
@@ -1496,7 +1501,7 @@ function _getIssuesOfTest(test_id) {
 
 /**
  * Returns a promise that delete a test from the database
- * @param {*} test_id The id of the test
+ * @param {int} test_id The id of the test
  * @returns new Promise, which returns a string 'Test removed' if it succeeds
  */
 function _deleteTest(test_id) {
@@ -1517,12 +1522,12 @@ function _deleteTest(test_id) {
 
 /**
  * Returns a promise which modify the informations related to a specific test in the database
- * @param {*} testId The id of the test
- * @param {*} name The new name of the test
- * @param {*} description The new description of the test
- * @param {*} expected_result The new expected result of the test
- * @param {*} last_version_validated The new last version this test was validated
- * @param {*} state The new state of the test
+ * @param {int} testId The id of the test
+ * @param {string} name The new name of the test
+ * @param {string} description The new description of the test
+ * @param {string} expected_result The new expected result of the test
+ * @param {string} last_version_validated The new last version this test was validated
+ * @param {string} state The new state of the test
  * @returns new Promise, which returns the number of affected rows
  */
 function _modifyTest(
@@ -1566,7 +1571,7 @@ function _modifyTest(
 
 /**
  * Returns a promise that gets every test id related to a project from the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns the list of test ids
  */
 function _getAllTestsIdsFromProject(project_id) {
@@ -1587,7 +1592,7 @@ function _getAllTestsIdsFromProject(project_id) {
 
 /**
  * Returns a promise that get all informations related to the tests of a project from the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns a list of Test objects
  */
 function _getAllTestsFromProject(project_id) {
@@ -1612,8 +1617,8 @@ function _getAllTestsFromProject(project_id) {
 
 /**
  * Returns a promise that update the state of a test in the database
- * @param {*} testId The id of the test
- * @param {*} state The new state of the test
+ * @param {int} testId The id of the test
+ * @param {string} state The new state of the test
  * @returns new Promise, which returns the number of affected rows
  */
 function _updateTestState(testId, state) {
@@ -1637,7 +1642,6 @@ _addSprint(3, 'Un objectif fort en couleur 2 !', '2019-06-10', '2019-06-20', [
   125,
   122
 ])
-
 _getAllSprintFromProject(3).then(
   valeur => {
     console.log(valeur)
@@ -1646,17 +1650,16 @@ _getAllSprintFromProject(3).then(
     console.log(raison)
   }
 )
-
 */
 
 /**
  * Returns a promise that add a sprint into the database
- * @param {*} project_id The id of the project related to the sprint
- * @param {*} objective The objective of the sprint
- * @param {*} date_begin The date the sprint begins
- * @param {*} date_end The date the sprint ends
- * @param {*} issue_list The list of issues of the sprint
- * @param {*} release_id The id of the release of the sprint
+ * @param {int} project_id The id of the project related to the sprint
+ * @param {string} objective The objective of the sprint
+ * @param {string} date_begin The date the sprint begins
+ * @param {string} date_end The date the sprint ends
+ * @param {int[]} issue_list The list of issues of the sprint
+ * @param {int} release_id The id of the release of the sprint
  * @returns new Promise, which returns the id of the newly added sprint
  */
 function _addSprint(
@@ -1694,11 +1697,11 @@ function _addSprint(
 
 /**
  * Returns a promise that update a sprint informations in the database
- * @param {*} sprint_id The id of the sprint
- * @param {*} objective The new objective of the sprint
- * @param {*} date_begin The new date the sprint will begin
- * @param {*} date_end The new date the sprint will end
- * @param {*} issue_list The new list of issue linked
+ * @param {int} sprint_id The id of the sprint
+ * @param {string} objective The new objective of the sprint
+ * @param {string} date_begin The new date the sprint will begin
+ * @param {string} date_end The new date the sprint will end
+ * @param {int[]} issue_list The new list of issue linked
  * @returns new Promise, which returns the number of affected rows
  */
 function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
@@ -1730,8 +1733,8 @@ function _updateSprint(sprint_id, objective, date_begin, date_end, issue_list) {
 
 /**
  * Returns a promise that update the release of a sprint in the database
- * @param {*} sprint_id The id of the sprint
- * @param {*} release_id The id of the release
+ * @param {int} sprint_id The id of the sprint
+ * @param {int} release_id The id of the release
  * @returns new Promise, which returns the number of affected rows
  */
 function _updateSprintRelease(sprint_id, release_id) {
@@ -1754,9 +1757,9 @@ function _updateSprintRelease(sprint_id, release_id) {
 }
 
 /**
- * Returns a promise that actualise a list of issues to a sprint in the database (DELETE existing ones then INSERT current ones) 
- * @param {*} sprint_id The id of a sprint
- * @param {*} issueId_list The list of issue ids
+ * Returns a promise that actualise a list of issues to a sprint in the database (DELETE existing ones then INSERT current ones)
+ * @param {int} sprint_id The id of a sprint
+ * @param {int} issueId_list The list of issue ids
  * @returns new Promise, which returns a string 'Issues linked to sprint' if it succeeds
  */
 function _setIssuesToSprint(sprint_id, issueId_list) {
@@ -1785,7 +1788,7 @@ function _setIssuesToSprint(sprint_id, issueId_list) {
 
 /**
  * Returns a promise that delete a sprint from the database
- * @param {*} id The id of the sprint
+ * @param {int} id The id of the sprint
  * @returns new Promise, which returns 'Project Deleted' if it succeeds
  */
 function _deleteSprint(id) {
@@ -1806,7 +1809,7 @@ function _deleteSprint(id) {
 
 /**
  * Returns a promise that gets all the informations regarding the sprints of a specific project in the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns a list of Sprint objects
  */
 function _getAllSprintFromProject(project_id) {
@@ -1831,7 +1834,7 @@ function _getAllSprintFromProject(project_id) {
 
 /**
  * Returns a promise that get every sprint if related to a project from the database
- * @param {*} project_id The id of the project
+ * @param {int} project_id The id of the project
  * @returns new Promise, which returns a list of sprint ids
  */
 function _getAllSprintIdsOfProject(project_id) {
@@ -1856,7 +1859,7 @@ function _getAllSprintIdsOfProject(project_id) {
 
 /**
  * Returns a promise that get all the information of a specific sprint from the database
- * @param {*} sprint_id The id of the sprint
+ * @param {int} sprint_id The id of the sprint
  * @returns new Promise, which returns the id of a sprint
  */
 function _getSprintById(sprint_id) {
@@ -1913,7 +1916,7 @@ function _getSprintById(sprint_id) {
 
 /**
  * Returns a promise that get from the database every ids related to the issues of a specific sprint
- * @param {*} sprint_id The id of the sprint
+ * @param {int} sprint_id The id of the sprint
  * @returns new Promise, which returns a list of issue ids
  */
 function _getIssuesIdsOfSprint(sprint_id) {
@@ -1934,7 +1937,7 @@ function _getIssuesIdsOfSprint(sprint_id) {
 
 /**
  * Returns a promise that get from the database every informations related to the issues of a specific sprint
- * @param {*} sprint_id The id of the sprint
+ * @param {int} sprint_id The id of the sprint
  * @returns new Promise, which returns a list of Issue objects
  */
 function _getIssuesOfSprint(sprint_id) {
@@ -1959,7 +1962,7 @@ function _getIssuesOfSprint(sprint_id) {
 
 /**
  * Returns a promise that get from the database the release id of a sprint
- * @param {*} sprint_id The id of the sprint
+ * @param {int} sprint_id The id of the sprint
  * @returns new Promise, which returns a list of release ids
  */
 function _getReleaseIdOfSprint(sprint_id) {
@@ -1982,8 +1985,8 @@ function _getReleaseIdOfSprint(sprint_id) {
 
 /**
  * Returns a promise that insert a new documentation to a release in the database
- * @param {*} release_id The id of the release
- * @param {*} url The link to the documentation
+ * @param {int} release_id The id of the release
+ * @param {string} url The link to the documentation
  * @returns new Promise, which returns the id of the newly added documentation
  */
 function _addDocToRelease(release_id, url) {
@@ -2006,8 +2009,8 @@ function _addDocToRelease(release_id, url) {
 
 /**
  * Returns a promise that update the documentation to a release in the database
- * @param {*} release_id The id of the release
- * @param {*} url The new link to the documentation
+ * @param {int} release_id The id of the release
+ * @param {string} url The new link to the documentation
  * @returns new Promise, which return the number of affected rows
  */
 function _updateDoc(release_id, url) {
@@ -2032,7 +2035,7 @@ function _updateDoc(release_id, url) {
 
 /**
  * Returns a promise that get the documentation informations of a release in the database
- * @param {*} release_id The id of a release
+ * @param {int} release_id The id of a release
  * @result new Promise, which returns a new Doc object
  */
 function _getDocFromReleaseId(release_id) {
@@ -2059,7 +2062,7 @@ function _getDocFromReleaseId(release_id) {
 
 /**
  * Returns a promise that get the documentation for a list of release from the database
- * @param {*} list_releases The list of releases ids
+ * @param {int[]} list_releases The list of releases ids
  * @returns new Promise, which return a list of Doc objects
  */
 function _getDocsFromReleases(list_releases) {
@@ -2079,9 +2082,9 @@ function _getDocsFromReleases(list_releases) {
 }
 
 /**
- * Returns a promise that remove a documentation related to a release from the database 
- * @param {*} release_id The id of the release
- * @returns new Promise, which returns a string 'Doc Deleted' if it succeeds 
+ * Returns a promise that remove a documentation related to a release from the database
+ * @param {int} release_id The id of the release
+ * @returns new Promise, which returns a string 'Doc Deleted' if it succeeds
  */
 function _deleteDoc(release_id) {
   return new Promise(function(resolve, reject) {
@@ -2099,8 +2102,8 @@ function _deleteDoc(release_id) {
 
 /**
  * Returns a promise that gets from the database the amount of tasks related to every issue
- * @param {*} projectId The id of a project
- * @returns new Project, which returns the result of the query 
+ * @param {int} projectId The id of a project
+ * @returns new Project, which returns the result of the query
  */
 function _getCountIssuesProject(projectId) {
   return new Promise(function(resolve, reject) {
@@ -2117,8 +2120,8 @@ function _getCountIssuesProject(projectId) {
 
 /**
  * Returns a promise that gets from the database the amount of issues related to the last sprint
- * @param {*} projectId The id of the project
- * @returns new Promise, which return the result of the query 
+ * @param {int} projectId The id of the project
+ * @returns new Promise, which return the result of the query
  */
 function _getCountIssuesLastSprint(projectId) {
   return new Promise(function(resolve, reject) {
@@ -2139,8 +2142,8 @@ function _getCountIssuesLastSprint(projectId) {
 
 /**
  * Return a promise that get from the database the amount of task of an issue by each state
- * @param {*} issueId The id of the issue
- * @returns new Promise, which returns the result of the query (issueId, total, totalToDo, totalDoing, totalDone) 
+ * @param {int} issueId The id of the issue
+ * @returns new Promise, which returns the result of the query (issueId, total, totalToDo, totalDoing, totalDone)
  */
 function _getCountTasksStatesFromIssues(issueId) {
   return new Promise(function(resolve, reject) {
@@ -2157,7 +2160,7 @@ function _getCountTasksStatesFromIssues(issueId) {
 
 /**
  * Returns a promise which returns the id of the current sprint of a project
- * @param {*} projectId The id of a project
+ * @param {int} projectId The id of a project
  * @returns new Promise, which returns the result of the query
  */
 function _getCurrentSprint(projectId) {
@@ -2178,9 +2181,9 @@ function _getCurrentSprint(projectId) {
 }
 
 /**
- * Returns a promise that get from the database the amount of tasks in an sprint and the amount of task in each state for a sprint  
- * @param {*} sprintId The id of the sprint
- * @returns new Promise, which returns the result of the query (sprintId, total, totalToDo, totalDoing, totalDone) 
+ * Returns a promise that get from the database the amount of tasks in an sprint and the amount of task in each state for a sprint
+ * @param {int} sprintId The id of the sprint
+ * @returns new Promise, which returns the result of the query (sprintId, total, totalToDo, totalDoing, totalDone)
  */
 function _getCountTasksStatesFromSprint(sprintId) {
   return new Promise(function(resolve, reject) {
