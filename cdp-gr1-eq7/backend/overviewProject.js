@@ -25,6 +25,11 @@ const PROJECT_OVERVIEW_ROUTE = '/overviewProject'
 
 const PROJECT_OVERVIEW_VIEW_PATH = '../views/overviewProject'
 
+/**
+ * Determine if an issue is finished, ongoing or to do based on its tasks status.
+ * @param {*} taskStatus - The status of the tasks of the issue.
+ * @return {int}
+ */
 function getIssueState(taskStatus) {
   if (taskStatus === undefined) {
     return 4
@@ -51,7 +56,14 @@ let sprintIssuesSummary = [0, 0, 0, 0, 0]
 let sprintTasksSummary = [0, 0, 0, 0]
 
 let promiseList = []
-
+/**
+ * Render the overview of the project.
+ * Shows the current sprint and how many of its issues and tasks are "to do", "ongoing" and "done".
+ * Shows how many of issues and tasks in all the projet are "to do", "ongoing" and "done".
+ * PROJECT_OVERVIEW_ROUTE is the route of the overview.
+ * PROJECT_OVERVIEW_VIEW_PATH is the path to the view of this route.
+ * function is the function applied to this route.
+ */
 app.get(PROJECT_OVERVIEW_ROUTE, function(req, res) {
   projectId = req.query.projectId
   projectIssuesSummary = [0, 0, 0, 0, 0]
