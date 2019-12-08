@@ -10,22 +10,22 @@ const Sprint = require('./classes/Sprint')
 const Doc = require('./classes/Doc')
 
 // https://stackoverflow.com/questions/30545749/how-to-provide-a-mysql-database-connection-in-single-file-in-nodejs
-var con = mysql.createConnection({
+/*var con = mysql.createConnection({
   host: 'www.remotemysql.com',
   user: 'wjJ627V9qY',
   database: 'wjJ627V9qY',
   password: 'qpxKOx6Pe8',
   multipleStatements: true
-})
+})*/
 
-/*var con = mysql.createConnection({
+var con = mysql.createConnection({
   host: 'mysql',
   port: '3306',
   user: 'root',
   database: 'scrumhelper',
   password: 'rootpassword',
   multipleStatements: true
-})*/
+})
 
 function _changeDatabaseRouteForTests() {
   con = mysql.createConnection({
