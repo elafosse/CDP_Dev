@@ -16,7 +16,7 @@
 | T48 | DB locale sur docker | <li>La base de donnée est disponible en local<li>Le projet utilise la base de donnée située localement| Fait | 1 | X | X | Rayan |
 | T49 | Docker-compose | Permettre le déploiement de l'application à l'aide de docker compose | Fait | X | X | T48 | Rayan |
 | T50 | Travis | <li>Travis récupère les push<li>Travis peut executer les tests | Fait | 1 | X | T57, T58, T59 | Jimmy |
-| T51 | Overview project | <li>Afficher les statistiques (done, doing, todo, total) de chaque partie du projet (Issues, tasks, sprints, .etc)| En cours | 1 | | | Jimmy |
+| T51 | Overview project | <li>Afficher les statistiques (done, doing, todo, total) de chaque partie du projet (Issues, tasks, sprints, .etc)| Fait | 1 | | | Jimmy |
 | T52 | Frontend des settings d'un projet | Une page " projectSettings.ejs " contenant : <li>Champ " Name "<li>Champ " Description "<li>Champ " Username github " permettant d'entrer le nom d'utilisateur du créateur du dépôt GitHub des releases<li>Champ " GitHub repository " permettant d'entrer le nom du dépôt GitHub des releases<li>Champ " List members " permettant d'entrer un nom d'utilisateur et de l'ajouter à la liste des membres du projet en cliquant sur un bouton " Add member "<li>Liste des membres du projet</li> | Fait | 1 | I3, I4 | X | Estelle |
 | T53 | Notifications | A faire | | | | | Jimmy |
 | T54 | Burndown Chart  overview + sprint | <li>Créer un burndown chart via un package dispo sur node<li>Afficher le BDC dans l'overview et les sprints | A faire | 1 | | | Jimmy |
