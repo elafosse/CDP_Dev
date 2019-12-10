@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le :  mer. 04 déc. 2019 à 22:31
--- Version du serveur :  8.0.13-4
--- Version de PHP :  7.2.24-0ubuntu0.18.04.1
+-- Host: localhost
+-- Generation Time: Dec 10, 2019 at 02:56 PM
+-- Server version: 8.0.13-4
+-- PHP Version: 7.2.24-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `scrumhelper`
+-- Database: `scrumhelper`
 --
 CREATE DATABASE IF NOT EXISTS `scrumhelper` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `scrumhelper`;
@@ -27,7 +27,7 @@ USE `scrumhelper`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `assigned_task`
+-- Table structure for table `assigned_task`
 --
 
 CREATE TABLE `assigned_task` (
@@ -37,7 +37,7 @@ CREATE TABLE `assigned_task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `assigned_task`
+-- Dumping data for table `assigned_task`
 --
 
 INSERT INTO `assigned_task` (`id`, `task_id`, `username`) VALUES
@@ -71,12 +71,26 @@ INSERT INTO `assigned_task` (`id`, `task_id`, `username`) VALUES
 (179, 114, 'User5'),
 (180, 115, 'User5'),
 (183, 12, 'User5'),
-(184, 12, 'User5');
+(184, 12, 'User5'),
+(195, 130, 'User5'),
+(196, 130, 'coucou'),
+(197, 131, 'coucou'),
+(200, 138, 'rrkheloufi'),
+(201, 139, 'rrkheloufi'),
+(202, 140, 'User5'),
+(203, 141, 'User5'),
+(204, 142, 'User5'),
+(205, 143, 'User5'),
+(206, 144, 'User5'),
+(207, 145, 'User5'),
+(208, 146, 'User5'),
+(209, 147, 'rrkheloufi'),
+(210, 148, 'rrkheloufi');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `documentation_of_release`
+-- Table structure for table `documentation_of_release`
 --
 
 CREATE TABLE `documentation_of_release` (
@@ -86,17 +100,17 @@ CREATE TABLE `documentation_of_release` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `documentation_of_release`
+-- Dumping data for table `documentation_of_release`
 --
 
 INSERT INTO `documentation_of_release` (`id`, `url`, `release_id`) VALUES
 (1, 'https://www.pokebip.com/index.php?phppage=membres/index', '21706864'),
-(2, 'https://www.youtube.com/ikujhlhlhlh', '21773215');
+(2, 'https://www.youtube.com/ikujhlhlhlhje', '21773215');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `issue`
+-- Table structure for table `issue`
 --
 
 CREATE TABLE `issue` (
@@ -109,7 +123,7 @@ CREATE TABLE `issue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `issue`
+-- Dumping data for table `issue`
 --
 
 INSERT INTO `issue` (`id`, `project_id`, `name`, `description`, `priority`, `difficulty`) VALUES
@@ -124,15 +138,6 @@ INSERT INTO `issue` (`id`, `project_id`, `name`, `description`, `priority`, `dif
 (126, 3, 'frf', 'Une bonne description', 'LOW', 2),
 (127, 110, 'jkbhjv2', 'nghfb', 'LOW', 1),
 (135, 110, 'gbdvfc', 'vfsd', 'HIGH', 1),
-(138, 123, '', 'Test3', 'LOW', 6),
-(141, 123, 'No description', '', '', 1),
-(145, 123, 'I2', 'Bonjour', 'HIGH', -567868),
-(147, 123, 'Strange description', 'nfioezhfez#mofjoierjf56853258fnlekzjfgzuhfnfe4r6z4f5e64f8zr4fsz4fznjzehuifeè_-{}[]()%BGFHMOOYbffhbikuyjhrteftu4j56tyhfbg489y6t5', 'LOW', 5),
-(148, 123, '.', 'Strang name3', 'LOW', -4),
-(149, 123, 'BONih1687/*/*-*6+5+86+202+nlvf;?p^poizfdsk', 'Strang name3', 'LOW', -4),
-(150, 123, '123456779952599562', 'Many numbers', 'medium', -10),
-(151, 123, 'abcdefghijklmnopqrstuvwxyzABCDJPÖHUJH', 'hyjutrz', 'medium', -24),
-(152, 123, '{(]-_|}[)', '{(]-_|}[)', '{(]-_|}[)', 9),
 (153, 3, 'rdfrdf', 'Hola', 'HIGH', 10),
 (157, 8, 'I1', 'Test', 'LOW', 1),
 (158, 8, 'I2', 'Test2', 'HIGH', 0),
@@ -171,12 +176,28 @@ INSERT INTO `issue` (`id`, `project_id`, `name`, `description`, `priority`, `dif
 (506, 573, 'I1', 'As... I want to... In order to...', 'LOW', 1),
 (507, 573, 'I2', 'As... I want to... In order to...', 'LOW', 1),
 (526, 586, 'test', 'As... I want to... In order to...', 'LOW', 5),
-(527, 472, 'test', 'As... I want to... In order to...', 'LOW', 5);
+(527, 472, 'test', 'As... I want to... In order to...', 'LOW', 5),
+(542, 123, 'I1', 'As a developper I want to... In order to...', 'LOW', 14),
+(543, 121, 'jimissue3', 'As... I want to... In order to...', 'MEDIUM', 5),
+(544, 599, 'Création d\'un compte	', 'En tant que visiteur, je souhaite créer un compte sur le site en cliquant sur un bouton \"Inscription\" afin de pouvoir m\'inscrire dans la base de donnée et me connecter par la suite. La page de création d\'un compte doit me demander : un nom d\'utilisateur unique sous forme de chaîne de caractères (20 char max) un mot de passe sous forme de chaîne de caractères.', 'LOW', 13),
+(546, 599, 'Connexion/Déconnexion	', 'En tant que visiteur, je souhaite me connecter à mon compte en cliquant sur un bouton \"Connection\" afin d\'avoir accès à mes projets et me déconnecter en cliquant sur un bouton \"Déconnexion\". La page de connexion doit me demander : mon nom d\'utilisateur unique sous forme de chaîne de caractères. un mot de passe sous forme de chaîne de caractères. Un message d\'erreur doit apparaître si le couple nom d\'utilisateur/mot de passe entré ne correspond à aucun compte.', 'LOW', 8),
+(547, 599, 'Création de projet	', 'En tant que connecté, je souhaite pouvoir créer un projet afin qu\'il soit disponible dans ma liste de projets en spécifiant : un nom, une description, et en ajoutant des membres', 'HIGH', 5),
+(548, 599, 'Liste des projets d\'un membre', 'En tant que connecté, je souhaite avoir accès à une liste des projets auxquels je suis inscrit afin de pouvoir accéder/modifier leur contenu. Je n\'ai accès qu\'aux projets auxquels j\'ai été invité.', 'LOW', 5),
+(549, 599, 'Liste des issues d\'un projet/sprint	', '	En tant que membre d\'un projet, je souhaite pouvoir accéder à la liste des issues d\'un projet, et la liste des issues d\'un sprint sélectionné afin de voir l\'avancement du projet/sprint et de pouvoir ajouter, modifier ou supprimer des issues du projet/sprint.', 'HIGH', 5),
+(550, 599, '	Création/Modification/Suppression d\'Issues', 'En tant que membre d\'un projet et en étant sur la liste des issues d\'un projet, je souhaite pouvoir créer une Issue en cliquant sur \"Ajouter Issue\" qui ouvre un formulaire me permettant de spécifier : un nom une description une priorité une difficulté (l\'id sera créé automatiquement) Modifier une issue en cliquant sur \"Modifier\" à coté de l\'issue concernée, et de spécifier les nouvelles valeurs des champs, et supprimer une issue en cliquant sur le bouton \"Supprimer\" à coté de l\'issue à supprimer, puis en confirmant mon choix afin de permettre aux autres membres du projet de la voir et l\'ajouter à un sprint pour pouvoir la découper en tâches.', 'HIGH', 5),
+(551, 599, 'Liste des tâches	', 'En tant que membre d\'un projet, je souhaite pouvoir accéder à la liste des taches d\'un projet auxquel j\'ai été invité sous forme de tableau avec les tâches à faire les tâches en cours les tâches terminées. afin de connaître l\'avancement des tâche du projet que j\'ai séléctionné.', 'HIGH', 5),
+(552, 599, 'Créer/Modifier/Supprimer une tâche', 'En tant que membre d\'un projet et étant sur la liste des tâches de celui-ci, je souhaite pouvoir créer une nouvelle tâche en cliquant sur le bouton \"Ajouter Tâche\" puis en spécifiant : son nom sa description son état sa date de début le temps nécessaire à sa réalisation sa Definition of Done les membres concernées par celle-ci la/les liaison(s) à l\'Id d\'une ou plusieurs issues. les tâches pré-requises à la réalisation de cette tâche Modifier les détails de la tâche, puis confirmer les changements cliquant sur le bouton \"Enregistrer\", et supprimer une tâche cliquant sur le bouton \"Supprimer\", puis en confirmant mon choix afin de permettre aux autres membres du projet de la voir et pouvoir l\'implémenter.', 'HIGH', 8),
+(553, 599, 'Voir l\'issue liée à une tâche	', '	En tant que membre du projet, je souhaite pouvoir accéder à une Issue liée à une tâche afin d\' avoir accès facilement à celle-ci en cliquant sur son Id dans les détails de la tâche concernée.', 'HIGH', 3),
+(557, 599, 'Menu de navigation dans un projet', ' projet	En tant que membre du projet, je souhaite avoir accès à un menu de navigation me permettant d\'accéder facilement à : la liste des issues la liste des tâches la liste des sprints la liste des releases la liste des documentations la liste des tests du projet afin de pouvoir accéder facilement à chaque partie du projet.', 'LOW', 3),
+(558, 599, 'Invitation/Suppression de membres', 'En tant que créateur du projet, je souhaite pouvoir inviter d\'autres membres à mon projet lors de sa création, ou ultérieurement afin qu\'ils puissent avoir acces à celui-ci et participer à son avancement, en : cliquant sur un bouton \"Ajouter un membre\" spécifiant son nom d\'utilisateur et supprimer un membre de mon projet en cliquant sur un bouton \"Supprimer\" à coté du nom du membre à supprimer. Après sa suppression, un membre n\'a plus accès à la vue du projet.', 'LOW', 5),
+(559, 599, 'Liste/Ajouter/Modifier/Supprimer Tests', 'En tant que membre du projet, je souhaite pouvoir ajouter un tests dans la liste des tests à effectuer en appuyant sur un bouton \"Ajouter Test\", puis en spécifiant un nom une description de la fonction à tester et du résultat attendu par celui-ci en le liant à une issue. en précisant la dernière version pour laquelle le test a été validé modifier un test en cliquant sur un bouton \"Modifier Test\" et supprimer un test en cliquant sur le bouton \"Supprimer\" à coté du test correspondant afin de pouvoir gérer facilement l\'avancement des tests du projet auxquel j\'appartient.', 'LOW', 5),
+(560, 599, 'Modifier l\'état d\'un Test	', 'En tant que membre du projet, je souhaite pouvoir modifier l\'état d\'un test (\"A coder\" ou \"Fait\") afin de comprendre rapidement quels tests ont été faits, et ceux restant à coder dans l\'application.', 'LOW', 8),
+(561, 599, 'Code couleur Tests	', 'En tant que membre du projet je souhaite que les tests bénéficient d\'un code couleur concernant leur état afin de faciliter la vue globale', 'LOW', 2);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `issue_of_sprint`
+-- Table structure for table `issue_of_sprint`
 --
 
 CREATE TABLE `issue_of_sprint` (
@@ -186,7 +207,7 @@ CREATE TABLE `issue_of_sprint` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `issue_of_sprint`
+-- Dumping data for table `issue_of_sprint`
 --
 
 INSERT INTO `issue_of_sprint` (`id`, `sprint_id`, `issue_id`) VALUES
@@ -222,12 +243,28 @@ INSERT INTO `issue_of_sprint` (`id`, `sprint_id`, `issue_id`) VALUES
 (426, 277, 502),
 (427, 277, 504),
 (428, 38, 157),
-(429, 38, 158);
+(429, 38, 158),
+(457, 298, 113),
+(458, 298, 114),
+(477, 299, 544),
+(478, 299, 546),
+(479, 299, 547),
+(480, 299, 548),
+(481, 299, 549),
+(482, 299, 550),
+(483, 299, 551),
+(484, 299, 552),
+(485, 299, 553),
+(486, 300, 557),
+(487, 300, 558),
+(488, 300, 559),
+(489, 300, 560),
+(490, 300, 561);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `issue_of_task`
+-- Table structure for table `issue_of_task`
 --
 
 CREATE TABLE `issue_of_task` (
@@ -237,7 +274,7 @@ CREATE TABLE `issue_of_task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Déchargement des données de la table `issue_of_task`
+-- Dumping data for table `issue_of_task`
 --
 
 INSERT INTO `issue_of_task` (`id`, `task_id`, `issue_id`) VALUES
@@ -289,12 +326,44 @@ INSERT INTO `issue_of_task` (`id`, `task_id`, `issue_id`) VALUES
 (192, 19, 159),
 (220, 114, 157),
 (221, 115, 11),
-(223, 12, 157);
+(223, 12, 157),
+(230, 130, 127),
+(231, 130, 135),
+(232, 131, 542),
+(233, 132, 113),
+(234, 132, 114),
+(235, 133, 113),
+(236, 134, 114),
+(237, 135, 113),
+(238, 136, 113),
+(239, 136, 114),
+(240, 137, 543),
+(247, 138, 544),
+(248, 138, 546),
+(249, 138, 547),
+(250, 139, 544),
+(251, 139, 546),
+(252, 139, 547),
+(253, 140, 544),
+(254, 140, 546),
+(255, 140, 547),
+(256, 141, 544),
+(257, 141, 546),
+(258, 141, 547),
+(259, 142, 548),
+(260, 143, 551),
+(261, 144, 551),
+(262, 144, 552),
+(263, 145, 551),
+(264, 145, 552),
+(265, 146, 552),
+(266, 147, 552),
+(267, 148, 553);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `issue_of_test`
+-- Table structure for table `issue_of_test`
 --
 
 CREATE TABLE `issue_of_test` (
@@ -304,7 +373,7 @@ CREATE TABLE `issue_of_test` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `issue_of_test`
+-- Dumping data for table `issue_of_test`
 --
 
 INSERT INTO `issue_of_test` (`id`, `test_id`, `issue_id`) VALUES
@@ -325,12 +394,26 @@ INSERT INTO `issue_of_test` (`id`, `test_id`, `issue_id`) VALUES
 (67, 28, 165),
 (68, 29, 165),
 (106, 42, 502),
-(107, 42, 504);
+(107, 42, 504),
+(110, 48, 542),
+(111, 49, 547),
+(112, 50, 548),
+(113, 51, 552),
+(114, 52, 552),
+(115, 53, 546),
+(116, 54, 546),
+(117, 55, 553),
+(118, 56, 559),
+(119, 57, 559),
+(120, 58, 559),
+(121, 59, 558),
+(122, 60, 548),
+(123, 61, 551);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `issue_state`
+-- Table structure for table `issue_state`
 --
 
 CREATE TABLE `issue_state` (
@@ -343,7 +426,7 @@ CREATE TABLE `issue_state` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `issue_state`
+-- Dumping data for table `issue_state`
 --
 
 INSERT INTO `issue_state` (`id`, `issue_sprint_id`, `totalTask`, `totalToDo`, `totalDoing`, `totalDone`) VALUES
@@ -372,7 +455,7 @@ INSERT INTO `issue_state` (`id`, `issue_sprint_id`, `totalTask`, `totalToDo`, `t
 -- --------------------------------------------------------
 
 --
--- Structure de la table `member`
+-- Table structure for table `member`
 --
 
 CREATE TABLE `member` (
@@ -381,7 +464,7 @@ CREATE TABLE `member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `member`
+-- Dumping data for table `member`
 --
 
 INSERT INTO `member` (`username`, `password`) VALUES
@@ -403,7 +486,7 @@ INSERT INTO `member` (`username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `project`
+-- Table structure for table `project`
 --
 
 CREATE TABLE `project` (
@@ -415,7 +498,7 @@ CREATE TABLE `project` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Déchargement des données de la table `project`
+-- Dumping data for table `project`
 --
 
 INSERT INTO `project` (`id`, `name`, `description`, `userGitHub`, `repositoryGitHub`) VALUES
@@ -425,7 +508,7 @@ INSERT INTO `project` (`id`, `name`, `description`, `userGitHub`, `repositoryGit
 (9, 'Projet Fou 2', 'Une longue description', '', NULL),
 (110, 'Bonjour', 'bonjour', 'elafosse', 'CDP_Tests'),
 (121, 'jimtest', 'Description test', '', NULL),
-(123, 'ProjectTest bis', 'Project to test the appli bis', 'elafosse', 'CDP_Tests'),
+(123, 'ProjectTest bis', 'Project to test the appli bis ça marche ?', 'elafosse', 'CDP_Release'),
 (148, 'Test1', 'Ceci est le test1', '', ''),
 (318, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo'),
 (319, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo'),
@@ -459,12 +542,14 @@ INSERT INTO `project` (`id`, `name`, `description`, `userGitHub`, `repositoryGit
 (593, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo'),
 (594, 'New Name !', 'Description', 'gitHubLogin', 'gitHubRepo'),
 (595, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo'),
-(596, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo');
+(596, 'Name', 'Description', 'gitHubLogin', 'gitHubRepo'),
+(599, 'Projet CDP', 'Mettre en place un projet permettant d\'accompagner une équipe à l\'utilisation des méthodes SCRUM, en utilisant les principes de sprint, d\'issues et de tâches. Permettre à une équipe de savoir se positionner dans les sprints, et permettre à chaque utilisateur de comprendre facilement les tâches qui lui sont attribuées, celles à faire et celles en cours.  ', 'elafosse', 'CDP_Release'),
+(600, 'Projet Web', 'Création d\'une application REST utilisant une api externe. Utilisation de l\'api \"WorldFood\" permettant de récupérer des recettes de plats. ', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `project_team`
+-- Table structure for table `project_team`
 --
 
 CREATE TABLE `project_team` (
@@ -474,7 +559,7 @@ CREATE TABLE `project_team` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
--- Déchargement des données de la table `project_team`
+-- Dumping data for table `project_team`
 --
 
 INSERT INTO `project_team` (`project_id`, `username`, `is_admin`) VALUES
@@ -485,14 +570,18 @@ INSERT INTO `project_team` (`project_id`, `username`, `is_admin`) VALUES
 (8, 'jimmy', 0),
 (573, 'User5', 0),
 (573, 'Test', 1),
-(123, 'coucou', 1),
 (110, 'User5', 0),
-(110, 'coucou', 1);
+(110, 'coucou', 1),
+(123, 'coucou', 1),
+(599, 'User5', 0),
+(599, 'rrkheloufi', 1),
+(600, 'user1', 0),
+(600, 'rrkheloufi', 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `sprint`
+-- Table structure for table `sprint`
 --
 
 CREATE TABLE `sprint` (
@@ -505,7 +594,7 @@ CREATE TABLE `sprint` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `sprint`
+-- Dumping data for table `sprint`
 --
 
 INSERT INTO `sprint` (`id`, `project_id`, `objective`, `date_begin`, `date_end`, `release_id`) VALUES
@@ -516,7 +605,7 @@ INSERT INTO `sprint` (`id`, `project_id`, `objective`, `date_begin`, `date_end`,
 (9, 110, 'bonjour', '2019-11-26', '2019-11-29', 21773215),
 (10, 110, 'gtdr', '2019-11-27', '2019-11-26', -1),
 (12, 110, 'bgr', '2019-11-13', '2019-11-26', 21706864),
-(15, 110, 'vfdbgrf', '2019-11-28', '2019-11-28', -1),
+(15, 110, 'zfafzgjyt', '2019-11-28', '2019-11-28', -1),
 (20, 110, 'vfgd', '2019-11-22', '2019-11-27', -1),
 (24, 110, 'bonjour', '2019-11-21', '2019-11-21', -1),
 (26, 110, 'nhnf', '2019-11-28', '2019-11-27', -1),
@@ -530,12 +619,16 @@ INSERT INTO `sprint` (`id`, `project_id`, `objective`, `date_begin`, `date_end`,
 (274, 573, 'Test - bis', '2019-12-27', '2019-12-27', 21773215),
 (276, 573, 'Ca marche', '2019-12-25', '2019-12-25', -1),
 (277, 573, 'Ca marche 2', '2019-12-27', '2019-12-26', -1),
-(288, 587, 'etets', '2019-12-10', '2019-12-13', -1);
+(288, 587, 'etets', '2019-12-10', '2019-12-13', -1),
+(298, 121, 'test bars', '2019-12-02', '2019-12-16', -1),
+(299, 599, 'Permettre à un utilisateur de s\'inscrire, se connecter et de créer/rejoindre un projet.\r\nMettre en place la création d\'Issues et de Tâches.', '2019-12-09', '2019-12-21', -1),
+(300, 599, 'Implémentation des tests.\r\nRéaliser de la barre de navigation du site.', '2019-12-23', '2020-01-04', -1),
+(301, 599, 'Implémentation de la release et de la documentation.\r\nPermettre un déploiement facile de l\'application', '2020-01-06', '2020-01-17', -1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `task`
+-- Table structure for table `task`
 --
 
 CREATE TABLE `task` (
@@ -550,7 +643,7 @@ CREATE TABLE `task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `task`
+-- Dumping data for table `task`
 --
 
 INSERT INTO `task` (`id`, `project_id`, `name`, `description`, `state`, `start_date`, `realisation_time`, `description_of_done`) VALUES
@@ -571,7 +664,6 @@ INSERT INTO `task` (`id`, `project_id`, `name`, `description`, `state`, `start_d
 (28, 2, 'fgtdfhggggg', 'fdghdfgjhdg', 'Done', '2019-10-18', 15, 'dodododo'),
 (29, 2, 'dfghdf', 'ghdfghdfgh', 'Done', '2019-11-03', 2, 'bk,l;'),
 (30, 2, 'gdf', 'hjg', 'Doing', '2019-11-06', 10, 'ghjk'),
-(31, 123, 'Task 1', 'Test task 1', 'To Do', '2019-11-17', 1, 'Test work'),
 (38, 2, 'ghjkghkl', 'ljmk', 'To Do', '2019-11-19', 15, '1bnj;k,'),
 (40, 2, 'hjklmlù', 'kmù*lmù*', 'Doing', '2019-11-28', 12, 'klmùjklmù'),
 (51, 110, 'Test', 'Je teste un truc', 'To Do', '2019-11-22', 1, 'Je teste quelque chose'),
@@ -612,12 +704,31 @@ INSERT INTO `task` (`id`, `project_id`, `name`, `description`, `state`, `start_d
 (113, 123, 'nhtf', 'nhgn', 'To Do', '2019-12-12', 1, ',jg'),
 (114, 8, 'efsdr', 'efrsgdt', 'Doing', '2019-12-18', 56, 'wsxdvfcbgvnh,bj'),
 (115, 8, 'EFSRGD', 'TEEST', 'Doing', '2019-12-06', 2, 'ESGRDTHF'),
-(128, 110, 'ngf', 'bhfg', 'To Do', '2019-12-12', 1, 'ngf');
+(128, 110, 'ngf', 'bhfg', 'To Do', '2019-12-12', 1, 'ngf'),
+(130, 110, 'abcd', 'efgh', 'To Do', '2019-12-19', 2, 'yfn'),
+(131, 123, ':lig', 'jkv', 'To Do', '2019-12-12', 2, 'ikjnhg'),
+(132, 121, 'test', 'fhdfghj', 'To Do', '2019-12-11', 1, ''),
+(133, 121, 'test2', 'fdhsdfgh', 'To Do', '2019-12-14', 1, ''),
+(134, 121, 'gkgh', 'ffhjgkg', 'Doing', '2019-12-15', 1, ''),
+(135, 121, 'hjkhm', 'dfhgjkghlk', 'Done', '2019-12-11', 1, ''),
+(136, 121, 'ghhjfhjgk', 'sghghj', 'Done', '2019-12-11', 1, ''),
+(137, 121, 'mjùk*ù', 'hj', 'To Do', '2019-12-10', 1, ''),
+(138, 599, 'Base de données', 'Créer une base de donnée en MySQL nommée \"cdp_projet_gr1_eq7\".', 'Done', '2019-11-25', 1, 'Base de données créé est prête à être utilisée. '),
+(139, 599, 'Créer tables dans la BD', 'Créer les tables de la base de données, finir la checklist.', 'Done', '2019-11-25', 1, 'Créer table \"project\" : id, name, description\r\nCréer table \"members\" : username, password\r\nCréer table \"project_team\" : project_id, username, is_admin\r\nCréer table \"issue\" : id, project_id, name, description, priority, difficulty\r\nCréer table \"task\" : id, project_id, name, description, state, date_beginning, realisation_time, description_of_done\r\nCréer table \"assigned_task\" : task_id, username\r\nCréer table \"task_dependencies\" : id, task_id, dependence\r\nCréer table \"task_checklist\" task_id, description, is_done\r\n'),
+(140, 599, 'Fonctions BD', 'Créer la classe base de donnée avec les fonctions nécessaires', 'Done', '2019-11-25', 1, 'createProject(name, description) : void\r\ndeleteProject(username, projectId) : void //check if it\'s the admin\r\ncreateMember(username, password) : void\r\ndeleteMember(username, password) : void\r\nvalidateConnexion(username, password) : bool\r\ninviteMembersToProject(projectId, List<username> usernames, List<bool> admins);\r\n'),
+(141, 599, 'Créer db_connection.js', 'Créer la classe permettant à l\'application de se connecter à la base de données.', 'Done', '2019-11-28', 1, 'Quand le site est capable de se connecter à la base de données.'),
+(142, 599, 'Afficher les projets', 'Création du fichier \"listProjects.ejs\"', 'Doing', '2019-11-27', 1, 'Tous les projets d\'un membre sont disponible sur listProjects.ejs\r\nCliquer sur un projet redirige l\'utilisateur vers la page du projet cliqué\r\nUn bouton \"Nouveau Projet\" est disponible, et redirige un utilisateur vers newProject.ejs\r\nSi l\'utilisateur est admin/createur du projet, alors un bouton supprimer projet doit être disponible'),
+(143, 599, 'Afficher les tâches', 'Création d\'une page HTML avec un tableau de trois colonnes pour les taches a faire/en cours/terminées.', 'Doing', '2019-11-28', 1, 'Création de la page HTML\r\nUn utilisateur peut savoir facilement si une tache est à faire, en cours ou terminée car la tâche est disponible dans le tableau'),
+(144, 599, 'Tâches dans la BdD', 'Récupération des tâches d\'un projet dans la BdD pour les afficher', 'Doing', '2019-11-27', 0, 'Récupérer les tâches concernant un projet à l\'aide de la classe contenant les méthodes de récupération des informations dans la base de données\r\nRanger les tâches dans le tableau en fonction de leur état'),
+(145, 599, 'Etat d\'une tâche', 'Modification de l\'état d\'une tâche', 'Doing', '2019-11-27', 1, 'Création de la page html du formulaire avec : nom de la tache (input text), Description (textarea), état (input radio), date de début (input date), durée (input number, en jour/homme), son DoD (textarea), les membres du projets affectés (liste avec les noms des membres du groupe, l\'utilisateur selectionne les bons), les tâches pré-requises (liste avec les noms des taches, l\'utilisateur selectionne les pré-requis), les issues associées (liste avec le nom des issues, l\'utilisateur selection celles en relation)\r\nInformations enregistrées dans la BdD\r\nAjout des liens permettant d\'accéder au formulaire dans la liste des tâches'),
+(146, 599, 'Modification de tâche	', 'Modifier tous les champs d\'une tâche.', 'Doing', '2019-11-27', 1, 'Ajout du bouton \"modifier\" permettant d\'afficher le formulaire.\r\nAffichage du formulaire d\'une tâche avec les informations de celle-ci prérempli dans les bons champs\r\nModifications effectuées dans la BdD'),
+(147, 599, 'Supprimer une tâche	', 'Supprimer définitivement une tâche. ', 'To Do', '2019-11-28', 1, 'Bouton \" supprimer \" pour supprimer a tâche correspondante sur la page des détails d\'une tache\r\nCréation d\'une alerte demandant la confirmation de suppression de la tâche\r\nSuppression de la tache dans la BdD'),
+(148, 599, '	Lien vers les issues liées à une tâche', 'Lien vers les issues liées à une tâche', 'To Do', '2019-11-28', 1, 'Dans la page des informations d\'une tâche, les issues associées disposent de liens cliquables vers les pages des infos des dites issues. (href sur le nom lui même ou petite icone de lien derrière chaque issue)');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `task_checklist`
+-- Table structure for table `task_checklist`
 --
 
 CREATE TABLE `task_checklist` (
@@ -628,7 +739,7 @@ CREATE TABLE `task_checklist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `task_checklist`
+-- Dumping data for table `task_checklist`
 --
 
 INSERT INTO `task_checklist` (`id`, `task_id`, `description`, `is_done`) VALUES
@@ -637,7 +748,7 @@ INSERT INTO `task_checklist` (`id`, `task_id`, `description`, `is_done`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `task_dependencies`
+-- Table structure for table `task_dependencies`
 --
 
 CREATE TABLE `task_dependencies` (
@@ -647,7 +758,7 @@ CREATE TABLE `task_dependencies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `task_dependencies`
+-- Dumping data for table `task_dependencies`
 --
 
 INSERT INTO `task_dependencies` (`id`, `task_id`, `depend_on_task_id`) VALUES
@@ -692,12 +803,21 @@ INSERT INTO `task_dependencies` (`id`, `task_id`, `depend_on_task_id`) VALUES
 (160, 114, 10),
 (161, 115, 11),
 (162, 13, 10),
-(163, 13, 12);
+(163, 13, 12),
+(176, 130, 22),
+(177, 130, 51),
+(178, 131, 72),
+(180, 139, 138),
+(181, 140, 138),
+(182, 140, 139),
+(183, 141, 139),
+(184, 141, 140),
+(185, 148, 139);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `test`
+-- Table structure for table `test`
 --
 
 CREATE TABLE `test` (
@@ -711,7 +831,7 @@ CREATE TABLE `test` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `test`
+-- Dumping data for table `test`
 --
 
 INSERT INTO `test` (`id`, `project_id`, `name`, `description`, `expected_result`, `last_version_validated`, `state`) VALUES
@@ -727,14 +847,28 @@ INSERT INTO `test` (`id`, `project_id`, `name`, `description`, `expected_result`
 (28, 148, 'Test1', 'un test', 'jtyhtgrghyjèuhtdbfhryhtf2gb3435456h4y65yr', '324', 'todo'),
 (29, 148, 'Test2', 'hythjyrfhtrhr', '3546468gtrgrds', '365', 'failed'),
 (42, 573, 'Test1 bis', 'Ca marche', 'Ca marche', '0.1.0', 'todo'),
-(44, 587, 'test', 'dfghdfh', 'dfghdf', 'dsfgsdfg', 'todo');
+(44, 587, 'test', 'dfghdfh', 'dfghdf', 'dsfgsdfg', 'todo'),
+(48, 123, 'T1', 'bgtdre', 'vfd', 'vfd', 'todo'),
+(49, 599, 'Ajouter un projet', 'addProject(...)', 'Integer', 'v.0.0.1', 'todo'),
+(50, 599, 'Modifier un projet', 'updateProject(projectId, ...)', 'Integer', 'v0.0.1', 'todo'),
+(51, 599, 'Ajouter une tâche', 'addTask(...)', 'Integer', 'v0.0.1', 'todo'),
+(52, 599, 'Modifier une tâche', 'updateTask(...)', 'string : \"Task updated\"', 'v0.0.1', 'failed'),
+(53, 599, 'Connexion', 'areUsernameAndPasswordCorrect(username, password)', 'boolean : (si les informations sont correctes ou non)', 'v0.0.1', 'passed'),
+(54, 599, 'Deconnexion', 'signOut(username)', 'User is signed out', 'v0.0.1', 'passed'),
+(55, 599, 'Accéder à l\'issue d\'une tâche', 'getIssuesOfTask(...)', 'Retourne les issues liées à la tâche choisie', 'v0.0.1', 'todo'),
+(56, 599, 'Ajouter une release', 'addReleaseFromGithubProject(username, password)', 'Retourne les release d\'un repo github', 'v0.0.1', 'todo'),
+(57, 599, 'Ajouter un test', 'addTest(...)', 'Integer', 'v0.0.1', 'todo'),
+(58, 599, 'Modifier un test', 'updateTest(testId, ...)', 'string : \"Test updated\"', 'v0.0.1', 'todo'),
+(59, 599, 'Inviter des membres', 'addMembers(listMembers[])', 'boolean : Retourne si l\'opération à fonctionné ou non', 'v0.0.1', 'todo'),
+(60, 599, 'Supprimer des membres', 'removeMembersFromProject(projectId, listMembers[]). Supprimer des membres existants, et d\'autres n\'existant pas. Supprimer des utilisateurs qui ne sont pas dans le projet.', 'boolean : Retourne si l\'opération à fonctionné ou non', 'v0.0.1', 'failed'),
+(61, 599, 'Récupérer la liste des tâches d\'un projet', 'getTasksFromProject(projectId). Tester avec des id existants et non-existants. ', 'Retourne toutes les tâches d\'un projet donné en paramètre.', 'v0.0.1', 'passed');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `assigned_task`
+-- Indexes for table `assigned_task`
 --
 ALTER TABLE `assigned_task`
   ADD PRIMARY KEY (`id`),
@@ -742,20 +876,20 @@ ALTER TABLE `assigned_task`
   ADD KEY `assigned_task_ibfk_2` (`username`);
 
 --
--- Index pour la table `documentation_of_release`
+-- Indexes for table `documentation_of_release`
 --
 ALTER TABLE `documentation_of_release`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `issue`
+-- Indexes for table `issue`
 --
 ALTER TABLE `issue`
   ADD PRIMARY KEY (`id`),
   ADD KEY `issue_ibfk_1` (`project_id`);
 
 --
--- Index pour la table `issue_of_sprint`
+-- Indexes for table `issue_of_sprint`
 --
 ALTER TABLE `issue_of_sprint`
   ADD PRIMARY KEY (`id`),
@@ -763,7 +897,7 @@ ALTER TABLE `issue_of_sprint`
   ADD KEY `sprint_id` (`sprint_id`);
 
 --
--- Index pour la table `issue_of_task`
+-- Indexes for table `issue_of_task`
 --
 ALTER TABLE `issue_of_task`
   ADD PRIMARY KEY (`id`),
@@ -771,7 +905,7 @@ ALTER TABLE `issue_of_task`
   ADD KEY `task_id` (`task_id`);
 
 --
--- Index pour la table `issue_of_test`
+-- Indexes for table `issue_of_test`
 --
 ALTER TABLE `issue_of_test`
   ADD PRIMARY KEY (`id`),
@@ -779,55 +913,55 @@ ALTER TABLE `issue_of_test`
   ADD KEY `test_id` (`test_id`);
 
 --
--- Index pour la table `issue_state`
+-- Indexes for table `issue_state`
 --
 ALTER TABLE `issue_state`
   ADD PRIMARY KEY (`id`),
   ADD KEY `issue_sprint_id` (`issue_sprint_id`);
 
 --
--- Index pour la table `member`
+-- Indexes for table `member`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`username`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Index pour la table `project`
+-- Indexes for table `project`
 --
 ALTER TABLE `project`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `project_team`
+-- Indexes for table `project_team`
 --
 ALTER TABLE `project_team`
   ADD KEY `project_team_ibfk_1` (`project_id`),
   ADD KEY `username` (`username`);
 
 --
--- Index pour la table `sprint`
+-- Indexes for table `sprint`
 --
 ALTER TABLE `sprint`
   ADD PRIMARY KEY (`id`),
   ADD KEY `sprint_ibfk_1` (`project_id`);
 
 --
--- Index pour la table `task`
+-- Indexes for table `task`
 --
 ALTER TABLE `task`
   ADD PRIMARY KEY (`id`),
   ADD KEY `project_id` (`project_id`);
 
 --
--- Index pour la table `task_checklist`
+-- Indexes for table `task_checklist`
 --
 ALTER TABLE `task_checklist`
   ADD PRIMARY KEY (`id`),
   ADD KEY `task_checklist_ibfk_1` (`task_id`);
 
 --
--- Index pour la table `task_dependencies`
+-- Indexes for table `task_dependencies`
 --
 ALTER TABLE `task_dependencies`
   ADD PRIMARY KEY (`id`),
@@ -835,164 +969,164 @@ ALTER TABLE `task_dependencies`
   ADD KEY `task_dependencies_ibfk_2` (`depend_on_task_id`);
 
 --
--- Index pour la table `test`
+-- Indexes for table `test`
 --
 ALTER TABLE `test`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `assigned_task`
+-- AUTO_INCREMENT for table `assigned_task`
 --
 ALTER TABLE `assigned_task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
--- AUTO_INCREMENT pour la table `documentation_of_release`
+-- AUTO_INCREMENT for table `documentation_of_release`
 --
 ALTER TABLE `documentation_of_release`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `issue`
+-- AUTO_INCREMENT for table `issue`
 --
 ALTER TABLE `issue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=542;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=562;
 
 --
--- AUTO_INCREMENT pour la table `issue_of_sprint`
+-- AUTO_INCREMENT for table `issue_of_sprint`
 --
 ALTER TABLE `issue_of_sprint`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=452;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=491;
 
 --
--- AUTO_INCREMENT pour la table `issue_of_task`
+-- AUTO_INCREMENT for table `issue_of_task`
 --
 ALTER TABLE `issue_of_task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=228;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
 
 --
--- AUTO_INCREMENT pour la table `issue_of_test`
+-- AUTO_INCREMENT for table `issue_of_test`
 --
 ALTER TABLE `issue_of_test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
--- AUTO_INCREMENT pour la table `issue_state`
+-- AUTO_INCREMENT for table `issue_state`
 --
 ALTER TABLE `issue_state`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
--- AUTO_INCREMENT pour la table `project`
+-- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=601;
 
 --
--- AUTO_INCREMENT pour la table `sprint`
+-- AUTO_INCREMENT for table `sprint`
 --
 ALTER TABLE `sprint`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
 
 --
--- AUTO_INCREMENT pour la table `task`
+-- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
--- AUTO_INCREMENT pour la table `task_checklist`
+-- AUTO_INCREMENT for table `task_checklist`
 --
 ALTER TABLE `task_checklist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `task_dependencies`
+-- AUTO_INCREMENT for table `task_dependencies`
 --
 ALTER TABLE `task_dependencies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
 
 --
--- AUTO_INCREMENT pour la table `test`
+-- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `assigned_task`
+-- Constraints for table `assigned_task`
 --
 ALTER TABLE `assigned_task`
   ADD CONSTRAINT `assigned_task_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `assigned_task_ibfk_2` FOREIGN KEY (`username`) REFERENCES `member` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `issue`
+-- Constraints for table `issue`
 --
 ALTER TABLE `issue`
   ADD CONSTRAINT `issue_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `issue_of_sprint`
+-- Constraints for table `issue_of_sprint`
 --
 ALTER TABLE `issue_of_sprint`
   ADD CONSTRAINT `issue_of_sprint_ibfk_1` FOREIGN KEY (`issue_id`) REFERENCES `issue` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `issue_of_sprint_ibfk_2` FOREIGN KEY (`sprint_id`) REFERENCES `sprint` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `issue_of_task`
+-- Constraints for table `issue_of_task`
 --
 ALTER TABLE `issue_of_task`
   ADD CONSTRAINT `issue_of_task_ibfk_1` FOREIGN KEY (`issue_id`) REFERENCES `issue` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `issue_of_task_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `issue_of_test`
+-- Constraints for table `issue_of_test`
 --
 ALTER TABLE `issue_of_test`
   ADD CONSTRAINT `issue_of_test_ibfk_1` FOREIGN KEY (`issue_id`) REFERENCES `issue` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `issue_of_test_ibfk_2` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `issue_state`
+-- Constraints for table `issue_state`
 --
 ALTER TABLE `issue_state`
   ADD CONSTRAINT `issue_state_ibfk_1` FOREIGN KEY (`issue_sprint_id`) REFERENCES `issue_of_sprint` (`id`);
 
 --
--- Contraintes pour la table `project_team`
+-- Constraints for table `project_team`
 --
 ALTER TABLE `project_team`
   ADD CONSTRAINT `project_team_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `project_team_ibfk_2` FOREIGN KEY (`username`) REFERENCES `member` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `sprint`
+-- Constraints for table `sprint`
 --
 ALTER TABLE `sprint`
   ADD CONSTRAINT `sprint_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `task`
+-- Constraints for table `task`
 --
 ALTER TABLE `task`
   ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Contraintes pour la table `task_checklist`
+-- Constraints for table `task_checklist`
 --
 ALTER TABLE `task_checklist`
   ADD CONSTRAINT `task_checklist_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `task_dependencies`
+-- Constraints for table `task_dependencies`
 --
 ALTER TABLE `task_dependencies`
   ADD CONSTRAINT `task_dependencies_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

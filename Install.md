@@ -1,42 +1,32 @@
-*(dernière modification : 4/12/2019)*
+*(dernière modification : 10/12/2019)*
 
-Installation
-============
-
-Installation
-------------
-
-Installation via docker :
-
-* `docker-compose build`
-
-Installation sans docker (necessite des pré-requis) :
-
-* Récupérer la (dernière) release
-* Dans CDP_dev : `npm install`
-
-Si l'installation s'est bien déroulée, vous pourrez démarrer l'application à l'aide de `node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`. 
-
-Le message `App listening on port # !` apparaissant sur le terminal confirmera que l'application est bien lancée.
-
-Pre-requis (pour l'installation sans docker)
-----------
+#### Pre-requis (pour l'installation sans docker) :
 
 * NodeJS v10
 * NPM v6
 
 L'application peut fonctionner avec d'autres versions mais nous ne fournissons aucune garantie à ce propos.
 
-Lancement de l'application
---------------------------
+Installation / Lancement
+------------
 
-Lancer l'application avec Docker :
+##### Installation et lancement via docker :
 
+* `git clone https://github.com/elafosse/CDP_Release.git`
+* `cd CDP_Release`
+* `docker-compose build`
 * `docker-compose up`
 
-Pour executer l'application sans Docker, il suffit de lancer la commande `node` sur le fichier `initApp.js`
+L'application est disponible à l'adresse `http://localhost:3000/`
 
-`node CDP_Dev/cdp-gr1-eq7/backend/initApp.js`
+##### Installation et lancement sans docker (necessite des pré-requis) :
+
+* `git clone https://github.com/elafosse/CDP_Release.git`
+* `cd CDP_Release/cdp-gr1-eq7`
+* `npm install`
+* `node backend/initApp.js`
+
+Le message `App listening on port # !` apparaissant sur le terminal confirmera que l'application est bien lancée.
 
 Configuration
 -------------
